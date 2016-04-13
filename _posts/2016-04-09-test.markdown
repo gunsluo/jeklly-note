@@ -1,8 +1,9 @@
 ---
 layout: post
-title:  "docker 服务器"
+title:  "Man must explore, and this is exploration at its greatest"
+subtitle:  "Problems look mighty small from 150 miles up"
 date:   2016-04-09 11:38:18 +0800
-categories: jekyll update
+categories: docker
 ---
 本篇文章是学习docker时，记录下的`常用命令`。
 

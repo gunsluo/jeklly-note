@@ -1,0 +1,16 @@
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('{% if page.headerimg %}{{ page.headerimg | escape }}{% else %}{{ "/img/post-bg.jpg" }}{% endif %}')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</h1>
+                        <h2 class="subheading">{% if page.subtitle %}{{ page.subtitle | escape }}{% else %}{{ site.subtitle | escape }}{% endif %}</h2>
+                        <span class="meta">写于 {{ page.date | date: "%Y-%m-%-d" }} By <a href="{{ site.authorurl }}">{{ site.author }}</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
