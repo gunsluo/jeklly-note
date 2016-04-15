@@ -46,35 +46,128 @@ hr.small {
   border-width: 4px;
   border-color: white;
 }
-.heading {
+p {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.timeline p, .cv-list {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+}
+.main-title {
+  border-bottom: 1px solid #efefef;
+  position: relative;
   margin-bottom: 30px;
 }
-.cv-title,
-.cv-subject {
-  text-align: right;
+.container-banner {
+    margin-top: 30px;
 }
-.cv-subject,
-.cv-p,
-.cv-list {
-  font-size: 90%;
+.margTop {
+    margin-top: 60px !important;
 }
-.cv-subject,
-.cv-p {
+.exp {
+    padding-left: 50px;
+    padding-top: 20px;
+    position: relative;
+    margin-bottom: 10px;
+}
+.exp .hgroup h6 i {
+	color:#cccccc;
+	margin-right:5px;
+}
+.exp .hgroup h6 span.current {
+	color:#ffffff;
+	background: #cd5353;
+	border-radius:6px;
+	-moz-border-radius:6px
+	-webkit-border-radius :6px;
+	-ms-border-radius:6px;
+	-o-border-radius: 6px;
+	padding:1px 12px;
+}
+.exp:after {
+    background: #cd5353;
+    border: 3px solid #ffffff;
+    content: "";
+    height: 15px;
+    left: -3px;
+    position: absolute;
+    text-align: center;
+    top: 24px;
+    width: 15px;
+    border-radius: 2em;
+}
+.timeline.experience:after {
+    content: '\e8ba';
+}
+.timeline.education:after {
+    content: '\e80c';
+}
+.timeline:before {
+	background: #ededed; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ededed 1%, #ededed 75%, #ffffff 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ededed), color-stop(75%,#ededed), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ededed 1%,#ededed 75%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ededed 1%,#ededed 75%,#ffffff 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ededed 1%,#ededed 75%,#ffffff 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ededed 1%,#ededed 75%,#ffffff 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+    bottom: 0;
+    content: "";
+    left: 18px;
+    position: absolute;
+    top: 0;
+    width: 3px;
+	height:100%;
+}
+.timeline:after {
+    background: #ffffff;
+    border: 3px solid #efefef;
+    font-family: 'fontello';
+    top: 0;
+    left: -5px;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    text-align: center;
+    color: #333333;
+    font-size: 20px;
+    line-height: 45px;
+    border-radius: 100%;
+    -moz-border-radius:100%;
+    -webkit-border-radius :100%;
+    -ms-border-radius:100%;
+    -o-border-radius: 100%;
+}
+.block-content {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-.collection,
-.cv-list{
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+.info ul.info-list {
+  padding: 0;
+  display: block;
+  list-style: none;
+  border: 1px solid #efefef;
+  text-align: center;
 }
-.collection{
-  font-size: 90%;
-  list-style-type: none;
-  padding-left: 0;
+.info ul.info-list li {
+  border-bottom: 1px solid #efefef;
+  background: #fafafa;
+  font-size: 16px;
 }
-.collection-item {
-  padding: 20px 0;
-  padding-left: 30px;
-  border-top: 1px solid #eeeeee;
+.info ul.info-list li .inf {
+  width: 35%;
+  background: #ffffff;
+  left: -1px;
+  position: relative;
+  border-right: 1px solid #efefef;
+  color: #333333;
+  display: inline-block;
+  padding: 8px 0;
+}
+.info ul.info-list li .value {
+  width: 63%;
+  color: #666666;
+  display: inline-block;
+  padding: 8px 0;
 }
 .navbar-custom {
   position: absolute;
@@ -404,16 +497,16 @@ form .row:first-child .floating-label-form-group {
 }
 .progress {
   background-color: #eee;
-  height: 30px;
-  margin-bottom: 30px;
-  border-radius: 0;
+  height: 24px;
+  margin-bottom: 24px;
+  border-radius: 6px;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .progress-bar {
-  line-height: 30px;
+  line-height: 24px;
   text-align: left;
   padding-left: 15px;
-  font-size: 14px
+  font-size: 13px;
 }
 ::-moz-selection {
   color: white;
