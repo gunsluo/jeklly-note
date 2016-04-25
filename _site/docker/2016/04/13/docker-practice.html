@@ -99,14 +99,67 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>本篇文章是学习docker时，记录下的<code class="highlighter-rouge">常用命令</code>。</p>
+                <p>本篇文章是实践中使用docker，遇到到的问题并记录下。</p>
 
-<p>登录:</p>
+<h3>首先推荐docker的学习资料</h3>
+
+<ol>
+<li><a href="https://www.gitbook.com/book/yeasy/docker_practice/details">Docker —— 从入门到实践</a></li>
+<li><a href="https://www.gitbook.com/book/yeasy/docker_practice/details">Docker —— 从入门到实践</a></li>
+</ol>
+
+<h3>常用命令</h3>
+
+<p><code>启动服务</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">/bin/systemctl restart  docker.service</code></pre></figure>
+
+<p><code>登录</code></p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker login registry.rd.fyec.cn</code></pre></figure>
 
-<p><a href="https://www.evernote.com/shard/s646/sh/b37d2247-f265-4ade-85b0-2c02ffbd67d7/07e9e0b60b3c7c501137fe0ea3a6360a">文章来源</a></p>
+<p><code>创建</code></p>
 
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker build -t registry.rd.fyec.cn/redis-server .</code></pre></figure>
+
+<p><code>运行</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -t -i registry.rd.fyec.cn/centos:centos7 /bin/bash</code></pre></figure>
+
+<p><code>提交</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker push registry.rd.fyec.cn/virtual_ccb_server</code></pre></figure>
+
+<p><code>SSH</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker <span class="nb">exec</span> -i -t 8ec02d6b7234  bash</code></pre></figure>
+
+<h3>Swarm</h3>
+
+<p><code>运行swarm manager</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d -p 2376:2376 swarm manage -H :2376 --replication --advertise 10.168.10.198:2376 consul://10.168.10.198:8500/swarm</code></pre></figure>
+
+<p><code>加入 swarm</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d swarm join --advertise<span class="o">=</span>10.168.10.198:2375 consul://10.168.10.198:8500/swarm</code></pre></figure>
+
+<h3>其他</h3>
+
+<p><code>共享主机目录</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d -v ~/nginxlogs:/var/log/nginx -p 5000:80 -i nginx</code></pre></figure>
+
+<p><code>持久化</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker create -v /tmp –name cmbdbf dev/file_agent 
+docker run -t -i –volumes-from cmbdbf dev/file_agent /bin/bash 
+<span class="nb">echo</span> “I’m not going anywhere” &gt; /tmp/hi
+<span class="nb">exit</span></code></pre></figure>
+
+<p><code>这里只是列出常用命令，之后会将docker网络问题与docker-compose管理以例子列出</code></p>
+
+<p><a href="https://www.evernote.com/shard/s646/sh/b37d2247-f265-4ade-85b0-2c02ffbd67d7/07e9e0b60b3c7c501137fe0ea3a6360a">文章来源</a></p>
 
                 <div id="disqus_thread"></div>
             </div>
@@ -114,6 +167,9 @@
     </div>
 
     <hr>
+<link rel="stylesheet" href="/css/github.min.css">
+<script src="/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <script>
 /**
 * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.

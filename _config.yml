@@ -16,7 +16,16 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://jerrylou.me" # the base hostname & protocol for your site
 
 # Build settings
-markdown: kramdown
+# markdown: kramdown
+highlighter: pygments
+markdown: redcarpet
+redcarpet:
+ extensions:
+   - fenced_code_blocks
+   - no_intra_emphasis
+   - strikethrough
+   - autolink
+   - tables
 
 #pagination
 gems: [jekyll-paginate]
