@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Man must explore, and this is exploration at its greatest</title>
+    <title>Docker实战应用</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -84,9 +84,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>Man must explore, and this is exploration at its greatest</h1>
-                        <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
-                        <span class="meta">写于 2016-04-9 By <a href="/index.html">Jerrylou</a></span>
+                        <h1>Docker实战应用</h1>
+                        <h2 class="subheading">我在实际项目中使用Docker的经验和遇到的问题</h2>
+                        <span class="meta">写于 2016-05-29 By <a href="/index.html">Jerrylou</a></span>
                     </div>
                 </div>
             </div>
@@ -99,11 +99,153 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>本篇文章是学习docker时，记录下的<code>常用命令</code>。</p>
+                <p>本篇文章是实践中使用docker，遇到到的问题并记录下。</p>
 
-<p>登录:</p>
+<h3>首先推荐docker的学习资料</h3>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker login registry.rd.fyec.cn</code></pre></figure>
+<ol>
+<li><a href="https://www.gitbook.com/book/yeasy/docker_practice/details">Docker —— 从入门到实践</a></li>
+</ol>
+
+<h3>Docker安装</h3>
+
+<p>系统Ubuntu 14.04 内核3.13.0-65-generic
+不多说直接给出安装命令，如果想源码编译的请上官网下载编译。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">apt-get update
+apt-get install wget
+
+wget -qO- https://get.docker.com/ <span class="p">|</span> sh</code></pre></figure>
+
+<p>Ok, 安装完成。就是这么简单。检测安装的docker版本。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker --version</code></pre></figure>
+
+<h3>常用命令</h3>
+
+<p>docker安装成功，了解下常用命令。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#启动服务</span>
+/bin/systemctl restart  docker.service
+<span class="c">#登录</span>
+docker login registry.rd.fyec.cn
+<span class="c">#创建</span>
+docker build -t registry.rd.fyec.cn/redis-server .
+<span class="c">#运行</span>
+docker run -t -i registry.rd.fyec.cn/centos:centos7 /bin/bash
+<span class="c">#提交</span>
+docker push registry.rd.fyec.cn/virtual_ccb_server
+<span class="c">#SSH</span>
+docker <span class="nb">exec</span> -i -t 8ec02d6b7234  bash</code></pre></figure>
+
+<h3>Dockerfile</h3>
+
+<p>如何创建自己的docker镜像，当然是写dockerfile了。现在就来写个简单的dockerfile吧。
+service是一个linux系统下的可运行文件</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#基础镜像库</span>
+from registry.rd.fyec.cn/base:latest
+
+<span class="c">#将service文件添加到docker镜像的/opt目录</span>
+ADD service /opt/service
+
+<span class="c">#运行时暴露80端口</span>
+EXPOSE 80
+
+<span class="c">#启动后运行/opt/service</span>
+CMD /opt/service</code></pre></figure>
+
+<p>简单的Dockerfile写好了，当然是创建docker image了。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker build -t &lt;docker image name&gt; &lt;dockerfile path&gt;</code></pre></figure>
+
+<p>最后，当然是吧docker镜像启动起来</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#启动并bash</span>
+docker run -t -i &lt;docker image name&gt; /bin/bash</code></pre></figure>
+
+<h3>Docker Swarm</h3>
+
+<p>Swarm是Docker公司在2014年12月初发布的一套较为简单的工具，用来管理Docker集群，它将一群Docker宿主机变成一个单一的，虚拟的主机。Swarm使用标准的Docker API接口作为其前端访问入口，换言之，各种形式的Docker Client(docker client in go, docker_py, docker等)均可以直接与Swarm通信。Swarm几乎全部用Go语言来完成开发，上周五，4月17号，Swarm0.2发布，相比0.1版本，0.2版本增加了一个新的策略来调度集群中的容器，使得在可用的节点上传播它们，以及支持更多的Docker命令以及集群驱动。</p>
+
+<p>Swarm deamon只是一个调度器（Scheduler）加路由器(router)，Swarm自己不运行容器，它只是接受docker客户端发送过来的请求，调度适合的节点来运行容器，这意味着，即使Swarm由于某些原因挂掉了，集群中的节点也会照常运行，当Swarm重新恢复运行之后，它会收集重建集群信息。</p>
+
+<h2>安装Docker-swarm</h2>
+
+<p>有三台服务器, 这三台机器创建一个Docker集群 其中 i-238242qix (10.253.101.25) 同时充当swarm manager管理集群</p>
+
+<table><thead>
+<tr>
+<th>机器名</th>
+<th>Ip</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>i-238242qix</td>
+<td>10.253.101.25</td>
+<td>swarm manager</td>
+</tr>
+<tr>
+<td>i-239z31k69</td>
+<td>10.253.100.20</td>
+<td></td>
+</tr>
+<tr>
+<td>i-238etvs5t</td>
+<td>10.253.100.229</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<p>Docker deamon 的监听端口 </p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vim /etc/default/docker</code></pre></figure>
+
+<p>在文件后面添加</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">DOCKER_OPTS</span><span class="o">=</span><span class="s2">&quot;-H 0.0.0.0:2375 -H unix:///var/run/docker.sock --graph /mnt/datadisk/docker --storage-driver btrfs&quot;</span></code></pre></figure>
+
+<p><code>--graph</code>指定docker使用磁盘 <code>--storage-driver</code>指定文件系统</p>
+
+<p>如果是使用consul配置Docker</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">DOCKER_OPTS</span><span class="o">=</span><span class="s2">&quot;-H 0.0.0.0:2375 -H unix:///var/run/docker.sock -D --cluster-advertise 10.139.52.27:2375 --cluster-store consul://10.139.52.27:8500/swarm --graph /mnt/data/docker --storage-driver btrfs&quot;</span></code></pre></figure>
+
+<p>重启 Docker deamon</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">service docker restart</code></pre></figure>
+
+<p>安装Docker官方提供的Swarm镜像</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker pull swarm</code></pre></figure>
+
+<p>运行swarm manager</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d -p 2376:2376 swarm manage -H :2376 --replication --advertise 10.168.10.198:2376 consul://10.168.10.198:8500/swarm</code></pre></figure>
+
+<p>加入 swarm</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d swarm join --advertise<span class="o">=</span>10.168.10.198:2375 consul://10.168.10.198:8500/swarm</code></pre></figure>
+
+<p>查看集群信息</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker -H 0.0.0.0:2376 info</code></pre></figure>
+
+<h3>其他</h3>
+
+<p>共享主机目录</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d -v ~/nginxlogs:/var/log/nginx -p 5000:80 -i nginx</code></pre></figure>
+
+<p>持久化</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker create -v /tmp –name cmbdbf dev/file_agent 
+docker run -t -i –volumes-from cmbdbf dev/file_agent /bin/bash 
+<span class="nb">echo</span> “I’m not going anywhere” &gt; /tmp/hi
+<span class="nb">exit</span></code></pre></figure>
+
+<p><code>这里只是列出常用命令，之后会将docker网络问题与docker-compose管理以例子列出</code></p>
 
 <p><a href="https://www.evernote.com/shard/s646/sh/b37d2247-f265-4ade-85b0-2c02ffbd67d7/07e9e0b60b3c7c501137fe0ea3a6360a">文章来源</a></p>
 

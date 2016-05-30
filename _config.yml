@@ -26,6 +26,9 @@ redcarpet:
    - strikethrough
    - autolink
    - tables
+   - highlight
+   - superscript
+   - with_to_data
 
 #pagination
 gems: [jekyll-paginate]

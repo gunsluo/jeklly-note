@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Docker实战应用</title>
+    <title>Mac &amp; Window10 双系统安装</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -84,9 +84,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>Docker实战应用</h1>
-                        <h2 class="subheading">我在实际项目中使用Docker的经验和遇到的问题</h2>
-                        <span class="meta">写于 2016-04-13 By <a href="/index.html">Jerrylou</a></span>
+                        <h1>Mac &amp; Window10 双系统安装</h1>
+                        <h2 class="subheading">基于el capitan 和 window10 安装教程。自选硬件、UEFI启动、hackintosh驱动</h2>
+                        <span class="meta">写于 2016-07-20 By <a href="/index.html">Jerrylou</a></span>
                     </div>
                 </div>
             </div>
@@ -99,67 +99,39 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>本篇文章是实践中使用docker，遇到到的问题并记录下。</p>
+                <p>本人使用mac pro 2015一段时间，深刻感受到mac pro对于开发者是如此的好用 - 爱不释手。同时也体会到pro硬件配置低引起的卡顿（图形渲染、virtual-box多开） 哎！由于经费和个人好奇心，于是...  开始吧</p>
 
-<h3>首先推荐docker的学习资料</h3>
+<h3>我的需求</h3>
 
 <ol>
-<li><a href="https://www.gitbook.com/book/yeasy/docker_practice/details">Docker —— 从入门到实践</a></li>
-<li><a href="https://www.gitbook.com/book/yeasy/docker_practice/details">Docker —— 从入门到实践</a></li>
+<li>装个hackintosh用于工作</li>
+<li>最好再装个window10。看看电影、打打游戏, 想想都嗨的不行。</li>
 </ol>
 
-<h3>常用命令</h3>
+<h3>硬件选择</h3>
 
-<p><code>启动服务</code></p>
+<p>osx系统对硬件有要求，在选择CPU、主板、显卡是要特别注意。选择一不小心可能会在之后无法安装osx, 也可能无法驱动显卡，还可能出现莫名其妙的问题。选择硬件之前请一定查是否有人成功安装。其他的就不说，直接给出参考网站: <a href="http://www.tonymacx86.com/buyersguide/march/2016">Mac硬件(可能需要翻墙)</a></p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">/bin/systemctl restart  docker.service</code></pre></figure>
+<h3>我的硬件</h3>
 
-<p><code>登录</code></p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker login registry.rd.fyec.cn</code></pre></figure>
-
-<p><code>创建</code></p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker build -t registry.rd.fyec.cn/redis-server .</code></pre></figure>
-
-<p><code>运行</code></p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -t -i registry.rd.fyec.cn/centos:centos7 /bin/bash</code></pre></figure>
-
-<p><code>提交</code></p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker push registry.rd.fyec.cn/virtual_ccb_server</code></pre></figure>
-
-<p><code>SSH</code></p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker <span class="nb">exec</span> -i -t 8ec02d6b7234  bash</code></pre></figure>
-
-<h3>Swarm</h3>
-
-<p><code>运行swarm manager</code></p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d -p 2376:2376 swarm manage -H :2376 --replication --advertise 10.168.10.198:2376 consul://10.168.10.198:8500/swarm</code></pre></figure>
-
-<p><code>加入 swarm</code></p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d swarm join --advertise<span class="o">=</span>10.168.10.198:2375 consul://10.168.10.198:8500/swarm</code></pre></figure>
-
-<h3>其他</h3>
-
-<p><code>共享主机目录</code></p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d -v ~/nginxlogs:/var/log/nginx -p 5000:80 -i nginx</code></pre></figure>
-
-<p><code>持久化</code></p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker create -v /tmp –name cmbdbf dev/file_agent 
-docker run -t -i –volumes-from cmbdbf dev/file_agent /bin/bash 
-<span class="nb">echo</span> “I’m not going anywhere” &gt; /tmp/hi
-<span class="nb">exit</span></code></pre></figure>
-
-<p><code>这里只是列出常用命令，之后会将docker网络问题与docker-compose管理以例子列出</code></p>
-
-<p><a href="https://www.evernote.com/shard/s646/sh/b37d2247-f265-4ade-85b0-2c02ffbd67d7/07e9e0b60b3c7c501137fe0ea3a6360a">文章来源</a></p>
+<table><thead>
+<tr>
+<th>Item</th>
+<th>Description</th>
+<th style="text-align: right">Price</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>item1</td>
+<td>item1 description</td>
+<td style="text-align: right">1.00</td>
+</tr>
+<tr>
+<td>item2</td>
+<td>item2 description</td>
+<td style="text-align: right">100.00</td>
+</tr>
+</tbody></table>
 
                 <div id="disqus_thread"></div>
             </div>
@@ -168,6 +140,21 @@ docker run -t -i –volumes-from cmbdbf dev/file_agent /bin/bash
 
     <hr>
 <link rel="stylesheet" href="/css/github.min.css">
+<style>
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    border:2px solid #ff0000;
+}
+
+th{
+    border:2px solid #000000;
+}
+
+td{
+    border:1px solid #000000;
+}
+</style>
 <script src="/js/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script>
