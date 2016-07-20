@@ -19,10 +19,24 @@ osx系统对硬件有要求，在选择CPU、主板、显卡是要特别注意�
 
 ###我的硬件
 
-| Item | Description | Price |
-| --- | --- | ---: |
-| item1 | item1 description | 1.00 |
-| item2 | item2 description | 100.00 |
+| 硬件类型 | 硬件型号 | ￥价格 |
+| --- | --- | --- |
+| **CPU** | 英特尔（Intel）酷睿四核 i5-6500 | `1480.00` |
+| **主板** | 技嘉（GIGABYTE）Z170-D3H主板 | `1000.00` |
+| **显卡** | EVGA GTX950 2G SC ACX2.0 cooler | `1100.00` |
+| **硬盘** | 三星(SAMSUNG) 850 EVO 250G SATA3 固态硬盘 | `580.00` |
+| **硬盘** | 希捷(SEAGATE)1TB 7200转64M SATA3 台式机硬盘 | `330.00` |
+| **内存** | 英睿达(Crucial)铂胜运动LT系列DDR4 2400 8G台式机内存 * 2 | `470.00` |
+| **机箱** | 美商海盗船（USCorsair）SPEC-03 黑色红光 中塔机箱 | `350.00` |
+| **水冷** | 美商海盗船（USCorsair）H55 CPU散热器 | `500.00` |
+
+**注意：硬件之间要相互支持。**
+
+
+###组装主机
+自己看着办，我无能为力。
+
+###制作El Capitan USB安装盘
 
 [mac-hardware-url]: http://www.tonymacx86.com/buyersguide/march/2016
 
