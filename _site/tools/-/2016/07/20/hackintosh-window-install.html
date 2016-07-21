@@ -116,60 +116,107 @@
 
 <table><thead>
 <tr>
-<th>硬件类型</th>
-<th>硬件型号</th>
-<th>￥价格</th>
+<th style="text-align: center">硬件类型</th>
+<th style="text-align: left">硬件型号</th>
+<th style="text-align: center">￥价格</th>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>CPU</strong></td>
-<td>英特尔（Intel）酷睿四核 i5-6500</td>
-<td><code>1480.00</code></td>
+<td style="text-align: center"><strong>CPU</strong></td>
+<td style="text-align: left">英特尔（Intel）酷睿四核 i5-6500</td>
+<td style="text-align: center"><code>1480.00</code></td>
 </tr>
 <tr>
-<td><strong>主板</strong></td>
-<td>技嘉（GIGABYTE）Z170-D3H主板</td>
-<td><code>1000.00</code></td>
+<td style="text-align: center"><strong>主板</strong></td>
+<td style="text-align: left">技嘉（GIGABYTE）Z170-D3H主板</td>
+<td style="text-align: center"><code>1000.00</code></td>
 </tr>
 <tr>
-<td><strong>显卡</strong></td>
-<td>EVGA GTX950 2G SC ACX2.0 cooler</td>
-<td><code>1100.00</code></td>
+<td style="text-align: center"><strong>显卡</strong></td>
+<td style="text-align: left">EVGA GTX950 2G SC ACX2.0 cooler</td>
+<td style="text-align: center"><code>1100.00</code></td>
 </tr>
 <tr>
-<td><strong>硬盘</strong></td>
-<td>三星(SAMSUNG) 850 EVO 250G SATA3 固态硬盘</td>
-<td><code>580.00</code></td>
+<td style="text-align: center"><strong>硬盘</strong></td>
+<td style="text-align: left">三星(SAMSUNG) 850 EVO 250G SATA3 固态硬盘</td>
+<td style="text-align: center"><code>580.00</code></td>
 </tr>
 <tr>
-<td><strong>硬盘</strong></td>
-<td>希捷(SEAGATE)1TB 7200转64M SATA3 台式机硬盘</td>
-<td><code>330.00</code></td>
+<td style="text-align: center"><strong>硬盘</strong></td>
+<td style="text-align: left">希捷(SEAGATE)1TB 7200转64M SATA3 台式机硬盘</td>
+<td style="text-align: center"><code>330.00</code></td>
 </tr>
 <tr>
-<td><strong>内存</strong></td>
-<td>英睿达(Crucial)铂胜运动LT系列DDR4 2400 8G台式机内存 * 2</td>
-<td><code>470.00</code></td>
+<td style="text-align: center"><strong>内存</strong></td>
+<td style="text-align: left">英睿达(Crucial)铂胜运动LT系列DDR4 2400 8G台式机内存 * 2</td>
+<td style="text-align: center"><code>470.00</code></td>
 </tr>
 <tr>
-<td><strong>机箱</strong></td>
-<td>美商海盗船（USCorsair）SPEC-03 黑色红光 中塔机箱</td>
-<td><code>350.00</code></td>
+<td style="text-align: center"><strong>机箱</strong></td>
+<td style="text-align: left">美商海盗船（USCorsair）SPEC-03 黑色红光 中塔机箱</td>
+<td style="text-align: center"><code>350.00</code></td>
 </tr>
 <tr>
-<td><strong>水冷</strong></td>
-<td>美商海盗船（USCorsair）H55 CPU散热器</td>
-<td><code>500.00</code></td>
+<td style="text-align: center"><strong>水冷</strong></td>
+<td style="text-align: left">美商海盗船（USCorsair）H55 CPU散热器</td>
+<td style="text-align: center"><code>500.00</code></td>
 </tr>
 </tbody></table>
 
-<p><strong>注意：硬件之间要相互支持。</strong></p>
+<p><strong>注意：硬件之间要相互支持。我选择的主板不支持蓝牙，也没有买无线网卡，osx的airdrop功能无法使用。你可以选择带蓝牙功能的主板并配上带蓝牙功能的无线网卡（单独蓝牙硬件）</strong></p>
 
 <h3>组装主机</h3>
 
 <p>自己看着办，我无能为力。</p>
 
-<h3>制作El Capitan USB安装盘</h3>
+<h3>制作El Capitan UEFI USB安装启动盘</h3>
+
+<ol>
+<li><p>准备16G的USB盘和一台osx系统的电脑(如果只有window，请看后面)</p></li>
+<li><p>通过 “Mac App Store” 更新下载，请进&quot;Mac App Store下载&quot; Install OS X El Capitan
+<img src="/img/post/install-osx-el-capitan.jpg" alt="Alt text" title="install os x el capitan">
+下载可能有点慢（可能需要翻墙）</p></li>
+<li><p>通过网盘下载，这里有小编亲手打包的&quot;OS X El Capitan&quot;镜像已上传到百度盘。提供下载</p>
+
+<ul>
+<li>文件名：安装 OS X El Capitan 1.7.28 2015-10-01.dmg</li>
+<li>百度盘 ：<a href="http://pan.baidu.com/s/1pLIMAD1">http://pan.baidu.com/s/1pLIMAD1</a></li>
+<li>提取码：593r</li>
+</ul></li>
+<li><p>格式话U盘，u盘名字为USB 
+<img src="/img/post/mac-format.png" alt="Alt text" title="format usb"></p></li>
+<li><p>打开「应用程序」-「实用工具」-「终端」，复制下面的命令，并粘贴到「终端」里，按回车运行：
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo /Applications/Install<span class="se">\ </span>OS<span class="se">\ </span>X<span class="se">\ </span>El<span class="se">\ </span>Capitan.app/Contents/Resources/createinstallmedia --volume /Volumes/USB --applicationpath /Applications/Install<span class="se">\ </span>OS<span class="se">\ </span>X<span class="se">\ </span>El<span class="se">\ </span>Capitan.app —nointeraction</code></pre></figure></p></li>
+<li><p>下载<a href="http://sourceforge.net/projects/cloverefiboot/">Cloverefiboot</a>, 右键「show package contents 」。找到Clover_v2.3k_r3423-UEFI-UB.pkg，双击安装UEFI启动到U盘。
+<img src="/img/post/clover-efi-boot.png" alt="Alt text" title="clover efi boot"></p></li>
+<li><p>windows系统制作osx启动盘。请参考: <a href="https://www.zhihu.com/question/19812727">教程</a></p></li>
+</ol>
+
+<h3>修改Bios,UEFI方式启动U盘</h3>
+
+<ol>
+<li>设置Bios 支持UEFI</li>
+</ol>
+
+<h3>安装el capitan 到固态硬盘</h3>
+
+<p>1.选择install OS X
+    <img src="/img/post/mac-install-1.jpg" alt="Alt text" title="mac install"></p>
+
+<p>2.选择语言
+    <img src="/img/post/mac-install-2.png" alt="Alt text" title="mac install"></p>
+
+<p>3.选择你的固体硬盘
+    <img src="/img/post/mac-install-3.png" alt="Alt text" title="mac install"></p>
+
+<p>4.格式化硬盘
+    <img src="/img/post/mac-install-4.png" alt="Alt text" title="mac install"></p>
+
+<p>5.install OS X
+    <img src="/img/post/mac-install-5.png" alt="Alt text" title="mac install"></p>
+
+<p>6.OS X 安装好了。
+    <img src="/img/post/mac-install-6.png" alt="Alt text" title="mac install"></p>
 
                 <div id="disqus_thread"></div>
             </div>
@@ -178,53 +225,6 @@
 
     <hr>
 <link rel="stylesheet" href="/css/github.min.css">
-<style>
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 18px;
-}
-
-table {
-    border-spacing: 0;
-    border-collapse: collapse;
-    border-color: grey;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-thead {
-    display: table-header-group;
-    vertical-align: middle;
-    border-color: inherit;
-}
-
-tbody {
-    display: table-row-group;
-    vertical-align: middle;
-    border-color: inherit;
-}
-
-table tr {
-    background-color: #fff;
-    border-top: 1px solid #ccc;
-}
-
-tr {
-    display: table-row;
-    vertical-align: inherit;
-    border-color: inherit;
-}
-
-table th, table td {
-    padding: 6px 13px;
-    border: 1px solid #ddd;
-}
-
-td, th {
-    display: table-cell;
-    vertical-align: inherit;
-}
-</style>
 <script src="/js/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script>

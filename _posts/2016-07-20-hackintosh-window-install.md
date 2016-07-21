@@ -20,7 +20,7 @@ osx系统对硬件有要求，在选择CPU、主板、显卡是要特别注意�
 ###我的硬件
 
 | 硬件类型 | 硬件型号 | ￥价格 |
-| --- | --- | --- |
+| :---: | :--- | :---: |
 | **CPU** | 英特尔（Intel）酷睿四核 i5-6500 | `1480.00` |
 | **主板** | 技嘉（GIGABYTE）Z170-D3H主板 | `1000.00` |
 | **显卡** | EVGA GTX950 2G SC ACX2.0 cooler | `1100.00` |
@@ -30,13 +30,63 @@ osx系统对硬件有要求，在选择CPU、主板、显卡是要特别注意�
 | **机箱** | 美商海盗船（USCorsair）SPEC-03 黑色红光 中塔机箱 | `350.00` |
 | **水冷** | 美商海盗船（USCorsair）H55 CPU散热器 | `500.00` |
 
-**注意：硬件之间要相互支持。**
+**注意：硬件之间要相互支持。我选择的主板不支持蓝牙，也没有买无线网卡，osx的airdrop功能无法使用。你可以选择带蓝牙功能的主板并配上带蓝牙功能的无线网卡（单独蓝牙硬件）**
 
 
 ###组装主机
 自己看着办，我无能为力。
 
-###制作El Capitan USB安装盘
+###制作El Capitan UEFI USB安装启动盘
+
+1. 准备16G的USB盘和一台osx系统的电脑(如果只有window，请看后面)
+
+2. 通过 “Mac App Store” 更新下载，请进"Mac App Store下载" Install OS X El Capitan
+    ![Alt text](/img/post/install-osx-el-capitan.jpg "install os x el capitan")
+    下载可能有点慢（可能需要翻墙）
+
+3. 通过网盘下载，这里有小编亲手打包的"OS X El Capitan"镜像已上传到百度盘。提供下载
+    - 文件名：安装 OS X El Capitan 1.7.28 2015-10-01.dmg
+    - 百度盘 ：http://pan.baidu.com/s/1pLIMAD1
+    - 提取码：593r
+
+4. 格式话U盘，u盘名字为USB 
+    ![Alt text](/img/post/mac-format.png "format usb")
+
+5. 打开「应用程序」-「实用工具」-「终端」，复制下面的命令，并粘贴到「终端」里，按回车运行：{% highlight bash %}
+sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinstallmedia --volume /Volumes/USB --applicationpath /Applications/Install\ OS\ X\ El\ Capitan.app —nointeraction
+{% endhighlight %}
+
+6. 下载[Cloverefiboot][Clover-url], 右键「show package contents 」。找到Clover_v2.3k_r3423-UEFI-UB.pkg，双击安装UEFI启动到U盘。
+    ![Alt text](/img/post/clover-efi-boot.png "clover efi boot")
+
+7. windows系统制作osx启动盘。请参考: [教程][window-oxs-usb-tutorial-url]
+
+###修改Bios,UEFI方式启动U盘
+
+1. 设置Bios 支持UEFI
+
+
+###安装el capitan 到固态硬盘
+
+1.选择install OS X
+    ![Alt text](/img/post/mac-install-1.jpg "mac install")
+
+2.选择语言
+    ![Alt text](/img/post/mac-install-2.png "mac install")
+
+3.选择你的固体硬盘
+    ![Alt text](/img/post/mac-install-3.png "mac install")
+
+4.格式化硬盘
+    ![Alt text](/img/post/mac-install-4.png "mac install")
+
+5.install OS X
+    ![Alt text](/img/post/mac-install-5.png "mac install")
+
+6.OS X 安装好了。
+    ![Alt text](/img/post/mac-install-6.png "mac install")
 
 [mac-hardware-url]: http://www.tonymacx86.com/buyersguide/march/2016
+[Clover-url]: http://sourceforge.net/projects/cloverefiboot/
+[window-oxs-usb-tutorial-url]: https://www.zhihu.com/question/19812727
 
