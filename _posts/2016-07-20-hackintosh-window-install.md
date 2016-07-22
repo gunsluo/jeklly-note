@@ -41,7 +41,8 @@ osx系统对硬件有要求，在选择CPU、主板、显卡是要特别注意�
 1. 准备16G的USB盘和一台osx系统的电脑(如果只有window，请看后面)
 
 2. 通过 “Mac App Store” 更新下载，请进"Mac App Store下载" Install OS X El Capitan
-    ![Alt text](/img/post/install-osx-el-capitan.jpg "install os x el capitan")
+    ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y34g8r3j30go0an0up.jpg "install os x el capitan")
+    
     下载可能有点慢（可能需要翻墙）
 
 3. 通过网盘下载，这里有小编亲手打包的"OS X El Capitan"镜像已上传到百度盘。提供下载
@@ -50,14 +51,14 @@ osx系统对硬件有要求，在选择CPU、主板、显卡是要特别注意�
     - 提取码：593r
 
 4. 格式话U盘，u盘名字为USB 
-    ![Alt text](/img/post/mac-format.png "format usb")
+    ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y353duxj30no0kwaew.jpg "format usb")
 
 5. 打开「应用程序」-「实用工具」-「终端」，复制下面的命令，并粘贴到「终端」里，按回车运行：{% highlight bash %}
 sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinstallmedia --volume /Volumes/USB --applicationpath /Applications/Install\ OS\ X\ El\ Capitan.app —nointeraction
 {% endhighlight %}
 
 6. 下载[Cloverefiboot][Clover-url], 右键「show package contents 」。找到Clover_v2.3k_r3423-UEFI-UB.pkg，双击安装UEFI启动到U盘。
-    ![Alt text](/img/post/clover-efi-boot.png "clover efi boot")
+    ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y33z603j30kc0faq5t.jpg "clover efi boot")
 
 7. windows系统制作osx启动盘。请参考: [教程][window-oxs-usb-tutorial-url]
 
@@ -69,22 +70,23 @@ sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinst
 ###安装el capitan 到固态硬盘
 
 1.选择install OS X
-    ![Alt text](/img/post/mac-install-1.jpg "mac install")
+http://ww3.sinaimg.cn/small/0065glrAgw1f62y34g8r3j30go0an0up.jpg
+    ![Alt text](http://ww2.sinaimg.cn/mw690/0065glrAgw1f62y35qv55j30hs0a03yn.jpg "mac install")
 
 2.选择语言
-    ![Alt text](/img/post/mac-install-2.png "mac install")
+    ![Alt text](http://ww1.sinaimg.cn/mw690/0065glrAgw1f62y36gi2gj30se0l8dil.jpg "mac install")
 
 3.选择你的固体硬盘
-    ![Alt text](/img/post/mac-install-3.png "mac install")
+    ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y379tqzj30sc0letac.jpg "mac install")
 
 4.格式化硬盘
-    ![Alt text](/img/post/mac-install-4.png "mac install")
+    ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y37whnrj30hs0dcmys.jpg "mac install")
 
 5.install OS X
-    ![Alt text](/img/post/mac-install-5.png "mac install")
+    ![Alt text](http://ww1.sinaimg.cn/mw690/0065glrAgw1f62y38zx9oj30hs0dejs1.jpg "mac install")
 
 6.OS X 安装好了。
-    ![Alt text](/img/post/mac-install-6.png "mac install")
+    ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y39uiedj30hs0ddgpl.jpg "mac install")
 
 [mac-hardware-url]: http://www.tonymacx86.com/buyersguide/march/2016
 [Clover-url]: http://sourceforge.net/projects/cloverefiboot/
