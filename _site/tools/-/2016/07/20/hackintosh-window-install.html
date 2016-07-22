@@ -196,7 +196,12 @@
 <h3>修改Bios,UEFI方式启动U盘</h3>
 
 <ol>
-<li>设置Bios 支持UEFI</li>
+<li><p>设置Bios 支持UEFI
+<img src="http://ww1.sinaimg.cn/mw690/0065glrAgw1f6325f8w00j3112112tds.jpg" alt="Alt text" title="bios"></p>
+
+<p><img src="http://ww1.sinaimg.cn/mw690/0065glrAgw1f6325mko1mj3112112gq5.jpg" alt="Alt text" title="bios"></p>
+
+<p><img src="http://ww1.sinaimg.cn/mw690/0065glrAgw1f632pgurc6j3112112dlk.jpg" alt="Alt text" title="bios"></p></li>
 </ol>
 
 <h3>安装el capitan 到固态硬盘</h3>
@@ -219,6 +224,83 @@
 
 <p>6.OS X 安装好了。
     <img src="http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y39uiedj30hs0ddgpl.jpg" alt="Alt text" title="mac install"></p>
+
+<h3>Hackintosh驱动篇</h3>
+
+<p>Hackintosh的驱动是最为麻烦的，显卡使用相对型号的web driver。驱动的详细安装介绍另起文章说明。</p>
+
+<h3>安装Window 10前准备</h3>
+
+<ol>
+<li>调整安装OSX固态盘大小，腾出硬盘空间安装Window 10
+
+<ul>
+<li>我的固态硬盘大小250G，170G安装Mac，80G安装Window 10</li>
+</ul></li>
+</ol>
+
+<ul>
+<li>打开「应用程序」-「实用工具」-「终端」</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">diskutil list</code></pre></figure>
+
+<ul>
+<li>调整硬盘大小</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo diskutil resizeVolume /dev/disk0s2 170GB </code></pre></figure>
+
+<ul>
+<li><p>调整后硬盘大小</p>
+
+<p><img src="http://ww2.sinaimg.cn/mw690/0065glrAgw1f62z9gmspmj30hk04w0tv.jpg" alt="Alt text" title="win install"></p></li>
+</ul>
+
+<h3>制作Window 10 UEFI U盘</h3>
+
+<ol>
+<li><p>下载Window 10 iso安装文件，最好选择64bit的安装包。<a href="http://www.itellyou.cn">下载地址</a></p></li>
+<li><p>格式化U盘，请务必选择「MS-DOS(FAT)」</p></li>
+<li><p>在「launchpad」中打开「Boot Camp Assistant」
+<img src="http://ww3.sinaimg.cn/mw690/0065glrAgw1f6303tw70sj30ov0ic40x.jpg" alt="Alt text" title="win install"></p></li>
+<li><p>点「continue」继续</p></li>
+<li><p>选择下载的Window 10.ISO文件，「continue」写入U盘
+<img src="http://ww2.sinaimg.cn/mw690/0065glrAgw1f6307aur77j30ov0icabm.jpg" alt="Alt text" title="win install"></p></li>
+</ol>
+
+<h3>安装Window10</h3>
+
+<ol>
+<li><p>重启系统，U盘启动进入Window安装</p></li>
+<li><p>选择没有使用的80G作为Window安装盘
+<img src="http://ww2.sinaimg.cn/mw690/0065glrAgw1f630qfhsd4j31560obwh7.jpg" alt="Alt text" title="win install"></p></li>
+<li><p>点「install」安装
+<img src="http://ww2.sinaimg.cn/mw690/0065glrAgw1f6313mpr9yj314t0mrgnp.jpg" alt="Alt text" title="win install"></p></li>
+<li><p>安装成功
+<img src="http://ww2.sinaimg.cn/mw690/0065glrAgw1f630qmkiiwj316c0paacx.jpg" alt="Alt text" title="win install"></p></li>
+</ol>
+
+<h3>修改Window10引导启动</h3>
+
+<ol>
+<li>重启系统，进入Mac系统</li>
+</ol>
+
+<ul>
+<li>打开「应用程序」-「实用工具」-「终端」, 挂载EFI启动盘</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">diskutil mount /dev/disk0s1</code></pre></figure>
+
+<ol>
+<li><p>将Mac的EFI引导程序拷贝到microsoft
+<img src="http://ww1.sinaimg.cn/mw690/0065glrAgw1f631iu7n22j30s70ef0us.jpg" alt="Alt text" title="win install"></p></li>
+<li><p>备份原有bootmgfw.efi 用mac的BOOTX64.efi替换到bootmgfw.efi
+<img src="http://ww1.sinaimg.cn/mw690/0065glrAgw1f631j2zabfj30s70efdj1.jpg" alt="Alt text" title="win install"></p></li>
+<li><p>重启系统，选择你想进入的系统吧
+<img src="http://ww2.sinaimg.cn/mw690/0065glrAgw1f63254x49hj3112112wi4.jpg" alt="Alt text" title="win install"></p></li>
+</ol>
 
                 <div id="disqus_thread"></div>
             </div>

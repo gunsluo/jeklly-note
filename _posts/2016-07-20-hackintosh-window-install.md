@@ -65,7 +65,11 @@ sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinst
 ###修改Bios,UEFI方式启动U盘
 
 1. 设置Bios 支持UEFI
+    ![Alt text](http://ww1.sinaimg.cn/mw690/0065glrAgw1f6325f8w00j3112112tds.jpg "bios")
 
+    ![Alt text](http://ww1.sinaimg.cn/mw690/0065glrAgw1f6325mko1mj3112112gq5.jpg "bios")
+
+    ![Alt text](http://ww1.sinaimg.cn/mw690/0065glrAgw1f632pgurc6j3112112dlk.jpg "bios")
 
 ###安装el capitan 到固态硬盘
 
@@ -88,7 +92,78 @@ http://ww3.sinaimg.cn/small/0065glrAgw1f62y34g8r3j30go0an0up.jpg
 6.OS X 安装好了。
     ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y39uiedj30hs0ddgpl.jpg "mac install")
 
+###Hackintosh驱动篇
+Hackintosh的驱动是最为麻烦的，显卡使用相对型号的web driver。驱动的详细安装介绍另起文章说明。
+
+###安装Window 10前准备
+
+1. 调整安装OSX固态盘大小，腾出硬盘空间安装Window 10
+    - 我的固态硬盘大小250G，170G安装Mac，80G安装Window 10
+
+* 打开「应用程序」-「实用工具」-「终端」
+
+{% highlight bash %}
+diskutil list
+{% endhighlight %}
+
+* 调整硬盘大小
+
+{% highlight bash %}
+sudo diskutil resizeVolume /dev/disk0s2 170GB 
+{% endhighlight %}
+
+* 调整后硬盘大小
+
+    ![Alt text](http://ww2.sinaimg.cn/mw690/0065glrAgw1f62z9gmspmj30hk04w0tv.jpg "win install")
+
+###制作Window 10 UEFI U盘
+
+1. 下载Window 10 iso安装文件，最好选择64bit的安装包。[下载地址][msdn-i-tell-you-url]
+
+2. 格式化U盘，请务必选择「MS-DOS(FAT)」
+
+3. 在「launchpad」中打开「Boot Camp Assistant」
+    ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f6303tw70sj30ov0ic40x.jpg "win install")
+
+4. 点「continue」继续
+
+5. 选择下载的Window 10.ISO文件，「continue」写入U盘
+    ![Alt text](http://ww2.sinaimg.cn/mw690/0065glrAgw1f6307aur77j30ov0icabm.jpg "win install")
+
+###安装Window10
+
+1. 重启系统，U盘启动进入Window安装
+
+2. 选择没有使用的80G作为Window安装盘
+    ![Alt text](http://ww2.sinaimg.cn/mw690/0065glrAgw1f630qfhsd4j31560obwh7.jpg "win install")
+
+3. 点「install」安装
+    ![Alt text](http://ww2.sinaimg.cn/mw690/0065glrAgw1f6313mpr9yj314t0mrgnp.jpg "win install")
+
+4. 安装成功
+    ![Alt text](http://ww2.sinaimg.cn/mw690/0065glrAgw1f630qmkiiwj316c0paacx.jpg "win install")
+
+###修改Window10引导启动
+
+1. 重启系统，进入Mac系统
+
+* 打开「应用程序」-「实用工具」-「终端」, 挂载EFI启动盘
+
+{% highlight bash %}
+diskutil mount /dev/disk0s1
+{% endhighlight %}
+
+2. 将Mac的EFI引导程序拷贝到microsoft
+    ![Alt text](http://ww1.sinaimg.cn/mw690/0065glrAgw1f631iu7n22j30s70ef0us.jpg "win install")
+
+3. 备份原有bootmgfw.efi 用mac的BOOTX64.efi替换到bootmgfw.efi
+    ![Alt text](http://ww1.sinaimg.cn/mw690/0065glrAgw1f631j2zabfj30s70efdj1.jpg "win install")
+
+4. 重启系统，选择你想进入的系统吧
+    ![Alt text](http://ww2.sinaimg.cn/mw690/0065glrAgw1f63254x49hj3112112wi4.jpg "win install")
+
 [mac-hardware-url]: http://www.tonymacx86.com/buyersguide/march/2016
 [Clover-url]: http://sourceforge.net/projects/cloverefiboot/
 [window-oxs-usb-tutorial-url]: https://www.zhihu.com/question/19812727
+[msdn-i-tell-you-url]: http://www.itellyou.cn
 
