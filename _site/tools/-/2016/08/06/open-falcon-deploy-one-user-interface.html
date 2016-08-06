@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>(原) 多节点Open-falcon统一用户接口配置</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/fontello.min.css" rel="stylesheet" type="text/css">
+    <!--
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    -->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+
+
+<body>
+
+        <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index.html"><!--Jerrylou Avatar--></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="/contact.html">Contact</a>
+                    </li>
+                    <li>
+                        <a href="/resume.html">Resume</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+
+            <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('/img/post-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>(原) 多节点Open-falcon统一用户接口配置</h1>
+                        <h2 class="subheading">小米开源项目open-falcon - 互联网企业级监控产品</h2>
+                        <span class="meta">写于 2016-08-6 By <a href="/index.html">Jerrylou</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>本文档对多节点负载open-falcon部署配置说明。请阅读<a href="http://book.open-falcon.org/zh/index.html">官方参考文档</a></p>
+
+<p><img src="http://ww4.sinaimg.cn/mw690/0065glrAgw1f6jxj0iaugj31270pcjwo.jpg" alt="Alt text" title="open-falcon arch"></p>
+
+<h3>机器部署</h3>
+
+<p>系统：Centos7</p>
+
+<table><thead>
+<tr>
+<th style="text-align: center">主机名</th>
+<th style="text-align: left">主机IP</th>
+<th style="text-align: center">备注</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center"><strong>falconpoc01</strong></td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">open-falcon模块测试机</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>falconpoc02</strong></td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">open-falcon模块测试机</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>falconpoc03</strong></td>
+<td style="text-align: left">10.128.31.138</td>
+<td style="text-align: center">open-falcon数据测试机</td>
+</tr>
+</tbody></table>
+
+<p>基于<a href="/tools/-/2016/08/06/open-falcon-deploy-with-muti-node.html">&lt;&lt;多节点Open-falcon部署&gt;&gt;</a>文章的环境进行部署</p>
+
+<h3>Nginx安装</h3>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">yum install epel-release
+yum install nginx
+
+systemctl <span class="nb">enable </span>nginx
+systemctl start nginx</code></pre></figure>
+
+<h3>Nginx配置</h3>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vim /etc/nginx/nginx.conf
+<span class="c"># For more information on configuration, see:</span>
+<span class="c">#   * Official English Documentation: http://nginx.org/en/docs/</span>
+<span class="c">#   * Official Russian Documentation: http://nginx.org/ru/docs/</span>
+
+user nginx<span class="p">;</span>
+worker_processes auto<span class="p">;</span>
+error_log /var/log/nginx/error.log<span class="p">;</span>
+pid /run/nginx.pid<span class="p">;</span>
+
+events <span class="o">{</span>
+    worker_connections 1024<span class="p">;</span>
+<span class="o">}</span>
+
+http <span class="o">{</span>
+    log_format  main  <span class="s1">&#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span>
+                      <span class="s1">&#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span>
+                      <span class="s1">&#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;</span><span class="p">;</span>
+
+    access_log  /var/log/nginx/access.log  main<span class="p">;</span>
+
+    sendfile            on<span class="p">;</span>
+    tcp_nopush          on<span class="p">;</span>
+    tcp_nodelay         on<span class="p">;</span>
+    keepalive_timeout   65<span class="p">;</span>
+    types_hash_max_size 2048<span class="p">;</span>
+
+    include             /etc/nginx/mime.types<span class="p">;</span>
+    default_type        application/octet-stream<span class="p">;</span>
+
+    <span class="c"># Load modular configuration files from the /etc/nginx/conf.d directory.</span>
+    <span class="c"># See http://nginx.org/en/docs/ngx_core_module.html#include</span>
+    <span class="c"># for more information.</span>
+    include /etc/nginx/conf.d/*.conf<span class="p">;</span>
+<span class="o">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vim /etc/nginx/conf.d/falcon.conf
+upstream dashboard <span class="o">{</span>
+        ip_hash<span class="p">;</span>
+        server   10.128.31.136:8081<span class="p">;</span>
+        server   10.128.31.137:8081<span class="p">;</span>
+<span class="o">}</span>
+
+upstream uic <span class="o">{</span>
+        ip_hash<span class="p">;</span>
+        server   10.128.31.136:1234<span class="p">;</span>
+        server   10.128.31.137:1234<span class="p">;</span>
+<span class="o">}</span>
+
+upstream portal <span class="o">{</span>
+        ip_hash<span class="p">;</span>
+        server   10.128.31.136:5050<span class="p">;</span>
+        server   10.128.31.137:5050<span class="p">;</span>
+<span class="o">}</span>
+
+upstream alarm <span class="o">{</span>
+        server   10.128.31.136:9912<span class="p">;</span>
+<span class="o">}</span>
+
+server <span class="o">{</span>
+      listen  8081<span class="p">;</span>
+      server_name  10.128.31.138<span class="p">;</span>
+
+      location / <span class="o">{</span>
+               proxy_pass        http://dashboard<span class="p">;</span>
+               proxy_set_header   Host             <span class="nv">$host</span><span class="p">;</span>
+               proxy_set_header   X-Real-IP        <span class="nv">$remote_addr</span><span class="p">;</span>
+               proxy_set_header   X-Forwarded-For  <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+      <span class="o">}</span>
+<span class="o">}</span> 
+
+server <span class="o">{</span>
+      listen  1234<span class="p">;</span>
+      server_name  10.128.31.138<span class="p">;</span>
+
+      location / <span class="o">{</span>
+               proxy_pass        http://uic<span class="p">;</span>
+               proxy_set_header   Host             <span class="nv">$host</span><span class="p">;</span>
+               proxy_set_header   X-Real-IP        <span class="nv">$remote_addr</span><span class="p">;</span>
+               proxy_set_header   X-Forwarded-For  <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+      <span class="o">}</span>
+<span class="o">}</span> 
+
+server <span class="o">{</span>
+      listen  5050<span class="p">;</span>
+      server_name  10.128.31.138<span class="p">;</span>
+
+      location / <span class="o">{</span>
+               proxy_pass        http://portal<span class="p">;</span>
+               proxy_set_header   Host             <span class="nv">$host</span><span class="p">;</span>
+               proxy_set_header   X-Real-IP        <span class="nv">$remote_addr</span><span class="p">;</span>
+               proxy_set_header   X-Forwarded-For  <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+      <span class="o">}</span>
+<span class="o">}</span> 
+
+server <span class="o">{</span>
+      listen  9912<span class="p">;</span>
+      server_name  10.128.31.138<span class="p">;</span>
+
+      location / <span class="o">{</span>
+               proxy_pass        http://alarm<span class="p">;</span>
+               proxy_set_header   Host             <span class="nv">$host</span><span class="p">;</span>
+               proxy_set_header   X-Real-IP        <span class="nv">$remote_addr</span><span class="p">;</span>
+               proxy_set_header   X-Forwarded-For  <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+      <span class="o">}</span>
+<span class="o">}</span> </code></pre></figure>
+
+<h3>Open-falcon用户接口配置</h3>
+
+<h4>uic用户管理模块</h4>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#配置</span>
+vim cfg.json
+<span class="o">{</span>
+    <span class="s2">&quot;log&quot;</span>: <span class="s2">&quot;debug&quot;</span>,
+    <span class="s2">&quot;company&quot;</span>: <span class="s2">&quot;MI&quot;</span>,
+    <span class="s2">&quot;http&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;enabled&quot;</span>: <span class="nb">true</span>,
+        <span class="s2">&quot;listen&quot;</span>: <span class="s2">&quot;0.0.0.0:1234&quot;</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;cache&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;enabled&quot;</span>: <span class="nb">true</span>,
+        <span class="s2">&quot;redis&quot;</span>: <span class="s2">&quot;falcon:6379&quot;</span>,
+        <span class="s2">&quot;idle&quot;</span>: 10,
+        <span class="s2">&quot;max&quot;</span>: 1000,
+        <span class="s2">&quot;timeout&quot;</span>: <span class="o">{</span>
+            <span class="s2">&quot;conn&quot;</span>: 10000,
+            <span class="s2">&quot;read&quot;</span>: 5000,
+            <span class="s2">&quot;write&quot;</span>: 5000
+        <span class="o">}</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;salt&quot;</span>: <span class="s2">&quot;&quot;</span>,
+    <span class="s2">&quot;canRegister&quot;</span>: <span class="nb">true</span>,
+    <span class="s2">&quot;ldap&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;enabled&quot;</span>: <span class="nb">false</span>,
+        <span class="s2">&quot;addr&quot;</span>: <span class="s2">&quot;ldap.example.com:389&quot;</span>,
+        <span class="s2">&quot;baseDN&quot;</span>: <span class="s2">&quot;dc=example,dc=com&quot;</span>,
+        <span class="s2">&quot;bindDN&quot;</span>: <span class="s2">&quot;cn=mananger,dc=example,dc=com&quot;</span>,
+        <span class="s2">&quot;bindPasswd&quot;</span>: <span class="s2">&quot;12345678&quot;</span>,
+        <span class="s2">&quot;userField&quot;</span>: <span class="s2">&quot;uid&quot;</span>,
+        <span class="s2">&quot;attributes&quot;</span>: <span class="o">[</span><span class="s2">&quot;sn&quot;</span>,<span class="s2">&quot;mail&quot;</span>,<span class="s2">&quot;telephoneNumber&quot;</span><span class="o">]</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;uic&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;addr&quot;</span>: <span class="s2">&quot;root:password@tcp(falcon-mysql:3306)/uic?charset=utf8&amp;loc=Asia%2FChongqing&quot;</span>,
+        <span class="s2">&quot;idle&quot;</span>: 10,
+        <span class="s2">&quot;max&quot;</span>: 100
+    <span class="o">}</span>,
+    <span class="s2">&quot;shortcut&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;falconPortal&quot;</span>: <span class="s2">&quot;http://10.128.31.138:5050/&quot;</span>,
+        <span class="s2">&quot;falconDashboard&quot;</span>: <span class="s2">&quot;http://10.128.31.138:8081/&quot;</span>,
+        <span class="s2">&quot;falconAlarm&quot;</span>: <span class="s2">&quot;http://10.128.31.138:9912/&quot;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+<h4>query绘图查询模块</h4>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#配置</span>
+vim cfg.json
+<span class="o">{</span>
+    <span class="s2">&quot;debug&quot;</span>: <span class="s2">&quot;false&quot;</span>,
+    <span class="s2">&quot;http&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;enabled&quot;</span>:  <span class="nb">true</span>,
+        <span class="s2">&quot;listen&quot;</span>:   <span class="s2">&quot;0.0.0.0:9966&quot;</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;graph&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;connTimeout&quot;</span>: 1000,
+        <span class="s2">&quot;callTimeout&quot;</span>: 5000,
+        <span class="s2">&quot;maxConns&quot;</span>: 32,
+        <span class="s2">&quot;maxIdle&quot;</span>: 32,
+        <span class="s2">&quot;replicas&quot;</span>: 500,
+        <span class="s2">&quot;cluster&quot;</span>: <span class="o">{</span>
+            <span class="s2">&quot;graph-00&quot;</span>: <span class="s2">&quot;falcon-graph:6070&quot;</span>,
+            <span class="s2">&quot;graph-01&quot;</span>: <span class="s2">&quot;falcon-graph2:6070&quot;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;api&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;query&quot;</span>: <span class="s2">&quot;http://10.128.31.137:9966&quot;</span>,
+        <span class="s2">&quot;dashboard&quot;</span>: <span class="s2">&quot;http://10.128.31.138:8081&quot;</span>,
+        <span class="s2">&quot;max&quot;</span>: 500
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+<h4>alarm报警处理模块</h4>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#配置</span>
+vim cfg.json
+<span class="o">{</span>
+    <span class="s2">&quot;debug&quot;</span>: <span class="nb">true</span>,
+    <span class="s2">&quot;uicToken&quot;</span>: <span class="s2">&quot;&quot;</span>,
+    <span class="s2">&quot;http&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;enabled&quot;</span>: <span class="nb">true</span>,
+        <span class="s2">&quot;listen&quot;</span>: <span class="s2">&quot;0.0.0.0:9912&quot;</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;queue&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;sms&quot;</span>: <span class="s2">&quot;/sms&quot;</span>,
+        <span class="s2">&quot;mail&quot;</span>: <span class="s2">&quot;/mail&quot;</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;redis&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;addr&quot;</span>: <span class="s2">&quot;falcon-redis:6379&quot;</span>,
+        <span class="s2">&quot;maxIdle&quot;</span>: 5,
+        <span class="s2">&quot;highQueues&quot;</span>: <span class="o">[</span>
+            <span class="s2">&quot;event:p0&quot;</span>,
+            <span class="s2">&quot;event:p1&quot;</span>,
+            <span class="s2">&quot;event:p2&quot;</span>,
+            <span class="s2">&quot;event:p3&quot;</span>,
+            <span class="s2">&quot;event:p4&quot;</span>,
+            <span class="s2">&quot;event:p5&quot;</span>
+        <span class="o">]</span>,
+        <span class="s2">&quot;lowQueues&quot;</span>: <span class="o">[</span>
+            <span class="s2">&quot;event:p6&quot;</span>
+        <span class="o">]</span>,
+        <span class="s2">&quot;userSmsQueue&quot;</span>: <span class="s2">&quot;/queue/user/sms&quot;</span>,
+        <span class="s2">&quot;userMailQueue&quot;</span>: <span class="s2">&quot;/queue/user/mail&quot;</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;api&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;portal&quot;</span>: <span class="s2">&quot;http://10.128.31.138:5050&quot;</span>,
+        <span class="s2">&quot;uic&quot;</span>: <span class="s2">&quot;http://10.128.31.138:1234&quot;</span>,
+        <span class="s2">&quot;links&quot;</span>: <span class="s2">&quot;http://10.128.31.138:5090&quot;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+<h3>用户接口</h3>
+
+<table><thead>
+<tr>
+<th style="text-align: center">描述</th>
+<th style="text-align: center">访问接口</th>
+<th style="text-align: center">功能</th>
+<th style="text-align: center">备注</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center"><strong>dashborad</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.138:8081/">http://10.128.31.138:8081/</a></td>
+<td style="text-align: center">监控主机数据查询</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>uic</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.138:1234/">http://10.128.31.138:1234/</a></td>
+<td style="text-align: center">用户组管理</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>portal</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.138:5050/">http://10.128.31.138:5050/</a></td>
+<td style="text-align: center">监控策略配置</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>alarm</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.138:9912/">http://10.128.31.138:9912/</a></td>
+<td style="text-align: center">报警查询</td>
+<td style="text-align: center"></td>
+</tr>
+</tbody></table>
+
+                <div id="disqus_thread"></div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+<link rel="stylesheet" href="/css/github.min.css">
+<script src="/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//jerrylou.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+        <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="https://twitter.com/gunsluo">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/gunsluo">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/gunsluo">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">
+                        Copyright &copy; Jerrylou 2016
+                        <a href="mailto:gunsluo@gmail.com">gunsluo@gmail.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
