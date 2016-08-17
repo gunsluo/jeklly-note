@@ -9,7 +9,7 @@ subtitle: "Have questions? I have answers (maybe)."
     <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
     <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
     <!-- NOTE: To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-    <form name="sentMessage" id="contactForm" novalidate>
+    <form action="http://127.0.0.1:4545/" method="post" name="sentMessage" id="contactForm" novalidate>
         <div class="row control-group">
             <div class="form-group col-xs-12 floating-label-form-group controls">
                 <label>Name</label>
@@ -39,10 +39,70 @@ subtitle: "Have questions? I have answers (maybe)."
             </div>
         </div>
         <br>
-        <div id="success"></div>
+        <p id="success" class="help-block text-danger" style="color:red"></p>
         <div class="row">
             <div class="form-group col-xs-12">
-                <button type="submit" class="btn btn-default">发送</button>
+                <button type="button" class="btn btn-default" id="contactBtn">发送</button>
             </div>
         </div>
     </form>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      var action = $("#contactForm").attr("action");
+      var method = $("#contactForm").attr("method");
+
+      function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+      }
+
+      $("#contactBtn").click(function(){
+
+        var name = $("#name").val();
+        if (name == "") {
+            $("#success").html("请输入姓名。");
+            return
+        }
+
+        var email = $("#email").val();
+        if (!isEmail(email)) {
+            $("#success").html("请输入正确的邮箱。");
+            return
+        }
+
+        var message = $("#message").val();
+        if (message == "") {
+            $("#success").html("请输入留言。");
+            return
+        }
+
+        var phone = $("#phone").val();
+
+        var subject = name + "给Jerrylou' Blog的留言";
+        var content = message + "\n电话：" + phone;
+        var data = {
+            subject: subject,
+            from: email,
+            content: content,
+        }
+
+        $.ajax({
+          dataType: 'json',
+          url: action,
+          type: method,
+          data: JSON.stringify(data),
+          success: function( result ) {
+            if (result.msg == 'Success') {
+              $("#success").html("发送成功。")
+            }else{
+              $("#success").html("发送失败。")
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) { 
+              $("#success").html("发送失败。")
+          }   
+        });
+      });
+    });
+    </script>
