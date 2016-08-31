@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>(原) 玩转魔方</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/fontello.min.css" rel="stylesheet" type="text/css">
+    <!--
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    -->
+
+    <script src="/js/jquery.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+
+
+<body>
+
+        <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index.html"><!--Jerrylou Avatar--></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="/contact.html">Contact</a>
+                    </li>
+                    <li>
+                        <a href="/resume.html">Resume</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+
+            <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('/img/post-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>(原) 玩转魔方</h1>
+                        <h2 class="subheading">入门级魔方公式 - 层先法</h2>
+                        <span class="meta">写于 2016-08-31 By <a href="/index.html">Jerrylou</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2>魔方公式</h2>
+
+<p>@(兴趣)</p>
+
+<h4>第一步</h4>
+
+<p>白色中心为底面，黄色中心为顶面</p>
+
+<table><thead>
+<tr>
+<th style="text-align: left">-</th>
+<th style="text-align: right">白</th>
+<th style="text-align: center">-</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: left">白</td>
+<td style="text-align: right">黄</td>
+<td style="text-align: center">白</td>
+</tr>
+<tr>
+<td style="text-align: left"></td>
+<td style="text-align: right">白</td>
+<td style="text-align: center"></td>
+</tr>
+</tbody></table>
+
+<p>顶面四边中块为白色，使用公式</p>
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="err">公式</span> <span class="n">FU</span><span class="o">`</span><span class="n">R</span>
+</code></pre></div>
+<h4>第二步 底面归位</h4>
+
+<ol>
+<li>顶层白色角块，观察另外两块​​颜色，与F和R面相同 公式</li>
+</ol>
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="err">公式</span> <span class="n">RUR</span><span class="o">`</span><span class="n">U</span><span class="o">`</span>
+</code></pre></div>
+<ol>
+<li>将白色块放于右下角执行公式，会变成1</li>
+</ol>
+
+<h4>第三步 中棱归位</h4>
+
+<ol>
+<li>找一顶层一边中块无黄色模块（两面都无），移至与中心颜色相同面，使其在右边，使用公式</li>
+</ol>
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="err">顶面与</span><span class="n">F</span><span class="err">面颜色相同</span> <span class="n">R</span><span class="o">`</span><span class="n">U</span><span class="o">`</span><span class="n">R</span><span class="o">`</span><span class="n">U</span><span class="o">`</span><span class="n">R</span><span class="o">`</span><span class="n">URUR</span>
+<span class="err">顶面与</span><span class="n">F</span><span class="err">面颜色不同</span> <span class="n">RURURU</span><span class="o">`</span><span class="n">R</span><span class="o">`</span><span class="n">U</span><span class="o">`</span><span class="n">R</span><span class="o">`</span>
+<span class="err">特殊情况两块对换</span>  <span class="n">R</span><span class="o">`</span><span class="n">U</span><span class="o">`</span><span class="n">R</span><span class="o">`</span><span class="n">U</span><span class="o">`</span><span class="n">R</span><span class="o">`</span><span class="n">URUR</span>
+</code></pre></div>
+<h4>第四步 顶面十字</h4>
+
+<ol>
+<li>顶端已有一个一字</li>
+<li>已有黄色连成左上直角</li>
+<li>只有一个黄色中心块</li>
+</ol>
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="err">公式</span>  <span class="n">FRUR</span><span class="o">`</span><span class="n">U</span><span class="o">`</span><span class="n">F</span><span class="o">`</span>
+</code></pre></div>
+<h4>第五步 顶面归位</h4>
+
+<ol>
+<li>只有一个黄色角块 置于右下角</li>
+<li>有2个两黄角块，转动顶面直到R面前上角有黄色角块</li>
+<li>顶端无黄色角块，转动顶面直到F右上角有黄色角块​，执行公式</li>
+</ol>
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="err">公式</span>  <span class="n">R</span><span class="o">`</span><span class="n">U2RUR</span><span class="o">`</span><span class="n">UR</span>
+</code></pre></div>
+<h4>第六步 顶角归位</h4>
+
+<ol>
+<li>找到有2个相同角块一面置于F面</li>
+<li>若无则先应用公式变为1</li>
+</ol>
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="err">公式</span>  <span class="n">IU</span><span class="o">`</span><span class="n">RD2R</span><span class="o">`</span><span class="n">URD2R</span><span class="o">`</span><span class="mi">2</span>
+</code></pre></div>
+<h4>第七步 顶棱归位</h4>
+
+<ol>
+<li>有一面已经正确归位，置于左侧，执行公式</li>
+<li>若无则先用公式变为1</li>
+</ol>
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="err">公式</span>      <span class="n">R</span><span class="o">`</span><span class="mi">2</span><span class="n">U</span><span class="o">`</span><span class="n">MF</span><span class="o">`</span><span class="n">U2MFU</span><span class="o">`</span><span class="n">R</span><span class="o">`</span><span class="mi">2</span>
+<span class="err">反方向公式</span> <span class="n">R</span><span class="o">`</span><span class="mi">2</span><span class="n">U</span> <span class="n">MF</span><span class="o">`</span><span class="n">U2MFU</span> <span class="n">R</span><span class="o">`</span><span class="mi">2</span>
+</code></pre></div>
+                <div id="disqus_thread"></div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+<link rel="stylesheet" href="/css/github.min.css">
+<script src="/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//jerrylou.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+        <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="https://twitter.com/gunsluo">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/gunsluo">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/gunsluo">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">
+                        Copyright &copy; Jerrylou 2016
+                        <a href="mailto:gunsluo@gmail.com">gunsluo@gmail.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
