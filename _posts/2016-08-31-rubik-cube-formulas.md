@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "(原) 玩转魔方"
+title: "(原) 魔方，我想玩转你"
 subtitle: "入门级魔方公式 - 层先法"
 tags: "魔方 层先法 入门 爱好 Cube formulas jerrylou"
 date: 2016-08-31 11:03:29

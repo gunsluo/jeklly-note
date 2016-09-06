@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Mac & Window10 双系统安装"
+title: "(原) Mac & Window10 双系统安装"
 subtitle: "基于el capitan 和 window10 安装教程。自选硬件、UEFI启动、hackintosh驱动"
 tags: "mac hackintosh el capitan window10 install 安装"
 date: 2016-07-20 12:00:00 +0800
