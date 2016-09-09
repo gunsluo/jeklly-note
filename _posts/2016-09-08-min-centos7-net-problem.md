@@ -8,7 +8,7 @@ categories: kills
   - 
 ---
 
-下载安装min Centos7到virtual box, 启动linux后网络命令是不可用。查找原因是系统启动选项没加载。其次ifconfig常见命令也无法找到，需要手动安装net-tools。
+下载安装min Centos7到virtual box, 启动linux后网络命令是不可用。需要系统启动选项加载网络参数。其次ifconfig常见命令也无法找到，需要手动安装net-tools。
 
 ###加载网络
 
@@ -53,5 +53,4 @@ yum makecache
 ```bash
 yum install net-tools
 ```
-
 

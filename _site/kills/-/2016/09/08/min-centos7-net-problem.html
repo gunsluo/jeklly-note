@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>虚拟机安装Centos7 Min的网络问题</title>
+    <title>虚拟机安装Centos7 Min的网络设备名问题</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -85,8 +85,8 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>虚拟机安装Centos7 Min的网络问题</h1>
-                        <h2 class="subheading">安装min centos后，网络不能使用 - 吐槽不已</h2>
+                        <h1>虚拟机安装Centos7 Min的网络设备名问题</h1>
+                        <h2 class="subheading">安装min centos后，网络设备重命名 - 吐槽不已</h2>
                         <span class="meta">写于 2016-09-8 By <a href="/index.html">Jerrylou</a></span>
                     </div>
                 </div>
@@ -100,18 +100,27 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>下载安装min Centos7到virtual box, 启动linux后网络是不可用。系统找不到网卡，查找原因是系统启动选项没加载。其次ifconfig常见命令也无法找到，需要手动安装net-tools。</p>
+                <p>下载安装min Centos7到virtual box, 启动linux后网络命令是不可用。需要系统启动选项加载网络参数。其次ifconfig常见命令也无法找到，需要手动安装net-tools。</p>
 
 <h3>加载网络</h3>
 
 <ol>
-<li><p>修改grub启动参数
-<code>vim /etc/sysconfig/grub</code> 添加net.ifnames=0 biosdevname=0</p>
+<li>修改grub启动参数
+<code>vim /etc/sysconfig/grub</code> 添加net.ifnames=0 biosdevname=0, 效果如下</li>
+</ol>
 
 <blockquote>
-<p>GRUB_CMDLINE_LINUX=”rd.lvm.lv=vg0/swap vconsole.keymap=us crashkernel=auto  vconsole.font=latarcyrheb-sun16 <code>net.ifnames=0 biosdevname=0</code> rd.lvm.lv=vg0/usr rhgb quiet”</p>
-</blockquote></li>
-<li><p>加载 <code>grub2-mkconfig -o /boot/grub2/grub.cfg</code></p></li>
+<p>GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR=&quot;$(sed &#39;s, release .*$,,g&#39; /etc/system-release)&quot;
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT=&quot;console&quot;
+GRUB_CMDLINE_LINUX=&quot;crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet <code>net.ifnames=0 biosdevname=0</code>&quot;
+GRUB_DISABLE_RECOVERY=&quot;true&quot;</p>
+</blockquote>
+
+<ol>
+<li>加载 <code>grub2-mkconfig -o /boot/grub2/grub.cfg</code></li>
 </ol>
 
 <h3>修改网卡名</h3>
@@ -127,6 +136,10 @@
 </blockquote></li>
 </ol>
 
+<h3>重启</h3>
+
+<p><code>systemctl reboot now</code></p>
+
 <h3>换源</h3>
 
 <p>使用国内aliyun源，加快下载速度。</p>
@@ -137,10 +150,6 @@ yum makecache
 <h3>安装网络工具</h3>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">yum install net-tools
 </code></pre></div>
-<h3>重启</h3>
-
-<p><code>reboot</code></p>
-
                 <div id="disqus_thread"></div>
             </div>
         </div>
