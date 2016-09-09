@@ -12,4 +12,6 @@ CakePHP 2
 /app/Config/database.php
 /vendors/*
 
+.bundle
 Gemfile.lock
+blog-f9e3c683bd6d.p12

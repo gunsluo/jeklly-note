@@ -14,13 +14,22 @@ description: > # this means to ignore newlines until "baseurl:"
   我是个Coder，懒的什么也没有留下。
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://jerrylou.me" # the base hostname & protocol for your site
+exclude:
+   - CNAME
+   - Gemfile
+   - Gemfile.lock
+   - LICENSE
+   - README.cn.md
+   - README.md
+   - blog-f9e3c683bd6d.p12
+   - jekyll.thor
 
 # Build settings
 # markdown: kramdown
 highlighter: pygments
 markdown: redcarpet
 redcarpet:
- extensions:
+extensions:
    - fenced_code_blocks
    - no_intra_emphasis
    - strikethrough
@@ -34,3 +43,5 @@ redcarpet:
 gems: [jekyll-paginate]
 paginate: 5
 paginate_path: "/page:num/"
+
+
