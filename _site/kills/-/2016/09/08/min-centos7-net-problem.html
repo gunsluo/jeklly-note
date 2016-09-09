@@ -105,22 +105,17 @@
 <h3>加载网络</h3>
 
 <ol>
-<li>修改grub启动参数
-<code>vim /etc/sysconfig/grub</code> 添加net.ifnames=0 biosdevname=0, 效果如下</li>
-</ol>
-
-<blockquote>
-<p>GRUB_TIMEOUT=5
-GRUB_DISTRIBUTOR=&quot;$(sed &#39;s, release .*$,,g&#39; /etc/system-release)&quot;
-GRUB_DEFAULT=saved
-GRUB_DISABLE_SUBMENU=true
-GRUB_TERMINAL_OUTPUT=&quot;console&quot;
-GRUB_CMDLINE_LINUX=&quot;crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet <code>net.ifnames=0 biosdevname=0</code>&quot;
-GRUB_DISABLE_RECOVERY=&quot;true&quot;</p>
-</blockquote>
-
-<ol>
-<li>加载 <code>grub2-mkconfig -o /boot/grub2/grub.cfg</code></li>
+<li><p>修改grub启动参数
+<code>vim /etc/sysconfig/grub</code> 添加net.ifnames=0 biosdevname=0, 效果如下</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">GRUB_TIMEOUT</span><span class="o">=</span>5
+<span class="nv">GRUB_DISTRIBUTOR</span><span class="o">=</span><span class="s2">&quot;$(sed &#39;s, release .*$,,g&#39; /etc/system-release)&quot;</span>
+<span class="nv">GRUB_DEFAULT</span><span class="o">=</span>saved
+<span class="nv">GRUB_DISABLE_SUBMENU</span><span class="o">=</span><span class="nb">true</span>
+<span class="nv">GRUB_TERMINAL_OUTPUT</span><span class="o">=</span><span class="s2">&quot;console&quot;</span>
+<span class="nv">GRUB_CMDLINE_LINUX</span><span class="o">=</span><span class="s2">&quot;crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet `net.ifnames=0 biosdevname=0`&quot;</span>
+<span class="nv">GRUB_DISABLE_RECOVERY</span><span class="o">=</span><span class="s2">&quot;true&quot;</span>
+</code></pre></div></li>
+<li><p>加载 <code>grub2-mkconfig -o /boot/grub2/grub.cfg</code></p></li>
 </ol>
 
 <h3>修改网卡名</h3>
@@ -130,10 +125,8 @@ GRUB_DISABLE_RECOVERY=&quot;true&quot;</p>
 <ol>
 <li><p>修改网络文件名 <code>mv /etc/sysconfig/network-scripts/ifcfg-en03 /etc/sysconfig/network-scripts/ifcfg-eth0</code></p></li>
 <li><p>修改网络设备名 <code>vim /etc/sysconfig/network-scripts/ifcfg-eth0</code></p>
-
-<blockquote>
-<p>name=en03修改为name=eth0</p>
-</blockquote></li>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">name</span><span class="o">=</span>en03修改为name<span class="o">=</span>eth0
+</code></pre></div></li>
 </ol>
 
 <h3>重启</h3>
@@ -148,8 +141,9 @@ curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-
 yum makecache
 </code></pre></div>
 <h3>安装网络工具</h3>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">yum install net-tools
-</code></pre></div>
+
+<p><code>yum install net-tools</code></p>
+
                 <div id="disqus_thread"></div>
             </div>
         </div>

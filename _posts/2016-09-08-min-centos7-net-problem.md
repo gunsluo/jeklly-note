@@ -15,13 +15,15 @@ categories: kills
 1. 修改grub启动参数
 `vim /etc/sysconfig/grub` 添加net.ifnames=0 biosdevname=0, 效果如下
 
-> GRUB_TIMEOUT=5
-> GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
-> GRUB_DEFAULT=saved
-> GRUB_DISABLE_SUBMENU=true
-> GRUB_TERMINAL_OUTPUT="console"
-> GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet `net.ifnames=0 biosdevname=0`"
-> GRUB_DISABLE_RECOVERY="true"
+    ```bash
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet `net.ifnames=0 biosdevname=0`"
+GRUB_DISABLE_RECOVERY="true"
+```
 
 2. 加载 `grub2-mkconfig -o /boot/grub2/grub.cfg`
 
@@ -33,14 +35,16 @@ categories: kills
 1. 修改网络文件名 `mv /etc/sysconfig/network-scripts/ifcfg-en03 /etc/sysconfig/network-scripts/ifcfg-eth0`
 
 2. 修改网络设备名 `vim /etc/sysconfig/network-scripts/ifcfg-eth0`
-> name=en03修改为name=eth0
+
+    ```bash
+name=en03修改为name=eth0
+```
 
 ###重启
 
 `systemctl reboot now`
 
 ###换源
-
 使用国内aliyun源，加快下载速度。
 
 ```bash
@@ -50,7 +54,6 @@ yum makecache
 ```
 
 ###安装网络工具
-```bash
-yum install net-tools
-```
+
+`yum install net-tools`
 
