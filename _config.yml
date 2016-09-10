@@ -29,7 +29,7 @@ exclude:
 highlighter: pygments
 markdown: redcarpet
 redcarpet:
-extensions:
+ extensions:
    - fenced_code_blocks
    - no_intra_emphasis
    - strikethrough

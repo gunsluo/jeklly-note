@@ -108,49 +108,215 @@
 
 <p>系统：Centos7</p>
 
-<p>| 主机名 | 主机IP | 备注 |
-| :---: | :--- | :---: |
-| <strong>falconpoc01</strong> | 10.128.31.136 | open-falcon模块测试机 |
-| <strong>falconpoc02</strong> | 10.128.31.137 | open-falcon模块测试机 |
-| <strong>falconpoc03</strong> | 10.128.31.138 | open-falcon数据测试机 |</p>
+<table><thead>
+<tr>
+<th style="text-align: center">主机名</th>
+<th style="text-align: left">主机IP</th>
+<th style="text-align: center">备注</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center"><strong>falconpoc01</strong></td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">open-falcon模块测试机</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>falconpoc02</strong></td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">open-falcon模块测试机</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>falconpoc03</strong></td>
+<td style="text-align: left">10.128.31.138</td>
+<td style="text-align: center">open-falcon数据测试机</td>
+</tr>
+</tbody></table>
 
 <h3>模块部署展示</h3>
 
-<p>| 模块 | 主机名 | 主机IP | 备注 |
-| :---: | :--- | :--- | :---: |
-| <strong>hbs</strong>  | falconpoc01 | 10.128.31.136 | 心跳服务 |
-| <strong>hbs</strong>  | falconpoc02 | 10.128.31.137 | 心跳服务 |
-| <strong>judge</strong>  | falconpoc01 | 10.128.31.136 | 告警判断 |
-| <strong>judge</strong>  | falconpoc02 | 10.128.31.137 | 告警判断 |
-| <strong>graph</strong>  | falconpoc01 | 10.128.31.136 | 存储绘图 |
-| <strong>graph</strong>  | falconpoc02 | 10.128.31.137 | 存储绘图 |
-| <strong>transfer</strong>  | falconpoc01 | 10.128.31.136 | 数据转发 |
-| <strong>transfer</strong>  | falconpoc02 | 10.128.31.137 | 数据转发 |
-| <strong>query</strong>  | falconpoc01 | 10.128.31.136 | 绘图查询 |
-| <strong>query</strong>  | falconpoc02 | 10.128.31.137 | 绘图查询 |
-| <strong>dashboard</strong>  | falconpoc01 | 10.128.31.136 | 用户查询 |
-| <strong>dashboard</strong>  | falconpoc02 | 10.128.31.137 | 用户查询 |
-| <strong>uic</strong>  | falconpoc01 | 10.128.31.136 | 用户管理 |
-| <strong>uic</strong>  | falconpoc02 | 10.128.31.137 | 用户管理 |
-| <strong>portal</strong>  | falconpoc01 | 10.128.31.136 | 策略配置 |
-| <strong>portal</strong>  | falconpoc02 | 10.128.31.137 | 策略配置 |
-| <strong>alarm</strong>  | falconpoc01 | 10.128.31.136 | 报警事件 |
-| <strong>sender</strong>  | falconpoc01 | 10.128.31.136 | 报警通知 |
-| <strong>task</strong>  | falconpoc01 | 10.128.31.136 | 定时任务 |
-<br /></p>
+<table><thead>
+<tr>
+<th style="text-align: center">模块</th>
+<th style="text-align: left">主机名</th>
+<th style="text-align: left">主机IP</th>
+<th style="text-align: center">备注</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center"><strong>hbs</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">心跳服务</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>hbs</strong></td>
+<td style="text-align: left">falconpoc02</td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">心跳服务</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>judge</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">告警判断</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>judge</strong></td>
+<td style="text-align: left">falconpoc02</td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">告警判断</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>graph</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">存储绘图</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>graph</strong></td>
+<td style="text-align: left">falconpoc02</td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">存储绘图</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>transfer</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">数据转发</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>transfer</strong></td>
+<td style="text-align: left">falconpoc02</td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">数据转发</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>query</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">绘图查询</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>query</strong></td>
+<td style="text-align: left">falconpoc02</td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">绘图查询</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>dashboard</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">用户查询</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>dashboard</strong></td>
+<td style="text-align: left">falconpoc02</td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">用户查询</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>uic</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">用户管理</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>uic</strong></td>
+<td style="text-align: left">falconpoc02</td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">用户管理</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>portal</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">策略配置</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>portal</strong></td>
+<td style="text-align: left">falconpoc02</td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">策略配置</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>alarm</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">报警事件</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>sender</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">报警通知</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>task</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">定时任务</td>
+</tr>
+</tbody></table>
 
-<p>|  | 主机名 | 主机IP | 备注 |
-| :---: | :--- | :--- | :---: |
-| <strong>mysql</strong>  | falconpoc03 | 10.128.31.138 | mysql数据库 |
-| <strong>redis</strong>  | falconpoc03 | 10.128.31.138 | redis数据库 |
-| <strong>sms</strong>  | falconpoc03 | 10.128.31.138 | 短信接口 |
-<br /></p>
+<p><br /></p>
 
-<p>| 模块 | 主机名 | 主机IP | 备注 |
-| :---: | :--- | :--- | :---: |
-| <strong>agent</strong>  | falconpoc01 | 10.128.31.136 | 指标采集 |
-| <strong>agent</strong>  | falconpoc02 | 10.128.31.137 | 指标采集 |
-| <strong>agent</strong>  | falconpoc03 | 10.128.31.138 | 指标采集 |</p>
+<table><thead>
+<tr>
+<th style="text-align: center"></th>
+<th style="text-align: left">主机名</th>
+<th style="text-align: left">主机IP</th>
+<th style="text-align: center">备注</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center"><strong>mysql</strong></td>
+<td style="text-align: left">falconpoc03</td>
+<td style="text-align: left">10.128.31.138</td>
+<td style="text-align: center">mysql数据库</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>redis</strong></td>
+<td style="text-align: left">falconpoc03</td>
+<td style="text-align: left">10.128.31.138</td>
+<td style="text-align: center">redis数据库</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>sms</strong></td>
+<td style="text-align: left">falconpoc03</td>
+<td style="text-align: left">10.128.31.138</td>
+<td style="text-align: center">短信接口</td>
+</tr>
+</tbody></table>
+
+<p><br /></p>
+
+<table><thead>
+<tr>
+<th style="text-align: center">模块</th>
+<th style="text-align: left">主机名</th>
+<th style="text-align: left">主机IP</th>
+<th style="text-align: center">备注</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center"><strong>agent</strong></td>
+<td style="text-align: left">falconpoc01</td>
+<td style="text-align: left">10.128.31.136</td>
+<td style="text-align: center">指标采集</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>agent</strong></td>
+<td style="text-align: left">falconpoc02</td>
+<td style="text-align: left">10.128.31.137</td>
+<td style="text-align: center">指标采集</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>agent</strong></td>
+<td style="text-align: left">falconpoc03</td>
+<td style="text-align: left">10.128.31.138</td>
+<td style="text-align: center">指标采集</td>
+</tr>
+</tbody></table>
 
 <h3>环境部署</h3>
 
@@ -1124,15 +1290,57 @@ vim cfg.json
 
 <h3>用户接口</h3>
 
-<p>| 描述 | 访问接口 | 功能 | 备注 |
-| :---: | :---: | :---: | :---: |
-| <strong>dashborad</strong>  | http://10.128.31.136:8081/ | 监控主机数据查询 |  |
-| <strong>uic</strong>  | http://10.128.31.136:1234/ | 用户组管理 |  |
-| <strong>portal</strong>  | http://10.128.31.136:5050/ | 监控策略配置 |  |
-| <strong>dashborad</strong>  | http://10.128.31.137:8081/ | 监控主机数据查询 |  |
-| <strong>uic</strong>  | http://10.128.31.137:1234/ | 用户组管理 |  |
-| <strong>portal</strong>  | http://10.128.31.137:5050/ | 监控策略配置 |  |
-| <strong>alarm</strong>  | http://10.128.31.136:9912/ | 报警查询 |  |</p>
+<table><thead>
+<tr>
+<th style="text-align: center">描述</th>
+<th style="text-align: center">访问接口</th>
+<th style="text-align: center">功能</th>
+<th style="text-align: center">备注</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center"><strong>dashborad</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.136:8081/">http://10.128.31.136:8081/</a></td>
+<td style="text-align: center">监控主机数据查询</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>uic</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.136:1234/">http://10.128.31.136:1234/</a></td>
+<td style="text-align: center">用户组管理</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>portal</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.136:5050/">http://10.128.31.136:5050/</a></td>
+<td style="text-align: center">监控策略配置</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>dashborad</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.137:8081/">http://10.128.31.137:8081/</a></td>
+<td style="text-align: center">监控主机数据查询</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>uic</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.137:1234/">http://10.128.31.137:1234/</a></td>
+<td style="text-align: center">用户组管理</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>portal</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.137:5050/">http://10.128.31.137:5050/</a></td>
+<td style="text-align: center">监控策略配置</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>alarm</strong></td>
+<td style="text-align: center"><a href="http://10.128.31.136:9912/">http://10.128.31.136:9912/</a></td>
+<td style="text-align: center">报警查询</td>
+<td style="text-align: center"></td>
+</tr>
+</tbody></table>
 
                 <div id="disqus_thread"></div>
             </div>
