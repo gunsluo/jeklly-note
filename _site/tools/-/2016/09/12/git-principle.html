@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Git原理简介</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/fontello.min.css" rel="stylesheet" type="text/css">
+    <!--
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    -->
+
+    <script src="/js/jquery.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+
+
+<body>
+
+        <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index.html"><!--Jerrylou Avatar--></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="/contact.html">Contact</a>
+                    </li>
+                    <li>
+                        <a href="/resume.html">Resume</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+
+            <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('/img/post-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Git原理简介</h1>
+                        <h2 class="subheading">Git如何实现？实现原理是什么？</h2>
+                        <span class="meta">写于 2016-09-12 By <a href="/index.html">Jerrylou</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h3>Git是什么？</h3>
+
+<p>git是软件开发版本控制系统，类似linux文件系统的实现(当然比linux文件系统简单)。</p>
+
+<h3>Git对象</h3>
+
+<p>Git是如何将文件进行存储？如何将相同文件不同提交进行分割?都依赖与Git对象</p>
+
+<ul>
+<li>repository(Tree)</li>
+<li>Tree对象(多commit)</li>
+<li>Commit对象(Blob)</li>
+<li>Blob对象(存储)</li>
+</ul>
+
+<h3>举例说明</h3>
+
+<p><strong>初始化Git</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir gittest
+<span class="nb">cd </span>gittest
+git init
+</code></pre></div>
+<p>查看目录结构<code>tree .git</code></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">.git
+├── branches
+├── config
+├── description
+├── HEAD
+├── hooks
+│   ├── applypatch-msg.sample
+│   ├── commit-msg.sample
+│   ├── post-update.sample
+│   ├── pre-applypatch.sample
+│   ├── pre-commit.sample
+│   ├── prepare-commit-msg.sample
+│   ├── pre-push.sample
+│   ├── pre-rebase.sample
+│   └── update.sample
+├── info
+│   └── exclude
+├── objects
+│   ├── info
+│   └── pack
+└── refs
+    ├── heads
+    └── tags
+</code></pre></div>
+<ul>
+<li>branches - 新版本不在使用</li>
+<li>config - Git项目特有的配置</li>
+<li>description - GitWeb 程序使用</li>
+<li>HEAD - 文件指向当前分支</li>
+<li>hooks - 客户端或服务端钩子脚本</li>
+<li>info - .gitignore 文件中管理的忽略模式 (ignored patterns) 的全局可执行文件</li>
+<li>objects - Git对象存储目录</li>
+<li>refs - 目录存储指向数据 (分支) 的提交对象的指针</li>
+</ul>
+
+<p><strong>添加文件到Git</strong></p>
+
+<p>添加： <code>echo &#39;version 1&#39; &gt; test.txt</code> <code>git add test.txt</code></p>
+
+<p>查看： <code>find .git/objects -type f</code> 结果如下：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">.git/objects/83/baae61804e65cc73a7201a7252750c76066a30
+</code></pre></div>
+<p>查看对象类型： <code>git cat-file -t 83baae61804e65cc73a7201a7252750c76066a30</code> 结果如下：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">blob
+</code></pre></div>
+<p>查看对象内容： <code>git cat-file -p 83baae61804e65cc73a7201a7252750c76066a30</code> 结果如下：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">version 1
+</code></pre></div>
+<p><strong>提交文件到Git</strong></p>
+
+<p>提交： <code>git commit -a -m &quot;firt commit&quot;</code></p>
+
+<p>查看： <code>find .git/objects -type f</code> 结果如下：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">.git/objects/83/baae61804e65cc73a7201a7252750c76066a30
+.git/objects/d8/329fc1cc938780ffdd9f94e0d364e0ea74f579
+.git/objects/6d/c9727a5974bb610f81c22914081d7e6373ae77
+</code></pre></div>
+<p>objects目录新生成了两个对象，这两个对象类型内容是什么呢？我们来看下</p>
+
+<p>查看类型：<code>git cat-file -t d8329fc1cc938780ffdd9f94e0d364e0ea74f579</code></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">tree
+</code></pre></div>
+<p>查看内容：<code>git cat-file -p d8329fc1cc938780ffdd9f94e0d364e0ea74f579</code></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="m">100644</span> blob 83baae61804e65cc73a7201a7252750c76066a30    test.txt
+</code></pre></div>
+<p>查看类型：<code>git cat-file -t 6dc9727a5974bb610f81c22914081d7e6373ae77</code></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">commit
+</code></pre></div>
+<p>查看内容：<code>git cat-file -p 6dc9727a5974bb610f81c22914081d7e6373ae77</code></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">tree d8329fc1cc938780ffdd9f94e0d364e0ea74f579
+author jerrylou &lt;gunsluo@gmail.com&gt; <span class="m">1473652081</span> +0800
+committer jerrylou &lt;gunsluo@gmail.com&gt; <span class="m">1473652081</span> +0800
+
+firt commit
+</code></pre></div>
+<p>综上git存储都是通过blob，commit，tree对象。blob存储文件提交内容，commit存储操作提交信息，tree存储指向blob的指针。</p>
+
+<h3>结构</h3>
+
+<p>Git repository是很多不同commit的集合，是有向无环图。如下:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">A---B---C---D---E---F--- master
+    <span class="se">\ </span>      /   <span class="se">\</span>
+    G------H    I---J--- feature
+</code></pre></div>
+<h3>merge和rebase</h3>
+
+<p>新的特性分支feature上有F,G两个commit。我们项将feature上的改动同步到master，可以feature分支merge到master。将得到如下:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">A---B---C---D--- master
+    <span class="se">\ </span>      /
+    F------G----- feature
+</code></pre></div>
+<p>我们会发现D节点有两个父节点C和G，经常做merge操作会导致无法得到正确的修改历史。</p>
+
+<p>使用rebase，得到如下:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">A---B---C---D------ master
+            <span class="se">\</span>
+            F---G---feature
+</code></pre></div>
+<p>不用担心修改历史</p>
+
+<h3>命令</h3>
+
+<p><img src="http://ww4.sinaimg.cn/mw690/0065glrAgw1f7qrk2hl4wj30nt0gugrq.jpg" alt="Alt text" title="git command"></p>
+
+<ul>
+<li>git clone - 下载git源码</li>
+<li>git pull --rebase origin master - 同步远程master分支到本地</li>
+<li>git push origin master - 提交当前分支到远程master分支</li>
+<li>git stash [pop] - 换成修改commit</li>
+</ul>
+
+<h3>解决冲突</h3>
+
+<p>当做了新的功能准备提交代码时，第一件事同步要合入分支代码(如dev)</p>
+
+<ol>
+<li>git pull --rebase origin dev</li>
+<li>提示冲突先修改冲突文件保证代码正确</li>
+<li>git add 冲突文件</li>
+<li>git rebase --contunie</li>
+<li>如还有冲突，跳到第二步，直到无冲突</li>
+</ol>
+
+<p>长时间不rebase主分支容易发生冲突。</p>
+
+<h3>我的.gitconfig配置</h3>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">[</span><span class="nb">alias</span><span class="o">]</span>
+    <span class="nv">st</span> <span class="o">=</span> status -sb
+    <span class="nv">br</span> <span class="o">=</span> branch -vv
+    <span class="nv">ds</span> <span class="o">=</span> diff --staged
+    <span class="nv">standup</span> <span class="o">=</span> log --since <span class="s1">&#39;1 day ago&#39;</span> --oneline --author sebastian@kusnier.net
+    <span class="nv">lastweek</span> <span class="o">=</span> log --since <span class="s1">&#39;1 week ago&#39;</span> --oneline
+    <span class="nv">ci</span> <span class="o">=</span> commit
+    <span class="nv">amend</span> <span class="o">=</span> commit --amend -C HEAD
+    <span class="nv">undo</span> <span class="o">=</span> reset --soft HEAD^
+    <span class="nv">co</span> <span class="o">=</span> checkout
+    <span class="nv">df</span> <span class="o">=</span> diff
+    <span class="nv">dc</span> <span class="o">=</span> diff --cached
+    <span class="nv">lg</span> <span class="o">=</span> log -p
+    <span class="nv">lol</span> <span class="o">=</span> log --graph --decorate --pretty<span class="o">=</span>oneline --abbrev-commit
+    <span class="nv">lola</span> <span class="o">=</span> log --graph --decorate --pretty<span class="o">=</span>oneline --abbrev-commit --all
+    <span class="nv">l</span> <span class="o">=</span> log --pretty<span class="o">=</span>oneline -n <span class="m">20</span> --graph
+    <span class="nv">graph</span> <span class="o">=</span> log --graph --pretty<span class="o">=</span>format<span class="s1">&#39;:%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset&#39;</span>
+    <span class="nv">ls</span> <span class="o">=</span> ls-files
+    <span class="nv">g</span>  <span class="o">=</span> grep -I
+    <span class="nv">vd</span> <span class="o">=</span> difftool -y -t gvimdiff
+    <span class="nv">p</span> <span class="o">=</span> !<span class="s2">&quot;git pull; git submodule foreach git pull origin master&quot;</span>
+    <span class="nv">undopush</span> <span class="o">=</span> push -f origin HEAD^:master
+    <span class="c"># Credit an author on the latest commit</span>
+    <span class="nv">credit</span> <span class="o">=</span> <span class="s2">&quot;!f() { git commit --amend --author \&quot;$1 &lt;$2&gt;\&quot; -C HEAD; }; f&quot;</span>
+
+    <span class="c"># Show files ignored by git:</span>
+    <span class="nv">ign</span> <span class="o">=</span> ls-files -o -i --exclude-standard
+<span class="o">[</span>user<span class="o">]</span>
+    <span class="nv">name</span> <span class="o">=</span> jerrylou
+    <span class="nv">email</span> <span class="o">=</span> gunsluo@gmail.com
+<span class="o">[</span>core<span class="o">]</span>
+    <span class="nv">editor</span> <span class="o">=</span> /usr/local/bin/vim
+    <span class="nv">excludesfile</span> <span class="o">=</span> /Users/jerrylou/.gitignore_global
+    <span class="nv">pager</span> <span class="o">=</span> cat
+    <span class="nv">autocrlf</span> <span class="o">=</span> input
+<span class="o">[</span>difftool <span class="s2">&quot;Kaleidoscope&quot;</span><span class="o">]</span>
+    <span class="nv">cmd</span> <span class="o">=</span> ksdiff --partial-changeset --relative-path <span class="se">\&quot;</span><span class="nv">$MERGED</span><span class="se">\&quot;</span> -- <span class="se">\&quot;</span><span class="nv">$LOCAL</span><span class="se">\&quot;</span> <span class="se">\&quot;</span><span class="nv">$REMOTE</span><span class="se">\&quot;</span>
+<span class="o">[</span>diff<span class="o">]</span>
+    <span class="nv">tool</span> <span class="o">=</span> Kaleidoscope
+<span class="o">[</span>difftool<span class="o">]</span>
+    <span class="nv">prompt</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="o">[</span>mergetool <span class="s2">&quot;Kaleidoscope&quot;</span><span class="o">]</span>
+    <span class="nv">cmd</span> <span class="o">=</span> ksdiff --merge --output <span class="se">\&quot;</span><span class="nv">$MERGED</span><span class="se">\&quot;</span> --base <span class="se">\&quot;</span><span class="nv">$BASE</span><span class="se">\&quot;</span> -- <span class="se">\&quot;</span><span class="nv">$LOCAL</span><span class="se">\&quot;</span> --snapshot <span class="se">\&quot;</span><span class="nv">$REMOTE</span><span class="se">\&quot;</span> --snapshot
+    <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="o">[</span>mergetool<span class="o">]</span>
+    <span class="nv">prompt</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nb">    </span><span class="nv">keepBackup</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="o">[</span>merge<span class="o">]</span>
+    <span class="nv">tool</span> <span class="o">=</span> Kaleidoscope
+    <span class="nv">log</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">    </span><span class="nv">summary</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="o">[</span>difftool <span class="s2">&quot;sourcetree&quot;</span><span class="o">]</span>
+    <span class="nv">cmd</span> <span class="o">=</span> opendiff <span class="se">\&quot;</span><span class="nv">$LOCAL</span><span class="se">\&quot;</span> <span class="se">\&quot;</span><span class="nv">$REMOTE</span><span class="se">\&quot;</span>
+    <span class="nv">path</span> <span class="o">=</span> 
+<span class="o">[</span>mergetool <span class="s2">&quot;sourcetree&quot;</span><span class="o">]</span>
+    <span class="nv">cmd</span> <span class="o">=</span> /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh <span class="se">\&quot;</span><span class="nv">$LOCAL</span><span class="se">\&quot;</span> <span class="se">\&quot;</span><span class="nv">$REMOTE</span><span class="se">\&quot;</span> -ancestor <span class="se">\&quot;</span><span class="nv">$BASE</span><span class="se">\&quot;</span> -merge <span class="se">\&quot;</span><span class="nv">$MERGED</span><span class="se">\&quot;</span>
+    <span class="nv">trustExitCode</span> <span class="o">=</span> <span class="nb">true</span>
+</code></pre></div>
+<h3>参考</h3>
+
+<ul>
+<li><a href="http://iissnan.com/progit/html/zh/ch9_1.html">Git内部原理</a></li>
+</ul>
+
+                <div id="disqus_thread"></div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+<link rel="stylesheet" href="/css/github.min.css">
+<script src="/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//jerrylou.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+        <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="https://twitter.com/gunsluo">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/gunsluo">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/gunsluo">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">
+                        Copyright &copy; Jerrylou 2016
+                        <a href="mailto:gunsluo@gmail.com">gunsluo@gmail.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
