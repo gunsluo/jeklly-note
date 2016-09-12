@@ -167,6 +167,10 @@ A---B---C---D------ master
 * git pull --rebase origin master - 同步远程master分支到本地
 * git push origin master - 提交当前分支到远程master分支
 * git stash [pop] - 换成修改commit
+* git reset --hard {commit} - 恢复到commit提交点
+* git reflog - 查看修改log,可用于恢复数据
+* git commit --amend - 撤销最后一次提交
+* git checkout {文件名} - 撤销对文件的修改
 
 ###解决冲突
 当做了新的功能准备提交代码时，第一件事同步要合入分支代码(如dev)
