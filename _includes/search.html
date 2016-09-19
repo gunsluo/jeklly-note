@@ -1,0 +1,12 @@
+<script>
+let postMap = {
+{% for category in site.categories %}'{{ category | first }}':[],{% endfor %}
+};
+{% for post in site.posts %}
+postMap['{{ post.categories | first }}'].push({
+    title: '{{ post.title }}',
+    url: '{{ post.url }}',
+    date: '{{ post.date| date: "%Y-%m-%-d"}}',
+});
+{% endfor %}
+</script>
