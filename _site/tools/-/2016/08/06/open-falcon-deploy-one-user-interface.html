@@ -27,6 +27,7 @@
     -->
 
     <script src="/js/jquery.min.js"></script>
+	<script src="/js/modernizr.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -41,126 +42,160 @@
 <body>
 
         <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/index.html"><!--Jerrylou Avatar--></a>
-            </div>
+    <header class="cd-main-header animate-search">
+		<div class="cd-logo"><a href="/index.html"><img src="/img/cd-logo.svg" alt="Logo"></a></div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-                    <li>
-                        <a href="/about.html">About</a>
-                    </li>
-                    <li>
-                        <a href="/contact.html">Contact</a>
-                    </li>
-                    <li>
-                        <a href="/resume.html">Resume</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+		<nav class="cd-main-nav-wrapper">
+			<a href="#search" class="cd-search-trigger cd-text-replace">Search</a>
+			
+			<ul class="cd-main-nav">
+				<li><a href="/">Home</a></li>
+				<li><a href="/about.html">About</a></li>
+				<li><a href="/contact.html">Contact</a></li>
+				<li><a href="/resume.html">Resume</a></li>
+			</ul> <!-- .cd-main-nav -->
+		</nav> <!-- .cd-main-nav-wrapper -->
 
-<script>
-let postMap = {
-'docker':[],'tools':[],'-':[],'kills':[],'person':[],
-};
+		<a href="#" class="cd-nav-trigger cd-text-replace">Menu<span></span></a>
+	</header>
 
-postMap['tools'].push({
-    title: 'Git原理简介',
-    url: '/tools/-/2016/09/12/git-principle.html',
-    date: '2016-09-12',
-});
+	<div id="search" class="cd-main-search">
+		<form>
+			<input type="search" placeholder="Search...">
 
-postMap['kills'].push({
-    title: '(转) 什么是NFV?它与SDN有什么关系?',
-    url: '/kills/-/2016/09/08/nfv-and-sdn.html',
-    date: '2016-09-8',
-});
+			<div class="cd-select">
+				<span>in</span>
+				<select name="select-category">
+					<option value="all-categories">分 类</option>
+                    
+                        
+					<option value="docker">docker</option>
+                        
+                    
+                        
+					<option value="tools">tools</option>
+                        
+                    
+                        
+					<option value="other">其它</option>
+                        
+                    
+                        
+					<option value="kills">kills</option>
+                        
+                    
+                        
+					<option value="person">person</option>
+                        
+                    
+				</select>
+				<span class="selected-value">分 类</span>
+			</div>
+		</form>
 
-postMap['kills'].push({
-    title: '虚拟机安装Centos7 Min的网络设备名问题',
-    url: '/kills/-/2016/09/08/min-centos7-net-problem.html',
-    date: '2016-09-8',
-});
+		<div class="cd-search-suggestions">
+			<div class="news">
+				<h3>搜索结果</h3>
+				<ul>
+				</ul>
+			</div> <!-- .news -->
 
-postMap['person'].push({
-    title: '(原) 魔方，我想玩转你',
-    url: '/person/-/2016/08/31/rubik-cube-formulas.html',
-    date: '2016-08-31',
-});
+			<div class="quick-links">
+				<h3>快捷链接</h3>
+				<ul>
+					<li><a href="/about.html">About Me</a></li>
+					<li><a href="/contact.html">Contact</a></li>
+					<li><a href="/resume.html">Resume</a></li>
+				</ul>
+			</div> <!-- .quick-links -->
+		</div> <!-- .cd-search-suggestions -->
 
-postMap['kills'].push({
-    title: '(原) Golang学习笔记',
-    url: '/kills/-/2016/08/10/golang-learning-note.html',
-    date: '2016-08-10',
-});
-
-postMap['tools'].push({
-    title: '(原) 多节点Open-falcon部署',
-    url: '/tools/-/2016/08/06/open-falcon-deploy-with-muti-node.html',
-    date: '2016-08-6',
-});
-
-postMap['tools'].push({
-    title: '(原) 多节点Open-falcon统一用户接口配置',
-    url: '/tools/-/2016/08/06/open-falcon-deploy-one-user-interface.html',
-    date: '2016-08-6',
-});
-
-postMap['tools'].push({
-    title: '(原) Mac & Window10 双系统安装',
-    url: '/tools/-/2016/07/20/hackintosh-window-install.html',
-    date: '2016-07-20',
-});
-
-postMap['docker'].push({
-    title: 'Docker实战应用',
-    url: '/docker/2016/05/29/docker-practice.html',
-    date: '2016-05-29',
-});
-
-postMap['docker'].push({
-    title: 'Man must explore, and this is exploration at its greatest',
-    url: '/docker/2016/04/09/test.html',
-    date: '2016-04-9',
-});
-
-</script>
+		<a href="#" class="close cd-text-replace">Close Form</a>
+	</div> <!-- .cd-main-search -->
+	<div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
+	<script src="/js/search.min.js"></script> <!-- Resource jQuery -->
+    <script>
+    let postMap = {
+    'docker':[],'tools':[],'-':[],'kills':[],'person':[],
+    };
+    
+    postMap['tools'].push({
+        title: 'Git原理简介',
+        url: '/tools/-/2016/09/12/git-principle.html',
+        date: '2016-09-12',
+    });
+    
+    postMap['kills'].push({
+        title: '(转) 什么是NFV?它与SDN有什么关系?',
+        url: '/kills/-/2016/09/08/nfv-and-sdn.html',
+        date: '2016-09-8',
+    });
+    
+    postMap['kills'].push({
+        title: '虚拟机安装Centos7 Min的网络设备名问题',
+        url: '/kills/-/2016/09/08/min-centos7-net-problem.html',
+        date: '2016-09-8',
+    });
+    
+    postMap['person'].push({
+        title: '(原) 魔方，我想玩转你',
+        url: '/person/-/2016/08/31/rubik-cube-formulas.html',
+        date: '2016-08-31',
+    });
+    
+    postMap['kills'].push({
+        title: '(原) Golang学习笔记',
+        url: '/kills/-/2016/08/10/golang-learning-note.html',
+        date: '2016-08-10',
+    });
+    
+    postMap['tools'].push({
+        title: '(原) 多节点Open-falcon部署',
+        url: '/tools/-/2016/08/06/open-falcon-deploy-with-muti-node.html',
+        date: '2016-08-6',
+    });
+    
+    postMap['tools'].push({
+        title: '(原) 多节点Open-falcon统一用户接口配置',
+        url: '/tools/-/2016/08/06/open-falcon-deploy-one-user-interface.html',
+        date: '2016-08-6',
+    });
+    
+    postMap['tools'].push({
+        title: '(原) Mac & Window10 双系统安装',
+        url: '/tools/-/2016/07/20/hackintosh-window-install.html',
+        date: '2016-07-20',
+    });
+    
+    postMap['docker'].push({
+        title: 'Docker实战应用',
+        url: '/docker/2016/05/29/docker-practice.html',
+        date: '2016-05-29',
+    });
+    
+    postMap['docker'].push({
+        title: 'Man must explore, and this is exploration at its greatest',
+        url: '/docker/2016/04/09/test.html',
+        date: '2016-04-9',
+    });
+    
+    </script>
 
 
 
             <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('/img/post-bg.jpg')">
+    <article class="blog-article art-theme">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="post-heading">
-                        <h1>(原) 多节点Open-falcon统一用户接口配置</h1>
-                        <h2 class="subheading">小米开源项目open-falcon - 互联网企业级监控产品</h2>
-                        <span class="meta">写于 2016-08-6 By <a href="/index.html">Jerrylou</a></span>
-                    </div>
+                    <h2 class="entry-title">(原) 多节点Open-falcon统一用户接口配置</h2>
+                    <h3 class="subheading">小米开源项目open-falcon - 互联网企业级监控产品</h3>
+                    <span class="date">2016-08-6 / Jerrylou</span>
                 </div>
             </div>
         </div>
-    </header>
-
+    </article>
 
 
     <!-- Main Content -->

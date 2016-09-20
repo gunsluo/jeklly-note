@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Jerrylou Blog"
+title: "Jerrylou' Blog"
 subtitle: 'inspiration， but is "tenacious labor for reward"'
 ---
     {% for post in paginator.posts %}
@@ -13,7 +13,7 @@ subtitle: 'inspiration， but is "tenacious labor for reward"'
                 {{ post.subtitle }}
             </h3>
         </a>
-        <p class="post-meta">写于 {{ post.date | date: "%Y-%m-%-d" }} By <a href="{{ site.authorurl }}">{{ site.author }}</a> </p>
+        <p class="post-meta">{{ post.date | date: "%Y-%m-%-d" }} / {{ site.author }} </p>
       </div>
       <hr>
     {% endfor %}

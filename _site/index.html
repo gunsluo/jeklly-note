@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Jerrylou Blog</title>
+    <title>Jerrylou&#39; Blog</title>
 
     <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
     <!-- Bootstrap Core CSS -->
@@ -27,6 +27,7 @@
     -->
 
     <script src="/js/jquery.min.js"></script>
+	<script src="/js/modernizr.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -41,126 +42,160 @@
 <body>
 
         <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/index.html"><!--Jerrylou Avatar--></a>
-            </div>
+    <header class="cd-main-header animate-search">
+		<div class="cd-logo"><a href="/index.html"><img src="/img/cd-logo.svg" alt="Logo"></a></div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-                    <li>
-                        <a href="/about.html">About</a>
-                    </li>
-                    <li>
-                        <a href="/contact.html">Contact</a>
-                    </li>
-                    <li>
-                        <a href="/resume.html">Resume</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+		<nav class="cd-main-nav-wrapper">
+			<a href="#search" class="cd-search-trigger cd-text-replace">Search</a>
+			
+			<ul class="cd-main-nav">
+				<li><a href="/">Home</a></li>
+				<li><a href="/about.html">About</a></li>
+				<li><a href="/contact.html">Contact</a></li>
+				<li><a href="/resume.html">Resume</a></li>
+			</ul> <!-- .cd-main-nav -->
+		</nav> <!-- .cd-main-nav-wrapper -->
 
-<script>
-let postMap = {
-'docker':[],'tools':[],'-':[],'kills':[],'person':[],
-};
+		<a href="#" class="cd-nav-trigger cd-text-replace">Menu<span></span></a>
+	</header>
 
-postMap['tools'].push({
-    title: 'Git原理简介',
-    url: '/tools/-/2016/09/12/git-principle.html',
-    date: '2016-09-12',
-});
+	<div id="search" class="cd-main-search">
+		<form>
+			<input type="search" placeholder="Search...">
 
-postMap['kills'].push({
-    title: '(转) 什么是NFV?它与SDN有什么关系?',
-    url: '/kills/-/2016/09/08/nfv-and-sdn.html',
-    date: '2016-09-8',
-});
+			<div class="cd-select">
+				<span>in</span>
+				<select name="select-category">
+					<option value="all-categories">分 类</option>
+                    
+                        
+					<option value="docker">docker</option>
+                        
+                    
+                        
+					<option value="tools">tools</option>
+                        
+                    
+                        
+					<option value="other">其它</option>
+                        
+                    
+                        
+					<option value="kills">kills</option>
+                        
+                    
+                        
+					<option value="person">person</option>
+                        
+                    
+				</select>
+				<span class="selected-value">分 类</span>
+			</div>
+		</form>
 
-postMap['kills'].push({
-    title: '虚拟机安装Centos7 Min的网络设备名问题',
-    url: '/kills/-/2016/09/08/min-centos7-net-problem.html',
-    date: '2016-09-8',
-});
+		<div class="cd-search-suggestions">
+			<div class="news">
+				<h3>搜索结果</h3>
+				<ul>
+				</ul>
+			</div> <!-- .news -->
 
-postMap['person'].push({
-    title: '(原) 魔方，我想玩转你',
-    url: '/person/-/2016/08/31/rubik-cube-formulas.html',
-    date: '2016-08-31',
-});
+			<div class="quick-links">
+				<h3>快捷链接</h3>
+				<ul>
+					<li><a href="/about.html">About Me</a></li>
+					<li><a href="/contact.html">Contact</a></li>
+					<li><a href="/resume.html">Resume</a></li>
+				</ul>
+			</div> <!-- .quick-links -->
+		</div> <!-- .cd-search-suggestions -->
 
-postMap['kills'].push({
-    title: '(原) Golang学习笔记',
-    url: '/kills/-/2016/08/10/golang-learning-note.html',
-    date: '2016-08-10',
-});
-
-postMap['tools'].push({
-    title: '(原) 多节点Open-falcon部署',
-    url: '/tools/-/2016/08/06/open-falcon-deploy-with-muti-node.html',
-    date: '2016-08-6',
-});
-
-postMap['tools'].push({
-    title: '(原) 多节点Open-falcon统一用户接口配置',
-    url: '/tools/-/2016/08/06/open-falcon-deploy-one-user-interface.html',
-    date: '2016-08-6',
-});
-
-postMap['tools'].push({
-    title: '(原) Mac & Window10 双系统安装',
-    url: '/tools/-/2016/07/20/hackintosh-window-install.html',
-    date: '2016-07-20',
-});
-
-postMap['docker'].push({
-    title: 'Docker实战应用',
-    url: '/docker/2016/05/29/docker-practice.html',
-    date: '2016-05-29',
-});
-
-postMap['docker'].push({
-    title: 'Man must explore, and this is exploration at its greatest',
-    url: '/docker/2016/04/09/test.html',
-    date: '2016-04-9',
-});
-
-</script>
+		<a href="#" class="close cd-text-replace">Close Form</a>
+	</div> <!-- .cd-main-search -->
+	<div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
+	<script src="/js/search.min.js"></script> <!-- Resource jQuery -->
+    <script>
+    let postMap = {
+    'docker':[],'tools':[],'-':[],'kills':[],'person':[],
+    };
+    
+    postMap['tools'].push({
+        title: 'Git原理简介',
+        url: '/tools/-/2016/09/12/git-principle.html',
+        date: '2016-09-12',
+    });
+    
+    postMap['kills'].push({
+        title: '(转) 什么是NFV?它与SDN有什么关系?',
+        url: '/kills/-/2016/09/08/nfv-and-sdn.html',
+        date: '2016-09-8',
+    });
+    
+    postMap['kills'].push({
+        title: '虚拟机安装Centos7 Min的网络设备名问题',
+        url: '/kills/-/2016/09/08/min-centos7-net-problem.html',
+        date: '2016-09-8',
+    });
+    
+    postMap['person'].push({
+        title: '(原) 魔方，我想玩转你',
+        url: '/person/-/2016/08/31/rubik-cube-formulas.html',
+        date: '2016-08-31',
+    });
+    
+    postMap['kills'].push({
+        title: '(原) Golang学习笔记',
+        url: '/kills/-/2016/08/10/golang-learning-note.html',
+        date: '2016-08-10',
+    });
+    
+    postMap['tools'].push({
+        title: '(原) 多节点Open-falcon部署',
+        url: '/tools/-/2016/08/06/open-falcon-deploy-with-muti-node.html',
+        date: '2016-08-6',
+    });
+    
+    postMap['tools'].push({
+        title: '(原) 多节点Open-falcon统一用户接口配置',
+        url: '/tools/-/2016/08/06/open-falcon-deploy-one-user-interface.html',
+        date: '2016-08-6',
+    });
+    
+    postMap['tools'].push({
+        title: '(原) Mac & Window10 双系统安装',
+        url: '/tools/-/2016/07/20/hackintosh-window-install.html',
+        date: '2016-07-20',
+    });
+    
+    postMap['docker'].push({
+        title: 'Docker实战应用',
+        url: '/docker/2016/05/29/docker-practice.html',
+        date: '2016-05-29',
+    });
+    
+    postMap['docker'].push({
+        title: 'Man must explore, and this is exploration at its greatest',
+        url: '/docker/2016/04/09/test.html',
+        date: '2016-04-9',
+    });
+    
+    </script>
 
 
 
             <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <article class="blog-article">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <h1>Jerrylou Blog</h1>
-                        <hr class="small">
-                        <span class="subheading">inspiration， but is &quot;tenacious labor for reward&quot;</span>
-                    </div>
+                    <h2 class="entry-title">Jerrylou&#39; Blog</h2>
+                    <h3 class="">-</h3>
+                    <span class="subheading">inspiration， but is &quot;tenacious labor for reward&quot;</span>
                 </div>
             </div>
         </div>
-    </header>
-
+    </article>
 
 
     <!-- Main Content -->
@@ -177,7 +212,7 @@ postMap['docker'].push({
                 Git如何实现？实现原理是什么？
             </h3>
         </a>
-        <p class="post-meta">写于 2016-09-12 By <a href="/index.html">Jerrylou</a> </p>
+        <p class="post-meta">2016-09-12 / Jerrylou </p>
       </div>
       <hr>
     
@@ -190,7 +225,7 @@ postMap['docker'].push({
                 虚拟化网络技术NFV与SDN的关系
             </h3>
         </a>
-        <p class="post-meta">写于 2016-09-8 By <a href="/index.html">Jerrylou</a> </p>
+        <p class="post-meta">2016-09-8 / Jerrylou </p>
       </div>
       <hr>
     
@@ -203,7 +238,7 @@ postMap['docker'].push({
                 安装min centos后，网络设备重命名 - 吐槽不已
             </h3>
         </a>
-        <p class="post-meta">写于 2016-09-8 By <a href="/index.html">Jerrylou</a> </p>
+        <p class="post-meta">2016-09-8 / Jerrylou </p>
       </div>
       <hr>
     
@@ -216,7 +251,7 @@ postMap['docker'].push({
                 入门级魔方公式 - 层先法
             </h3>
         </a>
-        <p class="post-meta">写于 2016-08-31 By <a href="/index.html">Jerrylou</a> </p>
+        <p class="post-meta">2016-08-31 / Jerrylou </p>
       </div>
       <hr>
     
@@ -229,7 +264,7 @@ postMap['docker'].push({
                 Golang学习过程中记录笔记，帮助理解
             </h3>
         </a>
-        <p class="post-meta">写于 2016-08-10 By <a href="/index.html">Jerrylou</a> </p>
+        <p class="post-meta">2016-08-10 / Jerrylou </p>
       </div>
       <hr>
     
