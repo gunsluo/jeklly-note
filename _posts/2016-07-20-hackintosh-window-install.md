@@ -73,23 +73,24 @@ sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinst
 
 ###安装el capitan 到固态硬盘
 
-1.选择install OS X
-http://ww3.sinaimg.cn/small/0065glrAgw1f62y34g8r3j30go0an0up.jpg
+1. 选择install OS X
     ![Alt text](http://ww2.sinaimg.cn/mw690/0065glrAgw1f62y35qv55j30hs0a03yn.jpg "mac install")
 
-2.选择语言
+2. 选择语言
     ![Alt text](http://ww1.sinaimg.cn/mw690/0065glrAgw1f62y36gi2gj30se0l8dil.jpg "mac install")
 
-3.选择你的固体硬盘
+3. 选择你的固体硬盘
     ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y379tqzj30sc0letac.jpg "mac install")
 
-4.格式化硬盘
+4. 格式化硬盘
+
     ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y37whnrj30hs0dcmys.jpg "mac install")
 
-5.install OS X
+5. install OS X
+
     ![Alt text](http://ww1.sinaimg.cn/mw690/0065glrAgw1f62y38zx9oj30hs0dejs1.jpg "mac install")
 
-6.OS X 安装好了。
+6. OS X 安装好了。
     ![Alt text](http://ww3.sinaimg.cn/mw690/0065glrAgw1f62y39uiedj30hs0ddgpl.jpg "mac install")
 
 ###Hackintosh驱动篇
