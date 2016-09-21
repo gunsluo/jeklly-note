@@ -1,53 +1,50 @@
-	<div id="search" class="cd-main-search">
-		<form>
-			<input type="search" placeholder="Search...">
+  <div id="search" class="cd-main-search">
+    <form>
+      <input type="search" placeholder="Search...">
 
-			<div class="cd-select">
-				<span>in</span>
-				<select name="select-category">
-					<option value="all-categories">分 类</option>
-                    {% for category in site.categories %}
-                        {% if category.first == "-" %}
-					<option value="other">其它</option>
-                        {% else %}
-					<option value="{{ category | first }}">{{ category | first }}</option>
-                        {% endif %}
-                    {% endfor %}
-				</select>
-				<span class="selected-value">分 类</span>
-			</div>
-		</form>
+      <div class="cd-select">
+        <span>in</span>
+        <select name="select-category">
+          <option value="categories">分 类</option>
+          {% for category in site.categories %}
+            {% if category.first != "-" %}<option value="{{ category | first }}">{{ category | first }}</option>{% endif %}
+          {% endfor %}
+          <option value="other">其它</option>
+        </select>
+        <span class="selected-value">categories</span>
+      </div>
+    </form>
 
-		<div class="cd-search-suggestions">
-			<div class="news">
-				<h3>搜索结果</h3>
-				<ul>
-				</ul>
-			</div> <!-- .news -->
+    <div class="cd-search-suggestions">
+      <div class="news">
+        <h3>搜索结果</h3>
+        <ul>
+        </ul>
+      </div> <!-- .news -->
 
-			<div class="quick-links">
-				<h3>快捷链接</h3>
-				<ul>
-					<li><a href="/about.html">About Me</a></li>
-					<li><a href="/contact.html">Contact</a></li>
-					<li><a href="/resume.html">Resume</a></li>
-				</ul>
-			</div> <!-- .quick-links -->
-		</div> <!-- .cd-search-suggestions -->
+      <div class="quick-links">
+        <h3>快捷链接</h3>
+        <ul>
+          <li><a href="/about.html">About Me</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+          <li><a href="/resume.html">Resume</a></li>
+        </ul>
+      </div> <!-- .quick-links -->
+    </div> <!-- .cd-search-suggestions -->
 
-		<a href="#" class="close cd-text-replace">Close Form</a>
-	</div> <!-- .cd-main-search -->
-	<div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
-	<script src="/js/search.min.js"></script> <!-- Resource jQuery -->
-    <script>
-    let postMap = {
-    {% for category in site.categories %}'{{ category | first }}':[],{% endfor %}
-    };
-    {% for post in site.posts %}
-    postMap['{{ post.categories | first }}'].push({
-        title: '{{ post.title }}',
-        url: '{{ post.url }}',
-        date: '{{ post.date| date: "%Y-%m-%-d"}}',
-    });
-    {% endfor %}
-    </script>
+    <a href="#" class="close cd-text-replace">Close Form</a>
+  </div> <!-- .cd-main-search -->
+  <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
+  <script src="/js/search.min.js"></script> <!-- Resource jQuery -->
+  <script>
+  let postMap = {
+  {% for category in site.categories %}'{{ category | first }}':[],{% endfor %}
+  };
+  {% for post in site.posts %}
+  postMap['{{ post.categories | first }}'].push({
+    title: '{{ post.title }}',
+    url: '{{ post.url }}',
+    date: '{{ post.date| date: "%Y-%m-%-d"}}',
+  });
+  {% endfor %}
+  </script>

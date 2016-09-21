@@ -1,13 +1,13 @@
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <article class="blog-article art-theme">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <h2 class="entry-title">{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</h2>
-                    <h3 class="subheading">{% if page.subtitle %}{{ page.subtitle | escape }}{% else %}{{ site.subtitle | escape }}{% endif %}</h3>
-                    <span class="date">{{ page.date | date: "%Y-%m-%-d" }} / Jerrylou</span>
-                </div>
-            </div>
+  <!-- Page Header -->
+  <!-- Set your background image for this header on the line below. -->
+  <article class="blog-article art-theme">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <h2 class="entry-title">{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</h2>
+          <h3 class="subheading">{% if page.subtitle %}{{ page.subtitle | escape }}{% else %}{{ site.subtitle | escape }}{% endif %}</h3>
+          <span class="date">Posted by <a href="#">{{ site.author }}</a> on {{ page.date | date: "%m %-d, %Y" }}</span>
         </div>
-    </article>
+      </div>
+    </div>
+  </article>

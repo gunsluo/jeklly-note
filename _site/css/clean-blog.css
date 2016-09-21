@@ -703,9 +703,9 @@ Header
   }
 }
 .cd-title a{
-  line-height: 3.4;
+  display: block;
+  margin-top: 14px;
   color: #fff;
-  font-size: 1.2em;
   text-decoration: none;
 }
 @media only screen and (min-width: 1024px) {
@@ -714,7 +714,7 @@ Header
     z-index: 3;
     margin-left: 5%;
   }
-  .cd-title img {
+  .cd-title a {
     margin-top: 29px;
   }
 }
@@ -1535,5 +1535,8 @@ JavaScript Disabled
 }
 
 .art-theme .entry-title{
-  font-size: 52px;
+  font-size: 50px;
+}
+.art-theme .subheading{
+  font-size: 28px;
 }

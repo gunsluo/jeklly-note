@@ -1,12 +1,12 @@
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <article class="blog-article">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <h2 class="entry-title">{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</h2>
-                    <span class="subheading">{% if page.subtitle %}{{ page.subtitle | escape }}{% else %}{{ page.subtitle | escape }}{% else %}{{ site.subtitle | escape }}{% endif %}</span>
-                </div>
-            </div>
+  <!-- Blog Header -->
+  <!-- Set your background image for this header on the line below. -->
+  <article class="blog-article">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <h2 class="entry-title">{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</h2>
+          <span class="subheading">{% if page.subtitle %}{{ page.subtitle | escape }}{% else %}{{ page.subtitle | escape }}{% else %}{{ site.subtitle | escape }}{% endif %}</span>
         </div>
-    </article>
+      </div>
+    </div>
+  </article>

@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
-    {% include head.html %}
-
+  {% include head.html %}
 <body>
-
-    {% include nav2.html %}
-
+  {% include nav2.html %}
+  <!-- Main Content -->
+  <main class="cd-main-content">
+    <!-- your content here -->
     {% include pgheader.html %}
-
     {{ content }}
-    
-    {% include footer.html %}
-
-    <!-- jQuery -->
-    <script src="/js/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/js/bootstrap.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="/js/clean-blog.min.js"></script>
-
+  <hr>
+  </main>
+  {% include footer.html %}
+  <!-- Bootstrap Core JavaScript -->
+  <script src="/js/bootstrap.min.js"></script>
+  <!-- Custom Theme JavaScript -->
+  <script src="/js/clean-blog.min.js"></script>
 </body>
-
 </html>

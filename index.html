@@ -3,31 +3,26 @@ layout: page
 title: "inspiration"
 subtitle: 'but is "tenacious labor for reward"'
 ---
-    {% for post in paginator.posts %}
-      <div class="post-preview">
-        <a href="{{ post.url | prepend: site.baseurl }}">
-            <h2 class="post-title">
-                {{ post.title }}
-            </h2>
-            <h3 class="post-subtitle">
-                {{ post.subtitle }}
-            </h3>
-        </a>
-        <p class="post-meta">{{ post.date | date: "%Y-%m-%-d" }} / {{ site.author }} </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        {% for post in paginator.posts %}
+          <div class="post-preview">
+          <a href="{{ post.url | prepend: site.baseurl }}">
+            <h2 class="post-title">{{ post.title }}</h2>
+            <h3 class="post-subtitle">{{ post.subtitle }}</h3>
+          </a>
+          <p class="post-meta">Posted by <a href="#">{{ site.author }}</a> on {{ post.date | date: "%m %-d, %Y" }}</p>
+          </div>
+          <hr>
+        {% endfor %}
+        <!-- Pager -->
+        <ul class="pager">
+          {% if paginator.previous_page %}
+          <li class="previous"><a href="{{ paginator.previous_page_path }}">&larr; Previous</a></li>{% endif %}
+          {% if paginator.next_page %}
+          <li class="next"><a href="{{ paginator.next_page_path }}">Next &rarr;</a></li>{% endif %}
+        </ul>
       </div>
-      <hr>
-    {% endfor %}
-    <!-- Pager -->
-    <ul class="pager">
-        {% if paginator.previous_page %}
-        <li class="previous">
-            <a href="{{ paginator.previous_page_path }}">&larr; Previous</a>
-        </li>
-        {% endif %}
-        {% if paginator.next_page %}
-        <li class="next">
-            <a href="{{ paginator.next_page_path }}">Next &rarr;</a>
-        </li>
-        {% endif %}
-    </ul>
-
+    </div>
+  </div>
