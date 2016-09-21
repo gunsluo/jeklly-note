@@ -33,7 +33,7 @@ table {
 }
 .post blockquote p {
   margin: 0;
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 *, *::after, *::before {
   box-sizing: border-box;
@@ -1405,4 +1405,7 @@ form .row:first-child .floating-label-form-group {
   color: white;
   text-shadow: none;
   background: #0085a1;
+}
+#disqus_thread {
+  margin-top: 50px;
 }
