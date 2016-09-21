@@ -675,7 +675,7 @@ Header
   display: table;
 }
 
-.cd-logo {
+.cd-logo, .cd-title  {
   display: inline-block;
   height: 100%;
   margin-left: 15px;
@@ -699,6 +699,22 @@ Header
     margin-left: 5%;
   }
   .cd-logo img {
+    margin-top: 29px;
+  }
+}
+.cd-title a{
+  line-height: 3.4;
+  color: #fff;
+  font-size: 1.2em;
+  text-decoration: none;
+}
+@media only screen and (min-width: 1024px) {
+  .cd-title {
+    position: absolute;
+    z-index: 3;
+    margin-left: 5%;
+  }
+  .cd-title img {
     margin-top: 29px;
   }
 }
@@ -1506,7 +1522,7 @@ JavaScript Disabled
   color:#25a197;
 }
 .blog-article .subheading{
-  font-size: 28px;
+  font-size: 38px;
   margin:5px 0 20px 0;
 }
 .blog-article .date{
