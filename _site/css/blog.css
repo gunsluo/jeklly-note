@@ -11,9 +11,6 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, main {
   display: block;
 }
-body {
-  line-height: 1;
-}
 blockquote, q {
   quotes: none;
 }
@@ -26,16 +23,17 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
+.post h1, .post h2, .post h3, .post h4, .post h5, .post h6 {
+  font-weight: 800;
+}
 *, *::after, *::before {
   box-sizing: border-box;
 }
-
 html {
   font-size: 62.5%;
 }
-
 body {
+  line-height: 1;
   font-size: 1.6rem;
   font-family: 'Open Sans','Helvetica Neue',sans-serif,"Microsoft YaHei New","Microsoft Yahei","微软雅黑",SimHei;
   background-color: #ffffff;
