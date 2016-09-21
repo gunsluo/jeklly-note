@@ -6,7 +6,7 @@
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           <h2 class="entry-title">{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</h2>
           <h3 class="subheading">{% if page.subtitle %}{{ page.subtitle | escape }}{% else %}{{ site.subtitle | escape }}{% endif %}</h3>
-          <span class="date">Posted by <a href="#">{{ site.author }}</a> on {{ page.date | date: "%m %-d, %Y" }}</span>
+          <span class="date">Posted by <a href="/">{{ site.author }}</a> on {{ page.date | date: "%m %-d, %Y" }}</span>
         </div>
       </div>
     </div>
