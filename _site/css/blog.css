@@ -33,7 +33,6 @@ html {
   font-size: 62.5%;
 }
 body {
-  line-height: 1;
   font-size: 1.6rem;
   font-family: 'Open Sans','Helvetica Neue',sans-serif,"Microsoft YaHei New","Microsoft Yahei","微软雅黑",SimHei;
   background-color: #ffffff;
@@ -240,6 +239,7 @@ Header
 }
 @media only screen and (min-width: 1024px) {
   .cd-title {
+    line-height: 1;
     position: absolute;
     z-index: 3;
     margin-left: 5%;
