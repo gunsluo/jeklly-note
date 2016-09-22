@@ -5,11 +5,11 @@
       <div class="cd-select">
         <span>in</span>
         <select name="select-category">
-          <option value="categories">分 类</option>
+          <option value="categories">categories</option>
           {% for category in site.categories %}
             {% if category.first != "-" %}<option value="{{ category | first }}">{{ category | first }}</option>{% endif %}
           {% endfor %}
-          <option value="other">其它</option>
+          <option value="other">other</option>
         </select>
         <span class="selected-value">categories</span>
       </div>
@@ -18,8 +18,7 @@
     <div class="cd-search-suggestions">
       <div class="news">
         <h3>搜索结果</h3>
-        <ul>
-        </ul>
+        <ul></ul>
       </div> <!-- .news -->
 
       <div class="quick-links">
@@ -35,7 +34,6 @@
     <a href="#" class="close cd-text-replace">Close Form</a>
   </div> <!-- .cd-main-search -->
   <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
-  <script src="/js/search.min.js"></script> <!-- Resource jQuery -->
   <script>
   let postMap = {
   {% for category in site.categories %}'{{ category | first }}':[],{% endfor %}
@@ -43,8 +41,10 @@
   {% for post in site.posts %}
   postMap['{{ post.categories | first }}'].push({
     title: '{{ post.title }}',
+    subtitle: '{{ post.subtitle }}',
     url: '{{ post.url }}',
     date: '{{ post.date| date: "%Y-%m-%-d"}}',
   });
   {% endfor %}
   </script>
+  <script src="/js/search.js"></script> <!-- Resource jQuery -->

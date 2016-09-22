@@ -712,7 +712,7 @@ Search Form
   }
   .cd-search-suggestions .news li {
     position: relative;
-    padding: 0.5em 0.625em 0.625em 3em;
+    padding: 0.625em 0.75em 0.75em 4em;
     margin-bottom: 0.25em;
   }
   .cd-search-suggestions .news li:last-of-type {
