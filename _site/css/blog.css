@@ -38,6 +38,9 @@ table {
   margin: 0;
   font-size: 0.9em;
 }
+.post table {
+  font-size: 0.9em;
+}
 *, *::after, *::before {
   box-sizing: border-box;
 }
