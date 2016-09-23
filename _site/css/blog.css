@@ -118,20 +118,20 @@ select {
 .cd-search-suggestions{
   line-height: 1;
 }
-
 .cd-search-suggestions ul{
   list-style: none;
 }
-.cd-search-suggestions img {
+.cd-search-suggestions img{
   max-width: 100%;
 }
-
 .cd-search-suggestions h3{
   margin:0;
 }
-
 .cd-search-suggestions h4{
   margin:0;
+}
+.cd-main-nav-wrapper ul {
+  list-style: none;
 }
 
 .cd-select::after {
@@ -354,6 +354,8 @@ Header
   position: fixed;
   z-index: 1;
   top: 0;
+  margin:0;
+  padding:0;
   right: 0;
   width: 260px;
   height: 100vh;
