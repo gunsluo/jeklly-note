@@ -85,18 +85,17 @@ jQuery(document).ready(function($){
   // press enter
   searchForm.keydown(function(event){
     if( event.which=='13' ) {
-      //event.preventDefault();
       return false;
     }
 
-    if( event.which=='13' ) {
-      closeSearchForm();
+    if( event.which=='27' ) {
       return false;
     }
-    console.log(event.which)
 
-    searchPost();
     return true;
+  });
+  searchForm.keyup(function(event){
+    searchPost();
   });
 
   $(document).keyup(function(event){
@@ -105,40 +104,69 @@ jQuery(document).ready(function($){
 
   //upadate span.selected-value text when user selects a new option
   searchForm.on('change', 'select', function(){
-    searchForm.find('.selected-value').text($(this).children('option:selected').text());
+    var selectedVal = $(this).children('option:selected').text();
+    searchForm.find('.selected-value').text(selectedVal);
+    searchPostByCategory(selectedVal.toLowerCase().trim())
   });
 
   // add by jerrylou
   function searchPost() {
-    let content = searchForm.find('input').val();
+    var content = searchForm.find('input').val();
     if( content == "" ){
-      //closeSearchForm();
+      postDom.html('');
       return;
     }
     searchPostByContent(content.toLowerCase().trim());
   }
   
   function searchPostByContent(content) {
-    console.log(content)
     if( typeof postMap == "undefined" ) {
       return;
     }
 
-    let innerhtml = '';
-    for(let key in postMap ) {
-      let category = postMap[key];
-      for(let idx in category){
-        let post = category[idx];
+    var innerhtml = '';
+    for(var key in postMap ) {
+      var category = postMap[key];
+      for(var idx in category){
+        var post = category[idx];
         if( (post.title.toLowerCase().indexOf(content) >= 0) ||
           (post.subtitle.toLowerCase().indexOf(content) >= 0) ) {
-          let li = '<li>' + 
-            '<a class="image-wrapper" href="#"><img src="img/placeholder.png" alt="News image"></a>' +
-            '<h4><a class="cd-nowrap" href="#">' + post.title + '</a></h4>' +
+          var li = '<li>' + 
+            '<a class="image-wrapper" href="' + post.url + '"><img src="img/placeholder.png" alt="News image"></a>' +
+            '<h4><a class="cd-nowrap" href="' + post.url + '">' + post.title + '</a></h4>' +
             '<time datetime="">' + post.subtitle + '</time></li>';
           innerhtml += li;
         }
       }
     }
+    postDom.html(innerhtml);
+  }
+
+  function searchPostByCategory(categoryName) {
+    if( typeof postMap == "undefined" ) {
+      return;
+    }
+    if( categoryName == "" ) {
+      postDom.html('');
+      return;
+    }
+
+    if( typeof postMap[categoryName] == "undefined" ) {
+      postDom.html('');
+      return;
+    }
+
+    var innerhtml = '';
+    var category = postMap[categoryName];
+    for(var idx in category){
+      var post = category[idx];
+      var li = '<li>' + 
+        '<a class="image-wrapper" href="' + post.url + '"><img src="img/placeholder.png" alt="News image"></a>' +
+        '<h4><a class="cd-nowrap" href="' + post.url + '">' + post.title + '</a></h4>' +
+        '<time datetime="">' + post.subtitle + '</time></li>';
+      innerhtml += li;
+    }
+
     postDom.html(innerhtml);
   }
 });

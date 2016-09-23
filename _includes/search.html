@@ -5,13 +5,13 @@
       <div class="cd-select">
         <span>in</span>
         <select name="select-category">
-          <option value="categories">categories</option>
+          <option value="类 别">类 别</option>
           {% for category in site.categories %}
             {% if category.first != "-" %}<option value="{{ category | first }}">{{ category | first }}</option>{% endif %}
           {% endfor %}
           <option value="other">other</option>
         </select>
-        <span class="selected-value">categories</span>
+        <span class="selected-value">类 别</span>
       </div>
     </form>
 
