@@ -30,7 +30,6 @@ jQuery(document).ready(function($){
       searchForm.detach().insertBefore(navigationTrigger);
       navigationWrapper.detach().insertBefore(searchForm).find('.cd-serch-wrapper').remove();
     } else if( screenSize == 'mobile' && !(mainHeader.children('.cd-main-nav-wrapper').length == 0)) {
-      alert(2)
       //mobile screen - move navigation and search form after .cd-main-content element
       navigationWrapper.detach().insertAfter('.cd-main-content');
       var newListItem = $('<li class="cd-serch-wrapper"></li>');
