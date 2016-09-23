@@ -132,7 +132,7 @@ jQuery(document).ready(function($){
         if( (post.title.toLowerCase().indexOf(content) >= 0) ||
           (post.subtitle.toLowerCase().indexOf(content) >= 0) ) {
           var li = '<li>' + 
-            '<a class="image-wrapper" href="' + post.url + '"><img src="img/placeholder.png" alt="News image"></a>' +
+            '<a class="image-wrapper" href="' + post.url + '"><img src="/img/placeholder.png" alt="News image"></a>' +
             '<h4><a class="cd-nowrap" href="' + post.url + '">' + post.title + '</a></h4>' +
             '<time datetime="">' + post.subtitle + '</time></li>';
           innerhtml += li;
@@ -161,7 +161,7 @@ jQuery(document).ready(function($){
     for(var idx in category){
       var post = category[idx];
       var li = '<li>' + 
-        '<a class="image-wrapper" href="' + post.url + '"><img src="img/placeholder.png" alt="News image"></a>' +
+        '<a class="image-wrapper" href="' + post.url + '"><img src="/img/placeholder.png" alt="News image"></a>' +
         '<h4><a class="cd-nowrap" href="' + post.url + '">' + post.title + '</a></h4>' +
         '<time datetime="">' + post.subtitle + '</time></li>';
       innerhtml += li;
