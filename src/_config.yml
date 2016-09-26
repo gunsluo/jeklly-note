@@ -35,7 +35,27 @@ redcarpet:
    - with_to_data
 
 #pagination
-gems: [jekyll-paginate]
+gems: [jekyll-paginate, jekyll-assets]
 paginate: 5
 paginate_path: "/page:num/"
 
+assets:
+  compress:
+    css: true
+    js: true
+  autowrite: true
+  cache: false
+  cache_type: filesystem
+  cdn: 
+  skip_baseurl_with_cdn: false
+  skip_prefix_with_cdn: false
+  prefix: "/assets"
+  digest: true
+  assets:
+    - "*.png"
+    - "bundle.css"
+  sources:
+    - _assets/css
+    - _assets/images
+    - _assets/fonts
+    - _assets/js

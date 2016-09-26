@@ -1101,38 +1101,38 @@ footer .copyright {
   margin-top: 30px;
 }
 .post-preview>a {
-  color: #333
+  color: #333;
 }
 .post-preview>a:focus,.post-preview>a:hover {
   text-decoration: none;
-  color: #0085A1
+  color: #0085A1;
 }
 .post-preview>a>.post-title {
   font-size: 30px;
   margin-top: 30px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
 .post-preview>a>.post-subtitle {
   margin: 0 0 10px;
-  font-weight: 300
+  font-weight: 300;
 }
 .post-preview>.post-meta {
   color: #777;
   font-size: 14px;
   font-style: italic;
-  margin-top: 0
+  margin-top: 0;
 }
 .post-preview>.post-meta>a {
   text-decoration: none;
-  color: #333
+  color: #333;
 }
 .post-preview>.post-meta>a:focus,.post-preview>.post-meta>a:hover {
   color: #0085A1;
-  text-decoration: underline
+  text-decoration: underline;
 }
 @media only screen and (min-width:768px) {
   .post-preview>a>.post-title {
-    font-size: 36px
+    font-size: 36px;
   }
 }
 .pager {
@@ -1209,7 +1209,7 @@ footer .copyright {
   -ms-transition: top 0.3s ease,opacity 0.3s ease;
   transition: top 0.3s ease,opacity 0.3s ease;
 }
-.floating-label-form-group::not(:first-child) {
+.floating-label-form-group:not(:first-child) {
   padding-left: 14px;
   border-left: 1px solid #eeeeee;
 }
@@ -1316,10 +1316,10 @@ form .row:first-child .floating-label-form-group {
   color:#ffffff;
   background: #cd5353;
   border-radius:6px;
-  -moz-border-radius:6px
-  -webkit-border-radius :6px;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
   -ms-border-radius:6px;
-  -o-border-radius: 6px;
+  -o-border-radius:6px;
   padding:1px 12px;
 }
 .exp:after {

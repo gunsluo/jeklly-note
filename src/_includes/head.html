@@ -8,13 +8,13 @@
     <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
     <link href="{{ "/img/favicon.ico" | prepend: site.baseurl }}" rel="icon" type="image/x-icon"/>
     <!-- Bootstrap Core CSS -->
-    <link href="{{ "/css/bootstrap.min.css" | prepend: site.baseurl }}" rel="stylesheet">
+    <link href="/assets/lib/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <!-- Custom CSS -->
-    <link href="{{ "/css/blog.min.css" | prepend: site.baseurl }}" rel="stylesheet">
+    {% css blog %}
     <!-- Custom Fonts -->
-    <link href="/css/font-opensans.min.css" rel="stylesheet" type="text/css">
-    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="/css/fontello.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/lib/css/font-opensans.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/lib/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/lib/css/fontello.min.css" rel="stylesheet" type="text/css">
 
     <script src="/js/jquery.min.js"></script>
 	<script src="/js/modernizr.min.js"></script>
