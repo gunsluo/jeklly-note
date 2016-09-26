@@ -148,7 +148,7 @@ select {
   transform: translateY(-50%);
   width: 16px;
   height: 16px;
-  background: url(../img/cd-icons.svg) no-repeat 0 0;
+  background: url(../assets/images/cd-icons.svg) no-repeat 0 0;
   pointer-events: none;
 }
 
@@ -835,7 +835,7 @@ Search Form
     transform: translateX(-50%) translateY(-50%);
     height: 16px;
     width: 16px;
-    background: url(../img/cd-icons.svg) no-repeat -16px 0;
+    background: url(../assets/images/cd-icons.svg) no-repeat -16px 0;
   }
   .cd-search-trigger::before {
     /* background circle */
