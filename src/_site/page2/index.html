@@ -69,6 +69,15 @@
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
           <div class="post-preview">
+          <a href="/kills/-/2016/08/10/golang-learning-note.html">
+            <h2 class="post-title">(原) Golang学习笔记</h2>
+            <h3 class="post-subtitle">Golang学习过程中记录笔记，帮助理解</h3>
+          </a>
+          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 08 10, 2016</p>
+          </div>
+          <hr>
+        
+          <div class="post-preview">
           <a href="/tools/-/2016/08/06/open-falcon-deploy-with-muti-node.html">
             <h2 class="post-title">(原) 多节点Open-falcon部署</h2>
             <h3 class="post-subtitle">小米开源项目open-falcon - 互联网企业级监控产品</h3>
@@ -104,20 +113,12 @@
           </div>
           <hr>
         
-          <div class="post-preview">
-          <a href="/docker/2016/04/09/test.html">
-            <h2 class="post-title">Man must explore, and this is exploration at its greatest</h2>
-            <h3 class="post-subtitle">Problems look mighty small from 150 miles up</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 04 9, 2016</p>
-          </div>
-          <hr>
-        
         <!-- Pager -->
         <ul class="pager">
           
           <li class="previous"><a href="/">&larr; Previous</a></li>
           
+          <li class="next"><a href="/page3/">Next &rarr;</a></li>
         </ul>
       </div>
     </div>
@@ -214,6 +215,13 @@
   let postMap = {
   'docker':[],'tools':[],'-':[],'kills':[],'person':[],
   };
+  
+  postMap['docker'].push({
+    title: 'Cadvisor源码分析（一）',
+    subtitle: 'Docker监控数据采集Cadvisor源码分析入门篇',
+    url: '/docker/-/2016/09/27/cadvisor-source-code-one.html',
+    date: '2016-09-27',
+  });
   
   postMap['tools'].push({
     title: 'Git原理简介',

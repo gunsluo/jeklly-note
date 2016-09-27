@@ -7,7 +7,7 @@
   <meta name="description" content="jerrylou blog it golang linux web distributed">
   <meta name="author" content="jerrylou">
 
-  <title>Docker实战应用</title>
+  <title>Cadvisor源码分析（一）</title>
   <link href="/assets/images/favicon.ico" rel="icon" type="image/x-icon"/>
   <!-- Bootstrap Core CSS -->
   <link href="/assets/lib/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -57,9 +57,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          <h2 class="entry-title">Docker实战应用</h2>
-          <h3 class="subheading">我在实际项目中使用Docker的经验和遇到的问题</h3>
-          <span class="date">Posted by <a href="/">Jerrylou</a> on 05 29, 2016</span>
+          <h2 class="entry-title">Cadvisor源码分析（一）</h2>
+          <h3 class="subheading">Docker监控数据采集Cadvisor源码分析入门篇</h3>
+          <span class="date">Posted by <a href="/">Jerrylou</a> on 09 27, 2016</span>
         </div>
       </div>
     </div>
@@ -68,155 +68,71 @@
     <div class="container post">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          <p>本篇文章是实践中使用docker，遇到到的问题并记录下。</p>
-
-<h3>首先推荐docker的学习资料</h3>
+          <p>这几篇文章主要是以cadvisor为例，对类似的资源搜集的agent的实现机理进行一个学习，采用的cadvisor版本是v0.20.0。主要是希望能通过分析cadvisor，对这一类agent所搜集的数据以及搜集方法，都有一个比较深入的理解。希望在梳理完成之后，对一些看似比较浅显的问题，比如cadvisor到底搜集了哪些数据，怎么搜集的，能有很好的回答，在文章整理方面，应该尽量通过 graph driving 的方式来呈现。</p>
 
 <ol>
-<li><a href="https://www.gitbook.com/book/yeasy/docker_practice/details">Docker —— 从入门到实践</a></li>
+<li>（一）主要是梳理下代码的各个模块以及其相关的功能，后面的几篇是对每个模块的较细致分析。</li>
+<li>（二）主要是对存储模块进行分析。</li>
+<li>（三）主要是对manager模块，也是最核心的模块进行分析。</li>
+<li>（四）主要是从user interface的角度进行分析，也就是api的角度，看cadvisor到底对外向用户暴露了哪些功能，也就是从功能的角度上分析，具体都包含了哪些指标等等。</li>
+<li>（五）其他方面的整理和收获，比如退出机制，event机制，还有整体上的体会，以及cadvisor在k8s中的使用，如何与heapster结合，等等，从中得到的一些所谓的insights。</li>
 </ol>
 
-<h3>Docker安装</h3>
+<h3>主要模块及流程</h3>
 
-<p>系统Ubuntu 14.04 内核3.13.0-65-generic
-不多说直接给出安装命令，如果想源码编译的请上官网下载编译。</p>
+<p><img src="http://7xn7vm.com1.z0.glb.clouddn.com/architect.001.jpeg" alt="Alt text" title="Cadvisor source code 1"></p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">apt-get update
-apt-get install wget
+<p>这个结构图其实也是main函数的主要执行流程。</p>
 
-wget -qO- https://get.docker.com/ <span class="p">|</span> sh</code></pre></figure>
+<p>首先是根据传入的storage参数生成inMemoryCache的实例（这一部分在part2中具体介绍），其中还包含了backendStorage实例，这个backendStorage实例主要是决定除了内存之外，数据会被存放在哪个后端中，实质上是一个storageDriver接口类型，在storage的package中，对于storageDriver接口做了不同的具体实现，memoryStorage实例的初始化的相关操作放在main package的另外一个文件：storagedriver.go中。</p>
 
-<p>Ok, 安装完成。就是这么简单。检测安装的docker版本。</p>
+<p>之后生成realSysFs结构的实例，其中涉及到的相关函数，是对系统的filesystem所进行的一些操作，realSysFs结构中实际上没有具体的字段，主要是对一系列的方法进行了封装，有点类似于一个工具类，就是通过传入不同的系统文件之后，再从中提取出来不同文件系统的信息。</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker --version</code></pre></figure>
+<p>之后，通过前面生成的memoryStorage以及sysfs实例，创建一个manager实例，这实际上通过一个接口来返回，manager接口中定义了许多用于获取容器和machine信息的函数，生成manager实例的时候，还需要传递两个额外的参数，分别是maxHousekeepingInterval(time.Durattion)以及allowDynamicHousekeeping(bool)分别表示信息存在内存的时间以及是否允许动态配置housekeeping的时间，也就是下一次开始搜集容器信息的时间，默认值分别为60s以及true。可以粗略浏览下manager结构的字段以及相关功能：</p>
+<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">manager</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="c1">//当前受到监控的容器存在一个map中 containerData结构中包括了对容器的各种具体操作方式和相关信息</span>
+  <span class="nx">containers</span>               <span class="kd">map</span><span class="p">[</span><span class="nx">namespacedContainerName</span><span class="p">]</span><span class="o">*</span><span class="nx">containerData</span>
+  <span class="c1">//对map中数据存取时采用的Lock</span>
+  <span class="nx">containersLock</span>           <span class="nx">sync</span><span class="p">.</span><span class="nx">RWMutex</span>
+  <span class="c1">//缓存在内存中的数据 主要是容器的相关信息</span>
+  <span class="nx">memoryCache</span>              <span class="o">*</span><span class="nx">memory</span><span class="p">.</span><span class="nx">InMemoryCache</span>
+  <span class="c1">//host上的实际文件系统的相关信息</span>
+  <span class="nx">fsInfo</span>                   <span class="nx">fs</span><span class="p">.</span><span class="nx">FsInfo</span>
+  <span class="c1">//machine的相关信息 cpu memory network system信息等等</span>
+  <span class="nx">machineInfo</span>              <span class="nx">info</span><span class="p">.</span><span class="nx">MachineInfo</span>
+  <span class="c1">// 用于存放退出信号的channel manager关闭的时候会给其中的channel发送退出信号</span>
+  <span class="nx">quitChannels</span>             <span class="p">[]</span><span class="kd">chan</span> <span class="kt">error</span>
+  <span class="c1">//cadvisor本身所运行的那个容器(如果cadvisor运行在容器中)</span>
+  <span class="nx">cadvisorContainer</span>        <span class="kt">string</span>
+  <span class="c1">// 是否在hostnamespace中？</span>
+  <span class="nx">inHostNamespace</span>          <span class="kt">bool</span>
+  <span class="c1">// dockerid的正则表达式匹配</span>
+  <span class="nx">dockerContainersRegexp</span>   <span class="o">*</span><span class="nx">regexp</span><span class="p">.</span><span class="nx">Regexp</span>
+  <span class="c1">// 用于获取cpu信息</span>
+  <span class="nx">loadReader</span>               <span class="nx">cpuload</span><span class="p">.</span><span class="nx">CpuLoadReader</span>
+  <span class="c1">// 对event相关操作进行的封装</span>
+  <span class="nx">eventHandler</span>             <span class="nx">events</span><span class="p">.</span><span class="nx">EventManager</span>
+  <span class="c1">//manager的启动时间</span>
+  <span class="nx">startupTime</span>              <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span>
+  <span class="c1">//在内存中保留数据的时间 也就是下次开始搜集容器相关信息并且更新内存信息的时间</span>
+  <span class="nx">maxHousekeepingInterval</span>  <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span>
+   <span class="c1">//是否允许动态设置dynamic housekeeping time</span>
+  <span class="nx">allowDynamicHousekeeping</span> <span class="kt">bool</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>由于还要把服务暴露给外部，所以还要提供一个server的功能来注册api，api可以看成是从另一个维度对程序进行分析，也就是从功能的维度。比起kube-apiserver，真是要简单多了，具体使用上也添加了证书的方式，把上面生成的containerManager注册进去，具体实现在cadvisor/http/handler.go中，可以看到目前已经实现了version1 0,1 1,1 2,1 3,2 0几种，以2 0为例，具体的路由类别主要是以下三种：</p>
 
-<h3>常用命令</h3>
+<ul>
+<li>一种是通过自带默认界面简单看一下机器上的容器信息，就是/containers/路由，这个目前支持的api版本比较低。</li>
+<li>另一种是/api/路由，具体在/cadvisor/api/handler.go中实现，这一部分路由已经设置的比较友好，会提示出当期支持的子路由都有哪些。可以看到在2.0版本中，支持的查询信息已经相当丰富。</li>
+<li>另外一个不错的功能就是支持通过页面的方式使用golang的pprof工具，在使用了profiling=true的参数之后，可以通过“net/http/pprof”package来获取应用层面的信息，可以为应用性能调优提供帮助。</li>
+</ul>
 
-<p>docker安装成功，了解下常用命令。</p>
+<p>之后就是启动manager，运行其Start方法，开始搜集信息，存储信息的循环操作，这之后还为containerManager注册了singlehandler，如果收到了系统发来的kill信号，程序就会捕获到，就直接执行manager的stop函数，manager停止工作。</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#启动服务</span>
-/bin/systemctl restart  docker.service
-<span class="c">#登录</span>
-docker login registry.rd.fyec.cn
-<span class="c">#创建</span>
-docker build -t registry.rd.fyec.cn/redis-server .
-<span class="c">#运行</span>
-docker run -t -i registry.rd.fyec.cn/centos:centos7 /bin/bash
-<span class="c">#提交</span>
-docker push registry.rd.fyec.cn/virtual_ccb_server
-<span class="c">#SSH</span>
-docker <span class="nb">exec</span> -i -t 8ec02d6b7234  bash</code></pre></figure>
+<p>可以看到，代码的意图在这里表现的很明确，就是生成后端，生成manager，注册api，启动server。还有其他的一些套路化的操作，比如在main函数开始的时候设置MaxProcs,设置runtime.GOMAXPROCS为当前cpu的个数，使得并发性能较高。</p>
 
-<h3>Dockerfile</h3>
-
-<p>如何创建自己的docker镜像，当然是写dockerfile了。现在就来写个简单的dockerfile吧。
-service是一个linux系统下的可运行文件</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#基础镜像库</span>
-from registry.rd.fyec.cn/base:latest
-
-<span class="c">#将service文件添加到docker镜像的/opt目录</span>
-ADD service /opt/service
-
-<span class="c">#运行时暴露80端口</span>
-EXPOSE 80
-
-<span class="c">#启动后运行/opt/service</span>
-CMD /opt/service</code></pre></figure>
-
-<p>简单的Dockerfile写好了，当然是创建docker image了。</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker build -t &lt;docker image name&gt; &lt;dockerfile path&gt;</code></pre></figure>
-
-<p>最后，当然是吧docker镜像启动起来</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#启动并bash</span>
-docker run -t -i &lt;docker image name&gt; /bin/bash</code></pre></figure>
-
-<h3>Docker Swarm</h3>
-
-<p>Swarm是Docker公司在2014年12月初发布的一套较为简单的工具，用来管理Docker集群，它将一群Docker宿主机变成一个单一的，虚拟的主机。Swarm使用标准的Docker API接口作为其前端访问入口，换言之，各种形式的Docker Client(docker client in go, docker_py, docker等)均可以直接与Swarm通信。Swarm几乎全部用Go语言来完成开发，上周五，4月17号，Swarm0.2发布，相比0.1版本，0.2版本增加了一个新的策略来调度集群中的容器，使得在可用的节点上传播它们，以及支持更多的Docker命令以及集群驱动。</p>
-
-<p>Swarm deamon只是一个调度器（Scheduler）加路由器(router)，Swarm自己不运行容器，它只是接受docker客户端发送过来的请求，调度适合的节点来运行容器，这意味着，即使Swarm由于某些原因挂掉了，集群中的节点也会照常运行，当Swarm重新恢复运行之后，它会收集重建集群信息。</p>
-
-<h2>安装Docker-swarm</h2>
-
-<p>有三台服务器, 这三台机器创建一个Docker集群 其中 i-238242qix (10.253.101.25) 同时充当swarm manager管理集群</p>
-
-<table><thead>
-<tr>
-<th>机器名</th>
-<th>Ip</th>
-<th>描述</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>i-238242qix</td>
-<td>10.253.101.25</td>
-<td>swarm manager</td>
-</tr>
-<tr>
-<td>i-239z31k69</td>
-<td>10.253.100.20</td>
-<td></td>
-</tr>
-<tr>
-<td>i-238etvs5t</td>
-<td>10.253.100.229</td>
-<td></td>
-</tr>
-</tbody></table>
-
-<p>Docker deamon 的监听端口 </p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vim /etc/default/docker</code></pre></figure>
-
-<p>在文件后面添加</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">DOCKER_OPTS</span><span class="o">=</span><span class="s2">&quot;-H 0.0.0.0:2375 -H unix:///var/run/docker.sock --graph /mnt/datadisk/docker --storage-driver btrfs&quot;</span></code></pre></figure>
-
-<p><code>--graph</code>指定docker使用磁盘 <code>--storage-driver</code>指定文件系统</p>
-
-<p>如果是使用consul配置Docker</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">DOCKER_OPTS</span><span class="o">=</span><span class="s2">&quot;-H 0.0.0.0:2375 -H unix:///var/run/docker.sock -D --cluster-advertise 10.139.52.27:2375 --cluster-store consul://10.139.52.27:8500/swarm --graph /mnt/data/docker --storage-driver btrfs&quot;</span></code></pre></figure>
-
-<p>重启 Docker deamon</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">service docker restart</code></pre></figure>
-
-<p>安装Docker官方提供的Swarm镜像</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker pull swarm</code></pre></figure>
-
-<p>运行swarm manager</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d -p 2376:2376 swarm manage -H :2376 --replication --advertise 10.168.10.198:2376 consul://10.168.10.198:8500/swarm</code></pre></figure>
-
-<p>加入 swarm</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d swarm join --advertise<span class="o">=</span>10.168.10.198:2375 consul://10.168.10.198:8500/swarm</code></pre></figure>
-
-<p>查看集群信息</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker -H 0.0.0.0:2376 info</code></pre></figure>
-
-<h3>其他</h3>
-
-<p>共享主机目录</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker run -d -v ~/nginxlogs:/var/log/nginx -p 5000:80 -i nginx</code></pre></figure>
-
-<p>持久化</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">docker create -v /tmp –name cmbdbf dev/file_agent 
-docker run -t -i –volumes-from cmbdbf dev/file_agent /bin/bash 
-<span class="nb">echo</span> “I’m not going anywhere” &gt; /tmp/hi
-<span class="nb">exit</span></code></pre></figure>
-
-<p><code>这里只是列出常用命令，之后会将docker网络问题与docker-compose管理以例子列出</code></p>
-
-<p><a href="https://www.evernote.com/shard/s646/sh/b37d2247-f265-4ade-85b0-2c02ffbd67d7/07e9e0b60b3c7c501137fe0ea3a6360a">文章来源</a></p>
+<p>后面几篇对每一个部分进行一些相对深入的分析。</p>
 
           <div id="disqus_thread"></div>
         </div>
