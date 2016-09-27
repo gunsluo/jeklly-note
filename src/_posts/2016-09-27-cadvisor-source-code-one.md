@@ -2,7 +2,7 @@
 layout: post
 title: "Cadvisor源码分析（一）"
 subtitle: "Docker监控数据采集Cadvisor源码分析入门篇" 
-tags: ""
+tags: "docker cadvisor 监控"
 date: 2016-09-27 14:02:15 +0800
 categories: docker
   - 
