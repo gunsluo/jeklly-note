@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="jerrylou blog it golang linux web distributed">
+  <meta name="author" content="jerrylou">
+
+  <title>Cadvisor源码分析（四）</title>
+  <link href="/assets/images/favicon.ico" rel="icon" type="image/x-icon"/>
+  <!-- Bootstrap Core CSS -->
+  <link href="/assets/lib/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <!-- Custom CSS -->
+  <link type="text/css" rel="stylesheet" href="/assets/blog-1aed8f490f3ac023ff7866546489ca60507e256c281ef5752a81ccda84780aab.css">
+  <!-- Custom Fonts -->
+  <link href="/assets/lib/css/font-opensans.min.css" rel="stylesheet" type="text/css">
+  <link href="/assets/lib/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="/assets/lib/css/fontello.min.css" rel="stylesheet" type="text/css">
+
+  <script src="/assets/lib/js/jquery.min.js"></script>
+  <script src="/assets/lib/js/modernizr.min.js"></script>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+    <!-- Navigation -->
+  <header class="cd-main-header animate-search">
+    <div class="cd-title"><a href="/index.html">Jerrylou's Blog</a></div>
+
+    <nav class="cd-main-nav-wrapper">
+      <a href="#search" class="cd-search-trigger cd-text-replace">Search</a>
+      
+      <ul class="cd-main-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/resume.html">Resume</a></li>
+      </ul> <!-- .cd-main-nav -->
+    </nav> <!-- .cd-main-nav-wrapper -->
+
+    <a href="#" class="cd-nav-trigger cd-text-replace">Menu<span></span></a>
+  </header>
+
+
+    <!-- Main Content -->
+  <main class="cd-main-content">
+    <!-- your content here -->
+      <!-- Page Header -->
+  <!-- Set your background image for this header on the line below. -->
+  <article class="blog-article art-theme">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <h2 class="entry-title">Cadvisor源码分析（四）</h2>
+          <h3 class="subheading">Docker监控数据采集Cadvisor源码分析API篇</h3>
+          <span class="date">Posted by <a href="/">Jerrylou</a> on 09 27, 2016</span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+    <div class="container post">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <p>这一部分主要是从API的角度进行分析，cadvisor提供的API是怎样暴露的，怎样注册上来的，以及具体功能是怎样的，由于内容比较琐碎，也是一点一点逐步再完善。</p>
+
+<h3>具体API分析</h3>
+
+<p>现在从另外一个维度进行分析，看cadvisor究竟提供了哪些服务出来。 具体api的实现在./cadvisor/api文件中，可以看到目前有newversion1_1 1_2 1_3 2_0几种版本，我们以2_0版本分析。</p>
+
+<p>从start函数中的<code>cadvisorhttp.RegisterHandlers</code>执行具体注册的功能，可以看到除了注册普通的api，还注册了用于性能调优的一些api。这里注册api也没有使用什么特别的框架，直接使用golang自带的serverMux的相关操作，比较容易理解，不再赘述。</p>
+
+<p>这里基本上把所有的request的情况写在了一个函数里，显的比较low，比起kube-apiserver来说，注册api这部分的复杂程度上，简直是差了好几个档次，别的不知道，就扩展性来说，显然不太行，不过考虑cadvisor也都仅仅是需要处理一些get请求，估计不会用到太复杂的api的参数，这样也算是满足需求，不需要杀鸡用牛刀了。</p>
+
+<p>在handleRequest函数中，对传来的request做了第一层处理，即截取出用户输入的api版本，并且交给对应的APIVersion的HandleRequest函数来处理，还要注意，这里每次都要把manager传进去，因为实际的取信息的操作都是通过manager来进行的。</p>
+
+<p>我们这里直接以2.0版本的api为例，分析下对外都暴露出了哪些信息，这些信息是怎样获取到的：</p>
+
+<p>v2.0版本有对应的option通过URL的query传递过来：</p>
+
+<ul>
+<li>IdType string 指定通过哪种方式识别容器名称，可以是name dockerid 或者 dockeralias</li>
+<li>Count int指定返回的stats的数目</li>
+<li>Recursive bool 是否递归地返回childrencontainer的信息</li>
+</ul>
+
+<p>下面分析下几种不同的requestType:</p>
+
+<p><strong>/api/v2.0/stats</strong></p>
+
+<p>具体的每个容器的特别详细的信息可以通过这个API得到。</p>
+
+<p>containerStats的信息比较丰富，包含每个子系统中的具体的信息。ContainerInfo中包含ContainerSpec以及ContainerStats数组，每隔一段时间就会记录一次ContainerStat信息。通过cout的参数控制，可以输出最新的几条containerstats信息。</p>
+
+<p>通过管理篇的分析，可以知道，在createContainer的最后一步，是通过houskeeping的操作不断地updateStats然后存到memoryCache中，这里关键是看下updateStates的时候各部分信息是如何获取到的。</p>
+
+<p>这部分的信息比较复杂，应该是容器主要搜集的信息来源，可以通过下面的图大致看一下具体那部分信息在程序中是怎么得到的。关于每一部分的具体含义来源，以及搜集时候的具体实现可以参考<a href="">这一篇</a></p>
+
+<p><img src="http://7xn7vm.com1.z0.glb.clouddn.com/metrics.001.jpeg" alt="Alt text" title="Cadvisor source code 1"></p>
+
+<p><strong>/api/v2.0/version</strong></p>
+
+<p>注意下使用golang自带的system package进行系统调用的方式（之前每次都是自己写一个命令之后去system.run），注意一些获取信息的技巧，可以避免很多繁琐的操作。虽然这一步内部manager得到的信息比较多，但是实际返回回来的之后cadvisor的version信息</p>
+
+<table><thead>
+<tr>
+<th style="text-align: center">指标</th>
+<th style="text-align: center">来源</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">主机的os版本信息</td>
+<td style="text-align: center">uname系统调用</td>
+</tr>
+<tr>
+<td style="text-align: center">容器所运行的os版本</td>
+<td style="text-align: center">/etc/os-release 文件中 读取PRETTY_NAME</td>
+</tr>
+<tr>
+<td style="text-align: center">dockerdeamon的版本信息</td>
+<td style="text-align: center">dockerdaemon get version</td>
+</tr>
+<tr>
+<td style="text-align: center">cadvisor本身的版本信息</td>
+<td style="text-align: center">gobuild的时候从ldflags参数传入</td>
+</tr>
+</tbody></table>
+
+<p><strong>/api/v2.0/attributes</strong></p>
+
+<table><thead>
+<tr>
+<th style="text-align: center">指标</th>
+<th style="text-align: center">来源</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">machine info</td>
+<td style="text-align: center">manager中的machine info结构体 主要是/proc/文件系统</td>
+</tr>
+<tr>
+<td style="text-align: center">version info</td>
+<td style="text-align: center">/api/v2.0/version中所提到的操作</td>
+</tr>
+</tbody></table>
+
+<p>具体实例是在new manager的时候生成的</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">type </span>MachineInfo struct <span class="o">{</span>
+    // The number of cores in this machine.
+    NumCores int <span class="sb">`</span>json:<span class="s2">&quot;num_cores&quot;</span><span class="sb">`</span>
+
+    // Maximum clock speed <span class="k">for</span> the cores, in KHz.
+    CpuFrequency uint64 <span class="sb">`</span>json:<span class="s2">&quot;cpu_frequency_khz&quot;</span><span class="sb">`</span>
+
+    // The amount of memory <span class="o">(</span>in bytes<span class="o">)</span> in this machine
+    MemoryCapacity uint64 <span class="sb">`</span>json:<span class="s2">&quot;memory_capacity&quot;</span><span class="sb">`</span>
+
+    // The machine id
+    MachineID string <span class="sb">`</span>json:<span class="s2">&quot;machine_id&quot;</span><span class="sb">`</span>
+
+    // The system uuid
+    SystemUUID string <span class="sb">`</span>json:<span class="s2">&quot;system_uuid&quot;</span><span class="sb">`</span>
+
+    // The boot id
+    BootID string <span class="sb">`</span>json:<span class="s2">&quot;boot_id&quot;</span><span class="sb">`</span>
+
+    // Filesystems on this machine.
+    Filesystems <span class="o">[]</span>FsInfo <span class="sb">`</span>json:<span class="s2">&quot;filesystems&quot;</span><span class="sb">`</span>
+
+    // Disk map
+    DiskMap map<span class="o">[</span>string<span class="o">]</span>DiskInfo <span class="sb">`</span>json:<span class="s2">&quot;disk_map&quot;</span><span class="sb">`</span>
+
+    // Network devices
+    NetworkDevices <span class="o">[]</span>NetInfo <span class="sb">`</span>json:<span class="s2">&quot;network_devices&quot;</span><span class="sb">`</span>
+
+    // Machine Topology
+    // Describes cpu/memory layout and hierarchy.
+    Topology <span class="o">[]</span>Node <span class="sb">`</span>json:<span class="s2">&quot;topology&quot;</span><span class="sb">`</span>
+
+    // Cloud provider the machine belongs to.
+    CloudProvider CloudProvider <span class="sb">`</span>json:<span class="s2">&quot;cloud_provider&quot;</span><span class="sb">`</span>
+
+    // Type of cloud instance <span class="o">(</span>e.g. GCE standard<span class="o">)</span> the machine is.
+    InstanceType InstanceType <span class="sb">`</span>json:<span class="s2">&quot;instance_type&quot;</span><span class="sb">`</span>
+
+    // ID of cloud instance <span class="o">(</span>e.g. instance-1<span class="o">)</span> given to it by the cloud provider.
+    InstanceID InstanceID <span class="sb">`</span>json:<span class="s2">&quot;instance_id&quot;</span><span class="sb">`</span>
+<span class="o">}</span>
+</code></pre></div>
+<p><strong>/api/v2.0/machine</strong></p>
+
+<p>这些信息包含在attribute中，直接返回machineinfo。</p>
+
+<p><strong>/api/v2.0/ps</strong></p>
+
+<p>这个会返回所有cgroup中的容器的信息，这个容器作为一个进程会显示出哪些信息，后面可以添加容器id信息，显示对应容器的ps信息(从manager存储的map中取出对应的containerData之后从中再进行筛选)： 比如：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl 127.0.0.1:8080/api/v2.0/ps/docker/4f61cb209b685085d5b575173bfa7a5bca822233ae47131ed43033e41fe6505d <span class="p">|</span>python -m json.tool<span class="o">[</span>
+<span class="o">{</span>
+    <span class="s2">&quot;cgroup_path&quot;</span>: <span class="s2">&quot;&quot;</span>,
+    <span class="s2">&quot;cmd&quot;</span>: <span class="s2">&quot;sh&quot;</span>,
+    <span class="s2">&quot;parent_pid&quot;</span>: 13823,
+    <span class="s2">&quot;percent_cpu&quot;</span>: 0,
+    <span class="s2">&quot;percent_mem&quot;</span>: 0,
+    <span class="s2">&quot;pid&quot;</span>: 18957,
+    <span class="s2">&quot;rss&quot;</span>: 671744,
+    <span class="s2">&quot;running_time&quot;</span>: <span class="s2">&quot;00:00:00&quot;</span>,
+    <span class="s2">&quot;start_time&quot;</span>: <span class="s2">&quot;20:18&quot;</span>,
+    <span class="s2">&quot;status&quot;</span>: <span class="s2">&quot;Ss+&quot;</span>,
+    <span class="s2">&quot;user&quot;</span>: <span class="s2">&quot;root&quot;</span>,
+    <span class="s2">&quot;virtual_size&quot;</span>: <span class="m">4546560</span>    
+<span class="o">}]</span>
+</code></pre></div>
+<p><strong>/api/v2.0/spec/</strong></p>
+
+<p>返回对应的ContainerSpec,比如,这个显示的是容器的spec的信息，显然比起machine的信息要少了好多，就相当于是一个统计清单，看哪些指标包含，哪些指标不包含，比较宏观的一个统计结果：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl 127.0.0.1:8080/api/v2.0/spec/docker/4f61cb209b685085d5b575173bfa7a5bca822233ae47131ed43033e41fe6505d <span class="p">|</span>python -m json.tool<span class="o">{</span>
+    <span class="s2">&quot;/docker/4f61cb209b685085d5b575173bfa7a5bca822233ae47131ed43033e41fe6505d&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;aliases&quot;</span>:<span class="o">[</span><span class="s2">&quot;serene_panini&quot;</span>,<span class="s2">&quot;4f61cb209b685085d5b575173bfa7a5bca822233ae47131ed43033e41fe6505d&quot;</span><span class="o">]</span>,
+        <span class="s2">&quot;cpu&quot;</span>: <span class="o">{</span>
+            <span class="s2">&quot;limit&quot;</span>: 1024,
+            <span class="s2">&quot;mask&quot;</span>: <span class="s2">&quot;0-1&quot;</span>,
+            <span class="s2">&quot;max_limit&quot;</span>: 0
+        <span class="o">}</span>,
+        <span class="s2">&quot;creation_time&quot;</span>: <span class="s2">&quot;2016-01-24T12:18:20.067581725Z&quot;</span>,
+        <span class="s2">&quot;has_cpu&quot;</span>: <span class="nb">true</span>,
+        <span class="s2">&quot;has_custom_metrics&quot;</span>: <span class="nb">false</span>,
+        <span class="s2">&quot;has_diskio&quot;</span>: <span class="nb">true</span>,
+        <span class="s2">&quot;has_filesystem&quot;</span>: <span class="nb">true</span>,
+        <span class="s2">&quot;has_memory&quot;</span>: <span class="nb">true</span>,
+        <span class="s2">&quot;has_network&quot;</span>: <span class="nb">true</span>,
+        <span class="s2">&quot;image&quot;</span>: <span class="s2">&quot;ubuntu:14.04&quot;</span>,
+        <span class="s2">&quot;memory&quot;</span>: <span class="o">{</span>
+            <span class="s2">&quot;limit&quot;</span>: 18446744073709551615,
+            <span class="s2">&quot;swap_limit&quot;</span>: 18446744073709551615
+        <span class="o">}</span>,
+        <span class="s2">&quot;namespace&quot;</span>: <span class="s2">&quot;docker&quot;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p><strong>/api/v2.0/storage</strong></p>
+
+<p>主要是文件系统的信息，比如下面结果</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl 127.0.0.1:8080/api/v2.0/storage/ <span class="p">|</span>python -m json.tool
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">&quot;available&quot;</span>: 321901092864,
+        <span class="s2">&quot;capacity&quot;</span>: 483753484288,
+        <span class="s2">&quot;device&quot;</span>: <span class="s2">&quot;/dev/disk/by-uuid/ab42c0eb-a891-4261-90cf-557f75f61f15&quot;</span>,
+        <span class="s2">&quot;labels&quot;</span>: <span class="o">[</span>
+            <span class="s2">&quot;root&quot;</span>,
+            <span class="s2">&quot;docker-images&quot;</span>
+        <span class="o">]</span>,
+        <span class="s2">&quot;mountpoint&quot;</span>: <span class="s2">&quot;/&quot;</span>,
+        <span class="s2">&quot;usage&quot;</span>: 137255526400
+    <span class="o">}</span>
+<span class="o">]</span>
+</code></pre></div>
+<p><strong>/api/v2.0/summary</strong></p>
+
+<p>通过containerData中的summaryreader来获取某个cgroups下面容器的某段时间的摘要信息。目前主要追踪的是cpu以及memory的信息。在statsSummary结构中有具体计算每个属性的方式，包括小时的平均信息，分钟的平均信息，等等。</p>
+
+<p><strong>/api/v2.0/appmetrics</strong></p>
+
+<p>可以自定义metrics信息。</p>
+
+<h3>从对外暴露的api的角度进行分析</h3>
+
+<p>info结构得到的信息</p>
+<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="p">{</span>
+    <span class="s">&quot;BridgeNfIp6tables&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">&quot;BridgeNfIptables&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">&quot;Containers&quot;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span>
+    <span class="s">&quot;CpuCfsPeriod&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">&quot;CpuCfsQuota&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">&quot;Debug&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="s">&quot;DockerRootDir&quot;</span><span class="p">:</span> <span class="s">&quot;/var/lib/docker&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Driver&quot;</span><span class="p">:</span> <span class="s">&quot;aufs&quot;</span><span class="p">,</span>
+    <span class="s">&quot;DriverStatus&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[</span>
+            <span class="s">&quot;Root Dir&quot;</span><span class="p">,</span>
+            <span class="s">&quot;/var/lib/docker/aufs&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s">&quot;Backing Filesystem&quot;</span><span class="p">,</span>
+            <span class="s">&quot;extfs&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s">&quot;Dirs&quot;</span><span class="p">,</span>
+            <span class="s">&quot;244&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s">&quot;Dirperm1 Supported&quot;</span><span class="p">,</span>
+            <span class="s">&quot;false&quot;</span>
+        <span class="p">]</span>
+    <span class="p">],</span>
+    <span class="s">&quot;ExecutionDriver&quot;</span><span class="p">:</span> <span class="s">&quot;native-0.2&quot;</span><span class="p">,</span>
+    <span class="s">&quot;ExperimentalBuild&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="s">&quot;HttpProxy&quot;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;HttpsProxy&quot;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;ID&quot;</span><span class="p">:</span> <span class="s">&quot;ZL2B:AQMX:2S7E:H3PG:V7P6:ITIE:AFEO:P6OL:HPAJ:QFCW:PR6D:PCPG&quot;</span><span class="p">,</span>
+    <span class="s">&quot;IPv4Forwarding&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">&quot;Images&quot;</span><span class="p">:</span> <span class="mi">172</span><span class="p">,</span>
+    <span class="s">&quot;IndexServerAddress&quot;</span><span class="p">:</span> <span class="s">&quot;https://index.docker.io/v1/&quot;</span><span class="p">,</span>
+    <span class="s">&quot;InitPath&quot;</span><span class="p">:</span> <span class="s">&quot;/usr/lib/docker/dockerinit&quot;</span><span class="p">,</span>
+    <span class="s">&quot;InitSha1&quot;</span><span class="p">:</span> <span class="s">&quot;1f4a3c648015cae3b3d76c5ba2980d8c1f88f388&quot;</span><span class="p">,</span>
+    <span class="s">&quot;KernelVersion&quot;</span><span class="p">:</span> <span class="s">&quot;3.13.0-24-generic&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Labels&quot;</span><span class="p">:</span> <span class="nx">null</span><span class="p">,</span>
+    <span class="s">&quot;LoggingDriver&quot;</span><span class="p">:</span> <span class="s">&quot;json-file&quot;</span><span class="p">,</span>
+    <span class="s">&quot;MemTotal&quot;</span><span class="p">:</span> <span class="mi">8373075968</span><span class="p">,</span>
+    <span class="s">&quot;MemoryLimit&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">&quot;NCPU&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s">&quot;NEventsListener&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;NFd&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
+    <span class="s">&quot;NGoroutines&quot;</span><span class="p">:</span> <span class="mi">157</span><span class="p">,</span>
+    <span class="s">&quot;Name&quot;</span><span class="p">:</span> <span class="s">&quot;ubuntu&quot;</span><span class="p">,</span>
+    <span class="s">&quot;NoProxy&quot;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;OomKillDisable&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">&quot;OperatingSystem&quot;</span><span class="p">:</span> <span class="s">&quot;Ubuntu 14.04 LTS&quot;</span><span class="p">,</span>
+    <span class="s">&quot;RegistryConfig&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;IndexConfigs&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;docker.io&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;Mirrors&quot;</span><span class="p">:</span> <span class="nx">null</span><span class="p">,</span>
+                <span class="s">&quot;Name&quot;</span><span class="p">:</span> <span class="s">&quot;docker.io&quot;</span><span class="p">,</span>
+                <span class="s">&quot;Official&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                <span class="s">&quot;Secure&quot;</span><span class="p">:</span> <span class="kc">true</span>
+            <span class="p">},</span>
+            <span class="s">&quot;k8stestreg:5000&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;Mirrors&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s">&quot;Name&quot;</span><span class="p">:</span> <span class="s">&quot;k8stestreg:5000&quot;</span><span class="p">,</span>
+                <span class="s">&quot;Official&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                <span class="s">&quot;Secure&quot;</span><span class="p">:</span> <span class="kc">false</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s">&quot;InsecureRegistryCIDRs&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">&quot;127.0.0.0/8&quot;</span>
+        <span class="p">],</span>
+        <span class="s">&quot;Mirrors&quot;</span><span class="p">:</span> <span class="nx">null</span>
+    <span class="p">},</span>
+    <span class="s">&quot;SwapLimit&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="s">&quot;SystemTime&quot;</span><span class="p">:</span> <span class="s">&quot;2015-11-24T20:02:48.562597431+08:00&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+          <div id="disqus_thread"></div>
+        </div>
+      </div>
+    </div>
+    <hr>
+  </main>
+  <link href="/assets/lib/css/github.min.css" rel="stylesheet" type="text/css">
+  <script src="/assets/lib/js/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script>
+  /**
+  * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+  */
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = '//jerrylou.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <ul class="list-inline text-center">
+            <li>
+              <a href="https://twitter.com/gunsluo">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/gunsluo">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/gunsluo">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+          <p class="copyright text-muted">
+            Copyright &copy; Jerrylou 2016
+            <a href="mailto:gunsluo@gmail.com">gunsluo@gmail.com</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+    <div id="search" class="cd-main-search">
+    <form>
+      <input type="search" placeholder="Search...">
+
+      <div class="cd-select">
+        <span>in</span>
+        <select name="select-category">
+          <option value="类 别">类 别</option>
+          
+            <option value="docker">docker</option>
+          
+            <option value="tools">tools</option>
+          
+            
+          
+            <option value="kills">kills</option>
+          
+            <option value="person">person</option>
+          
+          <option value="other">other</option>
+        </select>
+        <span class="selected-value">类 别</span>
+      </div>
+    </form>
+
+    <div class="cd-search-suggestions">
+      <div class="news">
+        <h3>搜索结果</h3>
+        <ul></ul>
+      </div> <!-- .news -->
+
+      <div class="quick-links">
+        <h3>快捷链接</h3>
+        <ul>
+          <li><a href="/about.html">About Me</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+          <li><a href="/resume.html">Resume</a></li>
+        </ul>
+      </div> <!-- .quick-links -->
+    </div> <!-- .cd-search-suggestions -->
+
+    <a href="#" class="close cd-text-replace">Close Form</a>
+  </div> <!-- .cd-main-search -->
+  <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
+  <script>
+  let postMap = {
+  'docker':[],'tools':[],'-':[],'kills':[],'person':[],
+  };
+  
+  postMap['docker'].push({
+    title: 'Cadvisor源码分析（四）',
+    subtitle: 'Docker监控数据采集Cadvisor源码分析API篇',
+    url: '/docker/-/2016/09/27/cadvisor-source-code-four.html',
+    date: '2016-09-27',
+  });
+  
+  postMap['docker'].push({
+    title: 'Cadvisor源码分析（三）',
+    subtitle: 'Docker监控数据采集Cadvisor源码分析管理篇',
+    url: '/docker/-/2016/09/27/cadvisor-source-code-three.html',
+    date: '2016-09-27',
+  });
+  
+  postMap['docker'].push({
+    title: 'Cadvisor源码分析（二）',
+    subtitle: 'Docker监控数据采集Cadvisor源码分析存储篇',
+    url: '/docker/-/2016/09/27/cadvisor-source-code-two.html',
+    date: '2016-09-27',
+  });
+  
+  postMap['docker'].push({
+    title: 'Cadvisor源码分析（一）',
+    subtitle: 'Docker监控数据采集Cadvisor源码分析入门篇',
+    url: '/docker/-/2016/09/27/cadvisor-source-code-one.html',
+    date: '2016-09-27',
+  });
+  
+  postMap['tools'].push({
+    title: 'Git原理简介',
+    subtitle: 'Git如何实现？实现原理是什么？',
+    url: '/tools/-/2016/09/12/git-principle.html',
+    date: '2016-09-12',
+  });
+  
+  postMap['kills'].push({
+    title: '(转) 什么是NFV?它与SDN有什么关系?',
+    subtitle: '虚拟化网络技术NFV与SDN的关系',
+    url: '/kills/-/2016/09/08/nfv-and-sdn.html',
+    date: '2016-09-8',
+  });
+  
+  postMap['kills'].push({
+    title: '虚拟机安装Centos7 Min的网络设备名问题',
+    subtitle: '安装min centos后，网络设备重命名 - 吐槽不已',
+    url: '/kills/-/2016/09/08/min-centos7-net-problem.html',
+    date: '2016-09-8',
+  });
+  
+  postMap['person'].push({
+    title: '(原) 魔方，我想玩转你',
+    subtitle: '入门级魔方公式 - 层先法',
+    url: '/person/-/2016/08/31/rubik-cube-formulas.html',
+    date: '2016-08-31',
+  });
+  
+  postMap['kills'].push({
+    title: '(原) Golang学习笔记',
+    subtitle: 'Golang学习过程中记录笔记，帮助理解',
+    url: '/kills/-/2016/08/10/golang-learning-note.html',
+    date: '2016-08-10',
+  });
+  
+  postMap['tools'].push({
+    title: '(原) 多节点Open-falcon部署',
+    subtitle: '小米开源项目open-falcon - 互联网企业级监控产品',
+    url: '/tools/-/2016/08/06/open-falcon-deploy-with-muti-node.html',
+    date: '2016-08-6',
+  });
+  
+  postMap['tools'].push({
+    title: '(原) 多节点Open-falcon统一用户接口配置',
+    subtitle: '小米开源项目open-falcon - 互联网企业级监控产品',
+    url: '/tools/-/2016/08/06/open-falcon-deploy-one-user-interface.html',
+    date: '2016-08-6',
+  });
+  
+  postMap['tools'].push({
+    title: '(原) Mac & Window10 双系统安装',
+    subtitle: '基于el capitan 和 window10 安装教程。自选硬件、UEFI启动、hackintosh驱动',
+    url: '/tools/-/2016/07/20/hackintosh-window-install.html',
+    date: '2016-07-20',
+  });
+  
+  postMap['docker'].push({
+    title: 'Docker实战应用',
+    subtitle: '我在实际项目中使用Docker的经验和遇到的问题',
+    url: '/docker/2016/05/29/docker-practice.html',
+    date: '2016-05-29',
+  });
+  
+  postMap['docker'].push({
+    title: 'Man must explore, and this is exploration at its greatest',
+    subtitle: 'Problems look mighty small from 150 miles up',
+    url: '/docker/2016/04/09/test.html',
+    date: '2016-04-9',
+  });
+  
+  </script>
+  <script type="text/javascript" src="/assets/search-da148dc9555a166476a3ffdbb298ae47326d8fdf18d5cbfecb28dcf50af1af36.js"></script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83957804-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+</body>
+</html>
