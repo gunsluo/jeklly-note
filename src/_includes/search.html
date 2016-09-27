@@ -36,10 +36,10 @@
   <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
   <script>
   let postMap = {
-  {% for category in site.categories %}'{{ category | first }}':[],{% endfor %}
+  {% for category in site.categories %}{% if category.first == "-" %}'other'{% else %}'{{ category | first }}'{% endif %}:[],{% endfor %}
   };
   {% for post in site.posts %}
-  postMap['{{ post.categories | first }}'].push({
+  postMap[{% if post.categories.first == null %}'other'{% else %}'{{ post.categories | first }}'{% endif %}].push({
     title: '{{ post.title }}',
     subtitle: '{{ post.subtitle }}',
     url: '{{ post.url }}',
