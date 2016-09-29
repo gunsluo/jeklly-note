@@ -7,7 +7,7 @@
   <meta name="description" content="jerrylou blog it golang linux web distributed">
   <meta name="author" content="jerrylou">
 
-  <title>inspiration</title>
+  <title>Docker安装步骤</title>
   <link href="/assets/images/favicon.ico" rel="icon" type="image/x-icon"/>
   <!-- Bootstrap Core CSS -->
   <link href="/assets/lib/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -51,81 +51,115 @@
     <!-- Main Content -->
   <main class="cd-main-content">
     <!-- your content here -->
-      <!-- Blog Header -->
+      <!-- Page Header -->
   <!-- Set your background image for this header on the line below. -->
-  <article class="blog-article">
+  <article class="blog-article art-theme">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          <h2 class="entry-title">inspiration</h2>
-          <span class="subheading">but is &quot;tenacious labor for reward&quot;</span>
+          <h2 class="entry-title">Docker安装步骤</h2>
+          <h3 class="subheading">在ubuntu系统上Docker安装步骤及命令</h3>
+          <span class="date">Posted by <a href="/">Jerrylou</a> on 09 29, 2016</span>
         </div>
       </div>
     </div>
   </article>
 
-      <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-          <div class="post-preview">
-          <a href="/person/-/2016/08/31/rubik-cube-formulas.html">
-            <h2 class="post-title">(原) 魔方，我想玩转你</h2>
-            <h3 class="post-subtitle">入门级魔方公式 - 层先法</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 08 31, 2016</p>
-          </div>
-          <hr>
-        
-          <div class="post-preview">
-          <a href="/kills/-/2016/08/10/golang-learning-note.html">
-            <h2 class="post-title">(原) Golang学习笔记</h2>
-            <h3 class="post-subtitle">Golang学习过程中记录笔记，帮助理解</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 08 10, 2016</p>
-          </div>
-          <hr>
-        
-          <div class="post-preview">
-          <a href="/tools/-/2016/08/06/open-falcon-deploy-with-muti-node.html">
-            <h2 class="post-title">(原) 多节点Open-falcon部署</h2>
-            <h3 class="post-subtitle">小米开源项目open-falcon - 互联网企业级监控产品</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 08 6, 2016</p>
-          </div>
-          <hr>
-        
-          <div class="post-preview">
-          <a href="/tools/-/2016/08/06/open-falcon-deploy-one-user-interface.html">
-            <h2 class="post-title">(原) 多节点Open-falcon统一用户接口配置</h2>
-            <h3 class="post-subtitle">小米开源项目open-falcon - 互联网企业级监控产品</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 08 6, 2016</p>
-          </div>
-          <hr>
-        
-          <div class="post-preview">
-          <a href="/tools/-/2016/07/20/hackintosh-window-install.html">
-            <h2 class="post-title">(原) Mac & Window10 双系统安装</h2>
-            <h3 class="post-subtitle">基于el capitan 和 window10 安装教程。自选硬件、UEFI启动、hackintosh驱动</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 07 20, 2016</p>
-          </div>
-          <hr>
-        
-        <!-- Pager -->
-        <ul class="pager">
-          
-          <li class="previous"><a href="/page2/">&larr; Previous</a></li>
-          
-          <li class="next"><a href="/page4/">Next &rarr;</a></li>
-        </ul>
+    <div class="container post">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <h3>安装要求</h3>
+
+<ul>
+<li>ubuntu 64 bit系统</li>
+<li>系统内核3.10及以上 命令<code>uname -r</code></li>
+</ul>
+
+<h3>安装步骤</h3>
+
+<p><strong>系统包更新</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update
+<span class="nv">$ </span>sudo apt-get install apt-transport-https ca-certificates
+</code></pre></div>
+<p><strong>增加GPG key</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+</code></pre></div>
+<p><strong>增加下载源</strong></p>
+
+<p><code>vim /etc/apt/sources.list.d/docker.list</code> 添加以下内容：</p>
+
+<ul>
+<li>On Ubuntu Precise 12.04 (LTS)</li>
+</ul>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">deb https://apt.dockerproject.org/repo ubuntu-precise main
+</code></pre></div>
+<ul>
+<li>On Ubuntu Trusty 14.04 (LTS)</li>
+</ul>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">deb https://apt.dockerproject.org/repo ubuntu-trusty main
+</code></pre></div>
+<ul>
+<li>On Ubuntu Wily 15.10</li>
+</ul>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">deb https://apt.dockerproject.org/repo ubuntu-wily main
+</code></pre></div>
+<ul>
+<li>On Ubuntu Xenial 16.04 (LTS)</li>
+</ul>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">deb https://apt.dockerproject.org/repo ubuntu-xenial main
+</code></pre></div>
+<p><strong>系统包更新</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update
+</code></pre></div>
+<p><strong>删除旧Docker</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get purge lxc-docker
+</code></pre></div>
+<p><strong>验证安装Docker</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">apt-cache policy docker-engine
+</code></pre></div>
+<p><strong>安装依赖包</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update
+sudo apt-get install linux-image-extra-<span class="k">$(</span>uname -r<span class="k">)</span> linux-image-extra-virtual
+</code></pre></div>
+<p><strong>安装Docker</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install docker-engine
+</code></pre></div>
+<p><strong>启动Docker</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo service docker start
+</code></pre></div>
+<p><strong>验证Docker安装</strong></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo docker run hello-world
+</code></pre></div>
+          <div id="disqus_thread"></div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <hr>
+    <hr>
   </main>
+  <link href="/assets/lib/css/github.min.css" rel="stylesheet" type="text/css">
+  <script src="/assets/lib/js/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script>
+  /**
+  * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+  */
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = '//jerrylou.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
     <!-- Footer -->
