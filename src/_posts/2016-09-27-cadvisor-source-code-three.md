@@ -4,7 +4,7 @@ title: "Cadvisor源码分析（三）"
 subtitle: "Docker监控数据采集Cadvisor源码分析管理篇" 
 tags: "docker cadvisor 监控"
 date: 2016-09-27 17:19:37 +0800
-categories: docker
+categories: cadvisor
   - 
 ---
 
