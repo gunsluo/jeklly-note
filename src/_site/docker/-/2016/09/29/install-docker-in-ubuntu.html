@@ -58,7 +58,7 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           <h2 class="entry-title">Docker安装步骤</h2>
-          <h3 class="subheading">在ubuntu系统上Docker安装步骤及命令</h3>
+          <h3 class="subheading">系统ubuntu上Docker安装步骤及命令</h3>
           <span class="date">Posted by <a href="/">Jerrylou</a> on 09 29, 2016</span>
         </div>
       </div>
@@ -111,7 +111,8 @@
 <p><strong>系统包更新</strong></p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update
 </code></pre></div>
-<p><strong>删除旧Docker</strong></p>
+<p><strong>删除旧Docker</strong>
+检查系统是否已经安装docker并移除老版本</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get purge lxc-docker
 </code></pre></div>
 <p><strong>验证安装Docker</strong></p>
@@ -127,7 +128,8 @@ sudo apt-get install linux-image-extra-<span class="k">$(</span>uname -r<span cl
 <p><strong>启动Docker</strong></p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo service docker start
 </code></pre></div>
-<p><strong>验证Docker安装</strong></p>
+<p><strong>验证Docker安装</strong>
+下载并启动hello-world的docker镜像，终端打印<code>hello world</code></p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo docker run hello-world
 </code></pre></div>
           <div id="disqus_thread"></div>
@@ -254,7 +256,7 @@ sudo apt-get install linux-image-extra-<span class="k">$(</span>uname -r<span cl
   
   postMap['docker'].push({
     title: 'Docker安装步骤',
-    subtitle: '在ubuntu系统上Docker安装步骤及命令',
+    subtitle: '系统ubuntu上Docker安装步骤及命令',
     url: '/docker/-/2016/09/29/install-docker-in-ubuntu.html',
     date: '2016-09-29',
   });

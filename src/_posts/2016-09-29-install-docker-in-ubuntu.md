@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Docker安装步骤"
-subtitle: "在ubuntu系统上Docker安装步骤及命令" 
+subtitle: "系统ubuntu上Docker安装步骤及命令" 
 tags: "docker 安装 ubuntu tool"
 date: 2016-09-29 14:02:21 +0800
 categories: docker
@@ -62,6 +62,7 @@ sudo apt-get update
 ```
 
 **删除旧Docker**
+检查系统是否已经安装docker并移除老版本
 
 ```bash
 sudo apt-get purge lxc-docker
@@ -93,6 +94,7 @@ sudo service docker start
 ```
 
 **验证Docker安装**
+下载并启动hello-world的docker镜像，终端打印`hello world`
 
 ```bash
 sudo docker run hello-world
