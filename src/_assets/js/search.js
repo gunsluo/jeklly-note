@@ -1,4 +1,5 @@
 jQuery(document).ready(function($){
+  const PAGE_SIZE = 5;
   var resizing = false,
     navigationWrapper = $('.cd-main-nav-wrapper'),
     navigation = navigationWrapper.children('.cd-main-nav'),
@@ -9,7 +10,8 @@ jQuery(document).ready(function($){
     navigationTrigger = $('.cd-nav-trigger'),
     mainHeader = $('.cd-main-header'),
     suggestions = $('.cd-search-suggestions'),
-    postDom = suggestions.find('.news > ul');
+    //postDom = suggestions.find('.news > ul');
+    postDom = suggestions.find('.news');
   
   function checkWindowWidth() {
     var mq = window.getComputedStyle(mainHeader.get(0), '::before').getPropertyValue('content').replace(/"/g, '').replace(/'/g, "");
@@ -105,7 +107,22 @@ jQuery(document).ready(function($){
   searchForm.on('change', 'select', function(){
     var selectedVal = $(this).children('option:selected').text();
     searchForm.find('.selected-value').text(selectedVal);
-    searchPostByCategory(selectedVal.toLowerCase().trim())
+    searchPostByCategory(selectedVal.toLowerCase().trim(), 1)
+  });
+
+  postDom.on('click', 'a.previous, a.next', function(){
+    var vals = $(this).attr("href").split('#');
+    var type = parseInt(vals[0]);
+    var content = vals[1];
+    var page = parseInt(vals[2]);
+
+    if (type == 1) {
+      searchPostByContent(content, page);
+    }else if(type == 2) {
+      searchPostByCategory(content, page);
+    }
+
+    return false;
   });
 
   // add by jerrylou
@@ -115,57 +132,93 @@ jQuery(document).ready(function($){
       postDom.html('');
       return;
     }
-    searchPostByContent(content.toLowerCase().trim());
+    searchPostByContent(content.toLowerCase().trim(), 1);
   }
-  
-  function searchPostByContent(content) {
+
+  function nonePostWithDom(){
+      postDom.html('<h3>News</h3><ul></ul>');
+  }
+
+  function searchPostByContent(content, page) {
     if( typeof postMap == "undefined" ) {
       return;
     }
 
-    var innerhtml = '';
+    var posts = [];
     for(var key in postMap ) {
       var category = postMap[key];
       for(var idx in category){
         var post = category[idx];
         if( (post.title.toLowerCase().indexOf(content) >= 0) ||
           (post.subtitle.toLowerCase().indexOf(content) >= 0) ) {
-          var li = '<li>' + 
-            '<a class="image-wrapper" href="' + post.url + '"><img src="/assets/images/placeholder.png" alt="News image"></a>' +
-            '<h4><a class="cd-nowrap" href="' + post.url + '">' + post.title + '</a></h4>' +
-            '<time datetime="">' + post.subtitle + '</time></li>';
-          innerhtml += li;
+          posts.push(post);
         }
       }
     }
-    postDom.html(innerhtml);
+
+    filterPostsByContentPage(posts, 1, content, page);
   }
 
-  function searchPostByCategory(categoryName) {
+  function searchPostByCategory(categoryName, page) {
     if( typeof postMap == "undefined" ) {
       return;
     }
     if( categoryName == "" ) {
-      postDom.html('');
+      nonePostWithDom();
       return;
     }
 
     if( typeof postMap[categoryName] == "undefined" ) {
-      postDom.html('');
+      nonePostWithDom();
       return;
     }
 
-    var innerhtml = '';
     var category = postMap[categoryName];
-    for(var idx in category){
-      var post = category[idx];
+
+    filterPostsByContentPage(category, 2, categoryName, page);
+  }
+
+  // type: 1-content 2-category
+  function filterPostsByContentPage(posts, type, content, page) {
+    var tlen = posts.length;
+    if (tlen == 0) {
+      nonePostWithDom();
+      return;
+    }
+    var tpage = parseInt(tlen / PAGE_SIZE) + (tlen % PAGE_SIZE == 0 ? 0 : 1);
+    if (page > tpage) {
+      page = tpage;
+    }
+
+    var start = (page - 1) * PAGE_SIZE;
+    var end = page * PAGE_SIZE - 1;
+    if (end > tlen - 1) {
+      end = tlen -1;
+    }
+
+    var innerhtml = '<h3>News</h3><ul>';
+    for(var idx = start; idx <= end; idx++){
+      var post = posts[idx];
       var li = '<li>' + 
         '<a class="image-wrapper" href="' + post.url + '"><img src="/assets/images/placeholder.png" alt="News image"></a>' +
         '<h4><a class="cd-nowrap" href="' + post.url + '">' + post.title + '</a></h4>' +
         '<time datetime="">' + post.subtitle + '</time></li>';
       innerhtml += li;
     }
+    innerhtml += '</ul><ul class="posts-nav">';
+
+    //page
+    if (page > 1) {
+      var h = type + '#' + content + '#' + (page - 1);
+      innerhtml += '<li class="previous"><a href="' + h + '" class="previous">后退</a></li>';
+    }
+    if (page < tpage) {
+      var h = type + '#' + content + '#' + (page + 1);
+      innerhtml += '<li class="next"><a href="' + h + '" class="next">更多...</a></li>';
+    }
+    innerhtml += '</ul>';
 
     postDom.html(innerhtml);
   }
+
 });

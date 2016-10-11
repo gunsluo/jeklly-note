@@ -1417,3 +1417,18 @@ form .row:first-child .floating-label-form-group {
 #disqus_thread {
   margin-top: 50px;
 }
+.posts-nav {
+  text-align: right;
+}
+.cd-search-suggestions .posts-nav li {
+  margin-left: 5px;
+  padding: 5px 6px;
+  display: inline-block;
+}
+.posts-nav li a {
+  text-align: center;
+  border: 1px solid #ddd;
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 4px 15px;
+}
