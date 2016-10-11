@@ -10,7 +10,6 @@ jQuery(document).ready(function($){
     navigationTrigger = $('.cd-nav-trigger'),
     mainHeader = $('.cd-main-header'),
     suggestions = $('.cd-search-suggestions'),
-    //postDom = suggestions.find('.news > ul');
     postDom = suggestions.find('.news');
   
   function checkWindowWidth() {
