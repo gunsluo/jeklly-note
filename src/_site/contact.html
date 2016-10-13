@@ -235,6 +235,8 @@
           
             <option value="cadvisor">cadvisor</option>
           
+            <option value="openstack">openstack</option>
+          
           <option value="other">other</option>
         </select>
         <span class="selected-value">类 别</span>
@@ -262,8 +264,15 @@
   <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
   <script>
   let postMap = {
-  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],
+  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],
   };
+  
+  postMap['openstack'].push({
+    title: 'OpenStack 模块介紹',
+    subtitle: 'OpenStack模块众多，对每个模块进行功能介绍（入门篇）',
+    url: '/openstack/-/2016/10/13/openstack-simple-intro.html',
+    date: '2016-10-13',
+  });
   
   postMap['docker'].push({
     title: 'Docker安装步骤',

@@ -69,6 +69,15 @@
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
           <div class="post-preview">
+          <a href="/kills/-/2016/09/08/min-centos7-net-problem.html">
+            <h2 class="post-title">虚拟机安装Centos7 Min的网络设备名问题</h2>
+            <h3 class="post-subtitle">安装min centos后，网络设备重命名 - 吐槽不已</h3>
+          </a>
+          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 09 8, 2016</p>
+          </div>
+          <hr>
+        
+          <div class="post-preview">
           <a href="/person/-/2016/08/31/rubik-cube-formulas.html">
             <h2 class="post-title">(原) 魔方，我想玩转你</h2>
             <h3 class="post-subtitle">入门级魔方公式 - 层先法</h3>
@@ -101,15 +110,6 @@
             <h3 class="post-subtitle">小米开源项目open-falcon - 互联网企业级监控产品</h3>
           </a>
           <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 08 6, 2016</p>
-          </div>
-          <hr>
-        
-          <div class="post-preview">
-          <a href="/tools/-/2016/07/20/hackintosh-window-install.html">
-            <h2 class="post-title">(原) Mac & Window10 双系统安装</h2>
-            <h3 class="post-subtitle">基于el capitan 和 window10 安装教程。自选硬件、UEFI启动、hackintosh驱动</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 07 20, 2016</p>
           </div>
           <hr>
         
@@ -188,6 +188,8 @@
           
             <option value="cadvisor">cadvisor</option>
           
+            <option value="openstack">openstack</option>
+          
           <option value="other">other</option>
         </select>
         <span class="selected-value">类 别</span>
@@ -215,8 +217,15 @@
   <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
   <script>
   let postMap = {
-  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],
+  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],
   };
+  
+  postMap['openstack'].push({
+    title: 'OpenStack 模块介紹',
+    subtitle: 'OpenStack模块众多，对每个模块进行功能介绍（入门篇）',
+    url: '/openstack/-/2016/10/13/openstack-simple-intro.html',
+    date: '2016-10-13',
+  });
   
   postMap['docker'].push({
     title: 'Docker安装步骤',

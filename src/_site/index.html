@@ -69,6 +69,15 @@
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
           <div class="post-preview">
+          <a href="/openstack/-/2016/10/13/openstack-simple-intro.html">
+            <h2 class="post-title">OpenStack 模块介紹</h2>
+            <h3 class="post-subtitle">OpenStack模块众多，对每个模块进行功能介绍（入门篇）</h3>
+          </a>
+          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 10 13, 2016</p>
+          </div>
+          <hr>
+        
+          <div class="post-preview">
           <a href="/docker/-/2016/09/29/install-docker-in-ubuntu.html">
             <h2 class="post-title">Docker安装步骤</h2>
             <h3 class="post-subtitle">系统ubuntu上Docker安装步骤及命令</h3>
@@ -99,15 +108,6 @@
           <a href="/cadvisor/-/2016/09/27/cadvisor-source-code-four.html">
             <h2 class="post-title">Cadvisor源码分析（四）</h2>
             <h3 class="post-subtitle">Docker监控数据采集Cadvisor源码分析API篇</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 09 27, 2016</p>
-          </div>
-          <hr>
-        
-          <div class="post-preview">
-          <a href="/cadvisor/-/2016/09/27/cadvisor-source-code-three.html">
-            <h2 class="post-title">Cadvisor源码分析（三）</h2>
-            <h3 class="post-subtitle">Docker监控数据采集Cadvisor源码分析管理篇</h3>
           </a>
           <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 09 27, 2016</p>
           </div>
@@ -187,6 +187,8 @@
           
             <option value="cadvisor">cadvisor</option>
           
+            <option value="openstack">openstack</option>
+          
           <option value="other">other</option>
         </select>
         <span class="selected-value">类 别</span>
@@ -214,8 +216,15 @@
   <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
   <script>
   let postMap = {
-  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],
+  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],
   };
+  
+  postMap['openstack'].push({
+    title: 'OpenStack 模块介紹',
+    subtitle: 'OpenStack模块众多，对每个模块进行功能介绍（入门篇）',
+    url: '/openstack/-/2016/10/13/openstack-simple-intro.html',
+    date: '2016-10-13',
+  });
   
   postMap['docker'].push({
     title: 'Docker安装步骤',
