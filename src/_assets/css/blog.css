@@ -41,6 +41,10 @@ table {
 .post table {
   font-size: 0.9em;
 }
+.post a {
+  font-style:italic;
+  text-decoration:underline;
+}
 *, *::after, *::before {
   box-sizing: border-box;
 }
