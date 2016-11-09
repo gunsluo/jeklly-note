@@ -69,6 +69,15 @@
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
           <div class="post-preview">
+          <a href="/tools/-/2016/09/12/git-principle.html">
+            <h2 class="post-title">Git原理简介</h2>
+            <h3 class="post-subtitle">Git如何实现？实现原理是什么？</h3>
+          </a>
+          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 09 12, 2016</p>
+          </div>
+          <hr>
+        
+          <div class="post-preview">
           <a href="/kills/-/2016/09/08/nfv-and-sdn.html">
             <h2 class="post-title">(转) 什么是NFV?它与SDN有什么关系?</h2>
             <h3 class="post-subtitle">虚拟化网络技术NFV与SDN的关系</h3>
@@ -101,15 +110,6 @@
             <h3 class="post-subtitle">Golang学习过程中记录笔记，帮助理解</h3>
           </a>
           <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 08 10, 2016</p>
-          </div>
-          <hr>
-        
-          <div class="post-preview">
-          <a href="/tools/-/2016/08/06/open-falcon-deploy-with-muti-node.html">
-            <h2 class="post-title">(原) 多节点Open-falcon部署</h2>
-            <h3 class="post-subtitle">小米开源项目open-falcon - 互联网企业级监控产品</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 08 6, 2016</p>
           </div>
           <hr>
         
@@ -190,6 +190,8 @@
           
             <option value="openstack">openstack</option>
           
+            <option value="deploy">deploy</option>
+          
           <option value="other">other</option>
         </select>
         <span class="selected-value">类 别</span>
@@ -217,8 +219,15 @@
   <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
   <script>
   let postMap = {
-  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],
+  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],'deploy':[],
   };
+  
+  postMap['deploy'].push({
+    title: '自动化部署平台',
+    subtitle: '基于Gitlab Jenkins Docker集群 微服务搭建自动化部署平台',
+    url: '/deploy/-/2016/11/09/auto-deploy-platform.html',
+    date: '2016-11-9',
+  });
   
   postMap['openstack'].push({
     title: 'OpenStack 安装手册',

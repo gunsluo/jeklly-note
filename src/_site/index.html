@@ -69,6 +69,15 @@
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
           <div class="post-preview">
+          <a href="/deploy/-/2016/11/09/auto-deploy-platform.html">
+            <h2 class="post-title">自动化部署平台</h2>
+            <h3 class="post-subtitle">基于Gitlab Jenkins Docker集群 微服务搭建自动化部署平台</h3>
+          </a>
+          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 11 9, 2016</p>
+          </div>
+          <hr>
+        
+          <div class="post-preview">
           <a href="/openstack/-/2016/10/18/openstack-install.html">
             <h2 class="post-title">OpenStack 安装手册</h2>
             <h3 class="post-subtitle">Centos7 Mini 系统OpenStack newton安装步骤详解</h3>
@@ -99,15 +108,6 @@
           <a href="/cadvisor/-/2016/09/27/cadvisor-source-code-metrics.html">
             <h2 class="post-title">Cadvisor源码分析监控项</h2>
             <h3 class="post-subtitle">Docker监控数据采集Cadvisor源码分析监控项</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 09 27, 2016</p>
-          </div>
-          <hr>
-        
-          <div class="post-preview">
-          <a href="/cadvisor/-/2016/09/27/cadvisor-source-code-five.html">
-            <h2 class="post-title">Cadvisor源码分析（五）</h2>
-            <h3 class="post-subtitle">Docker监控数据采集Cadvisor源码分析总结篇</h3>
           </a>
           <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 09 27, 2016</p>
           </div>
@@ -189,6 +189,8 @@
           
             <option value="openstack">openstack</option>
           
+            <option value="deploy">deploy</option>
+          
           <option value="other">other</option>
         </select>
         <span class="selected-value">类 别</span>
@@ -216,8 +218,15 @@
   <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
   <script>
   let postMap = {
-  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],
+  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],'deploy':[],
   };
+  
+  postMap['deploy'].push({
+    title: '自动化部署平台',
+    subtitle: '基于Gitlab Jenkins Docker集群 微服务搭建自动化部署平台',
+    url: '/deploy/-/2016/11/09/auto-deploy-platform.html',
+    date: '2016-11-9',
+  });
   
   postMap['openstack'].push({
     title: 'OpenStack 安装手册',

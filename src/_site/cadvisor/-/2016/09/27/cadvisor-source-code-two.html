@@ -305,6 +305,8 @@
           
             <option value="openstack">openstack</option>
           
+            <option value="deploy">deploy</option>
+          
           <option value="other">other</option>
         </select>
         <span class="selected-value">类 别</span>
@@ -332,8 +334,15 @@
   <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
   <script>
   let postMap = {
-  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],
+  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],'deploy':[],
   };
+  
+  postMap['deploy'].push({
+    title: '自动化部署平台',
+    subtitle: '基于Gitlab Jenkins Docker集群 微服务搭建自动化部署平台',
+    url: '/deploy/-/2016/11/09/auto-deploy-platform.html',
+    date: '2016-11-9',
+  });
   
   postMap['openstack'].push({
     title: 'OpenStack 安装手册',

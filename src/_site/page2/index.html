@@ -69,6 +69,15 @@
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
           <div class="post-preview">
+          <a href="/cadvisor/-/2016/09/27/cadvisor-source-code-five.html">
+            <h2 class="post-title">Cadvisor源码分析（五）</h2>
+            <h3 class="post-subtitle">Docker监控数据采集Cadvisor源码分析总结篇</h3>
+          </a>
+          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 09 27, 2016</p>
+          </div>
+          <hr>
+        
+          <div class="post-preview">
           <a href="/cadvisor/-/2016/09/27/cadvisor-source-code-four.html">
             <h2 class="post-title">Cadvisor源码分析（四）</h2>
             <h3 class="post-subtitle">Docker监控数据采集Cadvisor源码分析API篇</h3>
@@ -101,15 +110,6 @@
             <h3 class="post-subtitle">Docker监控数据采集Cadvisor源码分析入门篇</h3>
           </a>
           <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 09 27, 2016</p>
-          </div>
-          <hr>
-        
-          <div class="post-preview">
-          <a href="/tools/-/2016/09/12/git-principle.html">
-            <h2 class="post-title">Git原理简介</h2>
-            <h3 class="post-subtitle">Git如何实现？实现原理是什么？</h3>
-          </a>
-          <p class="post-meta">Posted by <a href="#">Jerrylou</a> on 09 12, 2016</p>
           </div>
           <hr>
         
@@ -190,6 +190,8 @@
           
             <option value="openstack">openstack</option>
           
+            <option value="deploy">deploy</option>
+          
           <option value="other">other</option>
         </select>
         <span class="selected-value">类 别</span>
@@ -217,8 +219,15 @@
   <div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
   <script>
   let postMap = {
-  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],
+  'docker':[],'tools':[],'other':[],'kills':[],'person':[],'cadvisor':[],'openstack':[],'deploy':[],
   };
+  
+  postMap['deploy'].push({
+    title: '自动化部署平台',
+    subtitle: '基于Gitlab Jenkins Docker集群 微服务搭建自动化部署平台',
+    url: '/deploy/-/2016/11/09/auto-deploy-platform.html',
+    date: '2016-11-9',
+  });
   
   postMap['openstack'].push({
     title: 'OpenStack 安装手册',
