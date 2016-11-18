@@ -57,6 +57,22 @@ sudo yum makecache
 sudo yum install gitlab-ce
 ```
 
+###修改配置
+
+`vim /etc/gitlab/gitlab.rb`
+
+```bash
+gitlab_rails['gitlab_email_from'] = 'gitlab@example.com'
+
+external_url 'http://10.128.31.109'
+```
+
+###编译启动
+
+```bash
+sudo gitlab-ctl reconfigure
+```
+
 ###问题
 
 1. 在浏览器中访问GitLab出现502错误。

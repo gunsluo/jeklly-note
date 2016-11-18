@@ -99,6 +99,16 @@ sudo systemctl reload firewalld
 <h3>安装</h3>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo yum install gitlab-ce
 </code></pre></div>
+<h3>修改配置</h3>
+
+<p><code>vim /etc/gitlab/gitlab.rb</code></p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">gitlab_rails<span class="o">[</span><span class="s1">&#39;gitlab_email_from&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;gitlab@example.com&#39;</span>
+
+external_url <span class="s1">&#39;http://10.128.31.109&#39;</span>
+</code></pre></div>
+<h3>编译启动</h3>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo gitlab-ctl reconfigure
+</code></pre></div>
 <h3>问题</h3>
 
 <ol>
