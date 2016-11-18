@@ -112,11 +112,25 @@ external_url <span class="s1">&#39;http://10.128.31.109&#39;</span>
 <h3>问题</h3>
 
 <ol>
-<li>在浏览器中访问GitLab出现502错误。
+<li><p>在浏览器中访问GitLab出现502错误。
 原因：内存不足。
-解决办法：检查系统的虚拟内存是否随机启动了，如果系统无虚拟内存，则增加虚拟内存，再重新启动系统。</li>
+解决办法：检查系统的虚拟内存是否随机启动了，如果系统无虚拟内存，则增加虚拟内存，再重新启动系统。</p></li>
+<li><p>8080端口冲突。
+原因：由于unicorn默认使用的是8080端口。
+解决办法：打开/etc/gitlab/gitlab.rb,打开# unicorn[&#39;port&#39;] = 8080 的注释，将8080修改为9090，保存后运行sudo gitlab-ctl reconfigure即可。</p></li>
+<li><p>GitLab头像无法正常显示
+原因：gravatar被墙
+解决办法：编辑 <code>/etc/gitlab/gitlab.rb</code>，将</p></li>
 </ol>
-
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#gitlab_rails[&#39;gravatar_plain_url&#39;] = &#39;http://gravatar.duoshuo.com/avatar/%{hash}?s=%{size}&amp;d=identicon&#39;</span>
+</code></pre></div>
+<p>修改为：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">gitlab_rails<span class="o">[</span><span class="s1">&#39;gravatar_plain_url&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;http://gravatar.duoshuo.com/avatar/%{hash}?s=%{size}&amp;d=identicon&#39;</span>
+</code></pre></div>
+<p>然后在命令行执行：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo gitlab-ctl reconfigure 
+sudo gitlab-rake cache:clear <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</code></pre></div>
           <div id="disqus_thread"></div>
         </div>
       </div>

@@ -79,3 +79,27 @@ sudo gitlab-ctl reconfigure
    原因：内存不足。
    解决办法：检查系统的虚拟内存是否随机启动了，如果系统无虚拟内存，则增加虚拟内存，再重新启动系统。
 
+2. 8080端口冲突。
+   原因：由于unicorn默认使用的是8080端口。
+   解决办法：打开/etc/gitlab/gitlab.rb,打开# unicorn['port'] = 8080 的注释，将8080修改为9090，保存后运行sudo gitlab-ctl reconfigure即可。
+
+3. GitLab头像无法正常显示
+   原因：gravatar被墙
+   解决办法：编辑 `/etc/gitlab/gitlab.rb`，将
+
+```bash
+#gitlab_rails['gravatar_plain_url'] = 'http://gravatar.duoshuo.com/avatar/%{hash}?s=%{size}&d=identicon'
+```
+
+修改为：
+
+```bash
+gitlab_rails['gravatar_plain_url'] = 'http://gravatar.duoshuo.com/avatar/%{hash}?s=%{size}&d=identicon'
+```
+
+然后在命令行执行：
+
+```bash
+sudo gitlab-ctl reconfigure 
+sudo gitlab-rake cache:clear RAILS_ENV=production
+```
